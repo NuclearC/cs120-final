@@ -3,8 +3,8 @@
  */
 public class CollectableEntity extends ColladableEntity {
 
-    int value;
-    int life;
+    private int value;
+    private int life;
 
     /**
      * Creates a collectable object.
