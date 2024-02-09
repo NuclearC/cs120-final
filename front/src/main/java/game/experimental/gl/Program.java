@@ -2,7 +2,14 @@ package game.experimental.gl;
 
 import static org.lwjgl.opengl.GL46.*;
 
+/**
+ * Implements an OpenGL program.
+ */
 public class Program {
+
+    /**
+     * Used to be thrown only from Program linking errors.
+     */
     public class ProgramException extends Exception {
         public ProgramException(String message) {
             super(message);
@@ -11,10 +18,18 @@ public class Program {
 
     private int program = 0;
 
+    /**
+     * Create an empty OpenGL program.
+     * Call Program.destroy() whenever this program is not needed anymore.
+     */
     public Program() {
         program = glCreateProgram();
     }
 
+    /**
+     * Links OpenGL program together. Shaders must had been attached prior.
+     * @throws ProgramException
+     */
     public void link() throws ProgramException {
         glLinkProgram(program);
 
@@ -29,18 +44,36 @@ public class Program {
         }
     }
 
+    /**
+     * Attaches a Shader object to the program.
+     * @param shader reference to the compiled Shader object
+     * @see Shader
+     */
     public void attachShader(Shader shader) {
         glAttachShader(program, shader.getInternalHandle());
     }
 
+    /**
+     * Return a location index to a uniform with the specified name.
+     * The uniform must be declared within the shader GLSL code.
+     * Name is case sensitive. 
+     * @param name the name of the uniform variable.
+     * @return 
+     */
     public int getUniform(String name) {
         return glGetUniformLocation(program, name);
     }
 
+    /**
+     * Update the graphics pipeline state to use this program. 
+     */
     public void use() {
         glUseProgram(program);
     }
 
+    /**
+     * Destroy the program.
+     */
     public void destroy() {
         glDeleteProgram(program);
     }

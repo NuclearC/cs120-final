@@ -6,7 +6,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
+/**
+ * Implements an OpenGL shader.
+ */
 public class Shader {
+    /**
+     * Used to be thrown only from Shader compilation errors.
+     */
     public class ShaderException extends Exception {
         public ShaderException(String message) {
             super(message);
@@ -21,6 +27,16 @@ public class Shader {
     private int shader = 0;
     private ShaderType type;
 
+    /**
+     * Creates an OpenGL Shader. 
+     * Reads the text data from the file specified by 'filename' and compiles the shader.
+     * Throws an exception if compilation fails.
+     * Must be destroyed manually by calling Shader.destroy()
+     * @param type Type of the shader, currently supported only VERTEX_SHADER and FRAGMENT_SHADER. 
+     * @param filename Absolute or relative path to the file containing the GLSL code. 
+     * @throws ShaderException
+     * @throws IOException
+     */
     public Shader(ShaderType type, String filename) throws ShaderException, IOException {
         this.type = type;
 
@@ -33,8 +49,8 @@ public class Shader {
                 break;    
         }
 
+        // read the data from the text file
         {
-
             File file = new File(filename);
             byte [] rawData = new byte[(int)file.length()];
             (new FileInputStream (file)).read(rawData);
@@ -44,6 +60,7 @@ public class Shader {
 
         glCompileShader(shader);
 
+        // stupid C style API
         int[] shaderIv = { 0 };
         glGetShaderiv(shader, GL_COMPILE_STATUS, shaderIv);
 
@@ -59,10 +76,17 @@ public class Shader {
         return type;
     }
 
+    /**
+     * Returns a GLuint typed number that OpenGL internally uses to identify this shader. 
+     * @return
+     */
     public int getInternalHandle() {
         return shader;
     }
 
+    /**
+     * Destroys the OpenGL shader. 
+     */
     public void destroy() {
         if (shader != 0) {
             glDeleteShader(shader);
