@@ -98,12 +98,23 @@ public class Vector2F implements Vector{
     }
 
     /**
-     * not implemented
+     * gives the angel between two vectors(should be revised about the double)
      * @param anotherVector is the second operand
-     * @return
+     * @return the angel between two vectors
      */
     @Override
     public float getAngle(Vector anotherVector) {
-        return 0;
+        double angle = this.dotProduct(anotherVector) / (this.length() * anotherVector.length());
+        return (float) Math.acos((double)angle);
+    }
+
+    /**
+     * calculates the length of the vector
+     * @return the length of the vector
+     */
+    @Override
+    public float length(){
+        float length = (float) Math.sqrt(x * x + y * y);
+        return length;
     }
 }

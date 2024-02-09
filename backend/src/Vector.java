@@ -34,6 +34,11 @@ public interface Vector {
      */
     float getAngle(Vector anotherVector);
 
+    /**
+     * calculates the length of the vector
+     * @return the length of the vector
+     */
+    float length();
 
 
 }

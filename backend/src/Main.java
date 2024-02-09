@@ -1,5 +1,7 @@
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        Vector2F a = new Vector2F(1,0);
+        Vector2F b = new Vector2F(0,1);
+        System.out.println(a.getAngle(b));
     }
 }
