@@ -7,6 +7,61 @@ public class Matrix4x4 {
     private float[] values;
 
     /**
+     * Creates an orthographic projection matrix.
+     * 
+     * @param left   X coordinate of the left-top corner.
+     * @param top    Y coordinate of the left-top corner.
+     * @param right  X coordinate of the right-bottom corner.
+     * @param bottom Y coordinate of the right-bottom corner.
+     * @param near   Minimum Z coordinate.
+     * @param far    Maximum Z coordinate (depth)
+     * @return the resulting matrix.
+     */
+    static public Matrix4x4 projectionOrthographic(float left, float top, float right, float bottom, float near,
+            float far) {
+
+        return new Matrix4x4(new float[] {
+                2.0f / (right - left),
+                0.f,
+                0.f,
+                0.f,
+
+                0.f,
+                2.0f / (top - bottom),
+                0.f,
+                0.f,
+
+                0.f,
+                0.f,
+                -2.0f / (far - near),
+                0.f,
+
+                (right + left) / (left - right),
+                (top + bottom) / (bottom - top),
+                (far + near) / (near - far),
+                1.f
+        });
+    }
+
+    static public Matrix4x4 transformScale(float v) {
+        return new Matrix4x4(new float[] {  
+            v, 0.f, 0.f, 0.f,
+            0.f, v, 0.f, 0.f,
+            0.f, 0.f, 1.f, 0.f,
+            0.f, 0.f, 0.f, 1.f
+        });
+    }
+
+    static public Matrix4x4 transformTranslate(float x, float y) {
+        return new Matrix4x4(new float[] {  
+            1.f, 0.f, 0.f, 0.f,
+            0.f, 1.f, 0.f, 0.f,
+            0.f, 0.f, 1.f, 0.f,
+            x, y, 0.f, 1.f
+        });
+    }
+
+    /**
      * Default constructor creates a zero matrix.
      */
     public Matrix4x4() {
@@ -22,8 +77,8 @@ public class Matrix4x4 {
         values = new float[] {
                 v, 0.f, 0.f, 0.f,
                 0.f, v, 0.f, 0.f,
-                0.f, 0.f, v, 0.f,
-                0.f, 0.f, 0.f, v
+                0.f, 0.f, 1.0f, 0.f,
+                0.f, 0.f, 0.f, 1.0f
         };
     }
 
@@ -72,13 +127,22 @@ public class Matrix4x4 {
     /**
      * Perform matrix multiplication.
      * Does not change the matrix of the callee object.
+     * DONT DO THIS. USE MULTIPLICATION IN SHADERS INSTEAD.
      * 
      * @param other the matrix to multiply with.
      * @return the newly resulting matrix.
      */
     public Matrix4x4 multiply(Matrix4x4 other) {
+        Matrix4x4 res = new Matrix4x4();
 
-        return new Matrix4x4();
+        for (int r = 0; r < 4; r++) {
+            for (int c = 0; c < 4; c++) {
+                for (int i = 0; i < 4; i++)
+                    res.values[r * 4 + c] += getAt(i, c) * other.getAt(r, i);
+            }
+        }
+
+        return res;
     }
 
     /**
@@ -89,6 +153,9 @@ public class Matrix4x4 {
      * @return the newly resulting matrix.
      */
     public Matrix4x4 multiply(float scalar) {
-        return new Matrix4x4();
+        Matrix4x4 res = new Matrix4x4();
+        for (int i = 0; i < 16; i++)
+            res.values[i] = values[i] * scalar;
+        return res;
     }
 }

@@ -35,7 +35,7 @@ public class App {
         glEnable(GL_MULTISAMPLE);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
-		
+
 		loop();
 
 		gameWindow.destroy();
@@ -78,7 +78,10 @@ public class App {
 		Shape circle = new Shape(Shape.buildCircle(36));
 		Shape quad = new Shape(Shape.buildQuad());
 
-		float[] pvm;
+		Matrix4x4 proj = Matrix4x4.projectionOrthographic(-640.f, -360.f, 640.f, 360.f, 0.f, 1.0f);
+		Matrix4x4 pvm = proj.multiply(Matrix4x4.transformTranslate(0.0f, 0.f).multiply(Matrix4x4.transformScale(64.0f)));
+		Matrix4x4 pvm2 = proj.multiply(Matrix4x4.transformTranslate(64.0f, 0.f).multiply(Matrix4x4.transformScale(64.0f)));
+
 		float circleColor[] = new float[]{1.0f, 0.f, 0.f, 1.0f};
 		float quadColor[] = new float[]{0.f, 1.0f, 0.f, 0.5f};
 		// Run the rendering loop until the user has attempted to close
@@ -89,14 +92,14 @@ public class App {
 
 			texture.bind();
 			program.use();
-			pvm = Shape.buildProjection(320.f, 240.f, 50.0f,30.0f, 100.f, 0.f);
-			glUniformMatrix4fv(program.getUniform("pvm"), false, pvm);
+			//pvm = Shape.buildProjection(320.f, 240.f, 50.0f,30.0f, 100.f, 0.f);
+			glUniformMatrix4fv(program.getUniform("pvm"), false, pvm.getRaw());
 			glUniform4fv(program.getUniform("color"), quadColor);
 			quad.draw();
 
 			texture2.bind();
-			pvm = Shape.buildProjection(320.f, 240.f, 100.0f, 100.0f, 0.f, 0.f);
-			glUniformMatrix4fv(program.getUniform("pvm"), false, pvm);
+			//pvm = Shape.buildProjection(320.f, 240.f, 100.0f, 100.0f, 0.f, 0.f);
+			glUniformMatrix4fv(program.getUniform("pvm"), false, pvm2.getRaw());
 			glUniform4fv(program.getUniform("color"), circleColor);
 			circle.draw();
 

@@ -52,13 +52,13 @@ public class Shape {
         return res;
     }
 
-    public static float[] buildProjection(float width, float height, float scaleX, float scaleY, float offsetX, float offsetY) {
-        return new float[]{
-            1.f / width * scaleX, 0.f, 0.f,  0.0f,
-			0.f, 1.f / height * scaleY, 0.f, 0.0f,
-			0.f, 0.f, 0.f, 0.f,
-			offsetX / width, offsetY / height, 0.f, 1.f};
-    }
+    // public static float[] buildProjection(float width, float height, float scaleX, float scaleY, float offsetX, float offsetY) {
+    //     return new float[]{
+    //         1.f / width * scaleX, 0.f, 0.f,  0.0f,
+	// 		0.f, 1.f / height * scaleY, 0.f, 0.0f,
+	// 		0.f, 0.f, 0.f, 0.f,
+	// 		offsetX / width, offsetY / height, 0.f, 1.f};
+    // }
 
     public Shape(float[] vertices) {
         vertexArray = glCreateVertexArrays();
