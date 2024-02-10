@@ -3,105 +3,49 @@ package game.experimental.app;
 
 import org.lwjgl.*;
 import org.lwjgl.glfw.*;
-import org.lwjgl.opengl.*;
-import org.lwjgl.system.*;
+import org.lwjgl.opengl.GL;
 
 import game.experimental.gl.*;
 import game.experimental.gl.Shader.ShaderException;
 import game.experimental.gl.Program.ProgramException;
 import game.experimental.gl.Shader.ShaderType;
 
-import java.nio.*;
-
-import static org.lwjgl.glfw.Callbacks.*;
-import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL46.*;
-import static org.lwjgl.system.MemoryStack.*;
-import static org.lwjgl.system.MemoryUtil.*;
+import static org.lwjgl.glfw.GLFW.*;
 
 public class App {
-	// The window handle
-	private long window;
+	private GameWindow gameWindow;
 
 	public void run() {
 		System.out.println("Hello LWJGL " + Version.getVersion() + "!");
 
-		init();
-		loop();
-
-		// Free the window callbacks and destroy the window
-		glfwFreeCallbacks(window);
-		glfwDestroyWindow(window);
-
-		// Terminate GLFW and free the error callback
-		glfwTerminate();
-		glfwSetErrorCallback(null).free();
-	}
-
-	private void init() {
-		// Setup an error callback. The default implementation
-		// will print the error message in System.err.
+        // bind GLFW error output to cerr
 		GLFWErrorCallback.createPrint(System.err).set();
 
-		// Initialize GLFW. Most GLFW functions will not work before doing this.
-		if ( !glfwInit() )
+		
+
+        if ( !glfwInit() )
 			throw new IllegalStateException("Unable to initialize GLFW");
+		// create the main output window
+		// this may be recreated if options are changed (such as window size of vsync)
+		gameWindow = new GameWindow(1280, 720, "OpenGL Output window", true);
 
-		// Configure GLFW
-		glfwDefaultWindowHints(); // optional, the current window hints are already the default
-		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
-		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE); // the window will be resizable
-        glfwWindowHint(GLFW_SAMPLES, 16);
-		// Create the window
-		window = glfwCreateWindow(640, 480, "Hello World!", NULL, NULL);
-		if ( window == NULL )
-			throw new RuntimeException("Failed to create the GLFW window");
-
-		// Setup a key callback. It will be called every time a key is pressed, repeated or released.
-		glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
-			if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE )
-				glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
-		});
-
-		// Get the thread stack and push a new frame
-		try ( MemoryStack stack = stackPush() ) {
-			IntBuffer pWidth = stack.mallocInt(1); // int*
-			IntBuffer pHeight = stack.mallocInt(1); // int*
-
-			// Get the window size passed to glfwCreateWindow
-			glfwGetWindowSize(window, pWidth, pHeight);
-
-			// Get the resolution of the primary monitor
-			GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-
-			// Center the window
-			glfwSetWindowPos(
-				window,
-				(vidmode.width() - pWidth.get(0)) / 2,
-				(vidmode.height() - pHeight.get(0)) / 2
-			);
-		} // the stack frame is popped automatically
-
-		// Make the OpenGL context current
-		glfwMakeContextCurrent(window);
-		// Enable v-sync
-		glfwSwapInterval(1);
-
-		// Make the window visible
-		glfwShowWindow(window);
-	}
-
-	private void loop() {
-		// This line is critical for LWJGL's interoperation with GLFW's
-		// OpenGL context, or any context that is managed externally.
-		// LWJGL detects the context that is current in the current thread,
-		// creates the GLCapabilities instance and makes the OpenGL
-		// bindings available for use.
 		GL.createCapabilities();
+
         glEnable(GL_MULTISAMPLE);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
+		
+		loop();
 
+		gameWindow.destroy();
+
+		glfwSetErrorCallback(null).free();
+		// Terminate GLFW and free the error callback
+		glfwTerminate();
+	}
+
+	private void loop() {
         Program program = new Program();
 
 		Texture texture, texture2;
@@ -139,7 +83,7 @@ public class App {
 		float quadColor[] = new float[]{0.f, 1.0f, 0.f, 0.5f};
 		// Run the rendering loop until the user has attempted to close
 		// the window or has pressed the ESCAPE key.
-		while ( !glfwWindowShouldClose(window) ) {
+		while ( !gameWindow.shouldClose() ) {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
             glClearColor(229.f / 255.f, 207.f / 255.f, 163.f / 255.f, 1.0f);
 
@@ -156,8 +100,7 @@ public class App {
 			glUniform4fv(program.getUniform("color"), circleColor);
 			circle.draw();
 
-			glfwSwapBuffers(window); // swap the colo m r buffers
-
+			gameWindow.present();
 			// Poll for window events. The key callback above will only be
 			// invoked during this call.
 			glfwPollEvents();
