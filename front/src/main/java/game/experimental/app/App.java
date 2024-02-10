@@ -79,8 +79,8 @@ public class App {
 		Shape quad = new Shape(Shape.buildQuad());
 
 		Matrix4x4 proj = Matrix4x4.projectionOrthographic(-640.f, -360.f, 640.f, 360.f, 0.f, 1.0f);
-		Matrix4x4 pvm = proj.multiply(Matrix4x4.transformTranslate(0.0f, 0.f).multiply(Matrix4x4.transformScale(64.0f)));
 		Matrix4x4 pvm2 = proj.multiply(Matrix4x4.transformTranslate(64.0f, 0.f).multiply(Matrix4x4.transformScale(64.0f)));
+		Matrix4x4 pvm = proj.multiply(Matrix4x4.transformRotate(0.44f).multiply(Matrix4x4.transformScale(64.0f)));
 
 		float circleColor[] = new float[]{1.0f, 0.f, 0.f, 1.0f};
 		float quadColor[] = new float[]{0.f, 1.0f, 0.f, 0.5f};
@@ -90,6 +90,7 @@ public class App {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
             glClearColor(229.f / 255.f, 207.f / 255.f, 163.f / 255.f, 1.0f);
 
+			
 			texture.bind();
 			program.use();
 			//pvm = Shape.buildProjection(320.f, 240.f, 50.0f,30.0f, 100.f, 0.f);

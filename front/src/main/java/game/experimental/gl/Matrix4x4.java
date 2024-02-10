@@ -61,6 +61,14 @@ public class Matrix4x4 {
         });
     }
 
+    static public Matrix4x4 transformRotate(float angle) {
+        return new Matrix4x4(new float[] {  
+            (float)Math.cos(angle), -(float)Math.sin(angle), 0.f, 0.f,
+            (float)Math.sin(angle),  (float)Math.cos(angle), 0.f, 0.f,
+            0.f, 0.f, 1.f, 0.f,
+            0.f, 0.f, 0.f, 1.f
+        });
+    }
     /**
      * Default constructor creates a zero matrix.
      */
