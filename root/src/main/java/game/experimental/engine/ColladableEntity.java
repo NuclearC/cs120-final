@@ -1,7 +1,7 @@
 package game.experimental.engine;
 
 /**
- * Cre
+ * Represents Colladable Entities, extends Entity class.
  */
 public class ColladableEntity extends Entity {
     /**
