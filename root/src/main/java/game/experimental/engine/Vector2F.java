@@ -1,6 +1,6 @@
 package game.experimental.engine;
 
-public class Vector2F implements Vector{
+public class Vector2F implements Vector, Cloneable{
     private float x, y;
 
     /**
@@ -118,4 +118,16 @@ public class Vector2F implements Vector{
         float length = (float) Math.sqrt(x * x + y * y);
         return length;
     }
+
+    /**
+     * needs to be chekced
+     * @return the clone of the vector
+     */
+    @Override
+    public Vector2F clone() {
+        Vector2F vector = new Vector2F(this.x, this.y);
+        return vector;
+
+    }
+
 }
