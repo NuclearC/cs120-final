@@ -42,5 +42,12 @@ public interface Vector {
      */
     float length();
 
+    /**
+     * checks the equality between vectors.
+     * @param vector the second operand
+     * @return true when both vectors are equal, false otherwise.
+     */
+    boolean equal(Vector vector);
+
 
 }

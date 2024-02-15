@@ -129,5 +129,15 @@ public class Vector2F implements Vector, Cloneable{
         return vector;
 
     }
-
+    /**
+     * checks the equality between vectors.
+     * @param vector the second operand
+     * @return true when both vectors are equal, false otherwise.
+     */
+    @Override
+    public boolean equal(Vector vector) {
+        Vector2F anotherVector = (Vector2F) vector;
+        if(this.x == anotherVector.getX() && this.y == anotherVector.getY()) return true;
+        return false;
+    }
 }

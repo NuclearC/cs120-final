@@ -71,4 +71,24 @@ public class BoundingBox {
         return vector;
     }
 
+    /**
+     * checks whether the given box is inside it or not
+     * @param box the box that is checked
+     * @return true when box is inside it or equal it, false otherwise.
+     */
+    public boolean contains(BoundingBox box) {
+        boolean result = (position.getX() <= box.position.getX() && getBottomRight().getX() >= box.getBottomRight().getX());
+        result = result && (position.getY() <= box.getPosition().getY() && getBottomRight().getY() >= getBottomRight().getY());
+        return result;
+    }
+
+    /**
+     *  checks whether the given box is intersecting with it or not
+     * @param box the box that is checked
+     * @return true if the boxes interacts, false otherwise
+     */
+     public boolean intersects(BoundingBox box) {
+        return !(position.getX() >= box.getTopRight().getX() || getTopRight().getX() <= box.getPosition().getX() || getPosition().getY() >= box.getBottomRight().getY() || getBottomRight().getY() <= box.getPosition().getY());
+     }
+
 }
