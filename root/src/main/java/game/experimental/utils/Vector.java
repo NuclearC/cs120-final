@@ -1,4 +1,4 @@
-package game.experimental.engine;
+package game.experimental.utils;
 
 /**
  * Represents the vectors' functionality.
@@ -8,7 +8,14 @@ public interface Vector {
      * @param anotherVector is the second operand
      * @return the sum of two vectors
      */
-    Vector sum(Vector anotherVector);
+    Vector add(Vector anotherVector);
+    
+    /**
+     * @param anotherVector is the second operand
+     * @return the difference of two vectors
+     */
+    Vector subtract(Vector anotherVector);
+
     /**
      *
      * @param anotherVector is the second operand
@@ -35,6 +42,13 @@ public interface Vector {
      * @return the angle between the two vector in radians
      */
     float getAngle(Vector anotherVector);
+
+    /**
+     * get the specified component
+     * @param index the index of the component
+     * @return the component of vector at index
+     */
+    float get(int index);
 
     /**
      * calculates the length of the vector

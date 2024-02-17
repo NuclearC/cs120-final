@@ -1,4 +1,4 @@
-package game.experimental.engine;
+package game.experimental.utils;
 
 public class BoundingBox implements Cloneable {
     private Vector2F position, size;

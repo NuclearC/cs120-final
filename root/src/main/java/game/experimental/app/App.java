@@ -9,6 +9,7 @@ import game.experimental.gl.*;
 import game.experimental.gl.Shader.ShaderException;
 import game.experimental.gl.Program.ProgramException;
 import game.experimental.gl.Shader.ShaderType;
+import game.experimental.utils.Matrix4x4F;
 
 import static org.lwjgl.opengl.GL46.*;
 import static org.lwjgl.glfw.GLFW.*;
@@ -48,7 +49,7 @@ public class App {
 	private void loop() {
         Program program = new Program();
 
-		Texture texture, texture2;
+		Texture texture, texture2, textureWall1, textureWall2;
 		try {
 			Shader vertexShader = new Shader(ShaderType.VERTEX_SHADER, "./assets/shaders/textured_vs.glsl");
 			Shader fragmentShader = new Shader(ShaderType.FRAGMENT_SHADER, "./assets/shaders/textured_fs.glsl");
@@ -60,6 +61,8 @@ public class App {
 
 			texture = new Texture("./assets/textures/texture_steel.psd");
 			texture2 = new Texture("./assets/textures/texture_pawn.psd");
+			textureWall1 = new Texture("./assets/textures/texture_wall_line.psd");
+			textureWall2 = new Texture("./assets/textures/texture_wall_corner.psd");
 		} catch(ShaderException e) {
 			System.out.println("Shader Compile error");
 			System.out.println(e.getMessage());
@@ -78,9 +81,7 @@ public class App {
 		Shape circle = new Shape(Shape.buildCircle(36));
 		Shape quad = new Shape(Shape.buildQuad());
 
-		Matrix4x4 proj = Matrix4x4.projectionOrthographic(-640.f, -360.f, 640.f, 360.f, 0.f, 1.0f);
-		Matrix4x4 pvm2 = proj.multiply(Matrix4x4.transformTranslate(64.0f, 0.f).multiply(Matrix4x4.transformScale(64.0f)));
-		Matrix4x4 pvm = proj.multiply(Matrix4x4.transformRotate(0.44f).multiply(Matrix4x4.transformScale(64.0f)));
+		Matrix4x4F proj = Matrix4x4F.projectionOrthographic(-640.f, -360.f, 640.f, 360.f, 0.f, 1.0f);
 
 		float circleColor[] = new float[]{1.0f, 0.f, 0.f, 1.0f};
 		float quadColor[] = new float[]{0.f, 1.0f, 0.f, 0.5f};
@@ -91,18 +92,29 @@ public class App {
             glClearColor(229.f / 255.f, 207.f / 255.f, 163.f / 255.f, 1.0f);
 
 			
-			texture.bind();
 			program.use();
+
+			
+			Matrix4x4F pvm = proj.multiply(Matrix4x4F.transformScale(64.0f));
+			texture2.bind();
+			//pvm = Shape.buildProjection(320.f, 240.f, 100.0f, 100.0f, 0.f, 0.f);
+			glUniformMatrix4fv(program.getUniform("pvm"), false, pvm.getRaw());
+			glUniform4fv(program.getUniform("color"), circleColor);
+			circle.draw();
+
+			pvm = proj.multiply(Matrix4x4F.transformTranslate(0.f, 32.f).multiply(Matrix4x4F.transformScale(32.0f)));
+			textureWall1.bind();
 			//pvm = Shape.buildProjection(320.f, 240.f, 50.0f,30.0f, 100.f, 0.f);
 			glUniformMatrix4fv(program.getUniform("pvm"), false, pvm.getRaw());
 			glUniform4fv(program.getUniform("color"), quadColor);
 			quad.draw();
 
-			texture2.bind();
-			//pvm = Shape.buildProjection(320.f, 240.f, 100.0f, 100.0f, 0.f, 0.f);
-			glUniformMatrix4fv(program.getUniform("pvm"), false, pvm2.getRaw());
-			glUniform4fv(program.getUniform("color"), circleColor);
-			circle.draw();
+			pvm = proj.multiply(Matrix4x4F.transformTranslate(0.f, 32.f - 64.f).multiply(Matrix4x4F.transformScale(32.0f)));
+			textureWall2.bind();
+			//pvm = Shape.buildProjection(320.f, 240.f, 50.0f,30.0f, 100.f, 0.f);
+			glUniformMatrix4fv(program.getUniform("pvm"), false, pvm.getRaw());
+			glUniform4fv(program.getUniform("color"), quadColor);
+			quad.draw();
 
 			gameWindow.present();
 			// Poll for window events. The key callback above will only be

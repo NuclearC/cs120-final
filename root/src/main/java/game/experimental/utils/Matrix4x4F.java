@@ -1,9 +1,9 @@
-package game.experimental.gl;
+package game.experimental.utils;
 
 /**
  * Implements a 4x4 matrix of floats
  */
-public class Matrix4x4 {
+public class Matrix4x4F {
     private float[] values;
 
     /**
@@ -17,10 +17,10 @@ public class Matrix4x4 {
      * @param far    Maximum Z coordinate (depth)
      * @return the resulting matrix.
      */
-    static public Matrix4x4 projectionOrthographic(float left, float top, float right, float bottom, float near,
+    static public Matrix4x4F projectionOrthographic(float left, float top, float right, float bottom, float near,
             float far) {
 
-        return new Matrix4x4(new float[] {
+        return new Matrix4x4F(new float[] {
                 2.0f / (right - left),
                 0.f,
                 0.f,
@@ -43,8 +43,8 @@ public class Matrix4x4 {
         });
     }
 
-    static public Matrix4x4 transformScale(float v) {
-        return new Matrix4x4(new float[] {  
+    static public Matrix4x4F transformScale(float v) {
+        return new Matrix4x4F(new float[] {  
             v, 0.f, 0.f, 0.f,
             0.f, v, 0.f, 0.f,
             0.f, 0.f, 1.f, 0.f,
@@ -52,8 +52,8 @@ public class Matrix4x4 {
         });
     }
 
-    static public Matrix4x4 transformTranslate(float x, float y) {
-        return new Matrix4x4(new float[] {  
+    static public Matrix4x4F transformTranslate(float x, float y) {
+        return new Matrix4x4F(new float[] {  
             1.f, 0.f, 0.f, 0.f,
             0.f, 1.f, 0.f, 0.f,
             0.f, 0.f, 1.f, 0.f,
@@ -61,8 +61,8 @@ public class Matrix4x4 {
         });
     }
 
-    static public Matrix4x4 transformRotate(float angle) {
-        return new Matrix4x4(new float[] {  
+    static public Matrix4x4F transformRotate(float angle) {
+        return new Matrix4x4F(new float[] {  
             (float)Math.cos(angle), -(float)Math.sin(angle), 0.f, 0.f,
             (float)Math.sin(angle),  (float)Math.cos(angle), 0.f, 0.f,
             0.f, 0.f, 1.f, 0.f,
@@ -72,7 +72,7 @@ public class Matrix4x4 {
     /**
      * Default constructor creates a zero matrix.
      */
-    public Matrix4x4() {
+    public Matrix4x4F() {
         values = new float[16];
     }
 
@@ -81,7 +81,7 @@ public class Matrix4x4 {
      * 
      * @param v The value of the entries in diagonal (1.0f for identity)
      */
-    public Matrix4x4(float v) {
+    public Matrix4x4F(float v) {
         values = new float[] {
                 v, 0.f, 0.f, 0.f,
                 0.f, v, 0.f, 0.f,
@@ -96,7 +96,7 @@ public class Matrix4x4 {
      * 
      * @param v The values of the matrix
      */
-    public Matrix4x4(float[] v) {
+    public Matrix4x4F(float[] v) {
         values = v;
     }
 
@@ -140,8 +140,8 @@ public class Matrix4x4 {
      * @param other the matrix to multiply with.
      * @return the newly resulting matrix.
      */
-    public Matrix4x4 multiply(Matrix4x4 other) {
-        Matrix4x4 res = new Matrix4x4();
+    public Matrix4x4F multiply(Matrix4x4F other) {
+        Matrix4x4F res = new Matrix4x4F();
 
         for (int r = 0; r < 4; r++) {
             for (int c = 0; c < 4; c++) {
@@ -160,8 +160,8 @@ public class Matrix4x4 {
      * @param other the scalar to multiply with.
      * @return the newly resulting matrix.
      */
-    public Matrix4x4 multiply(float scalar) {
-        Matrix4x4 res = new Matrix4x4();
+    public Matrix4x4F multiply(float scalar) {
+        Matrix4x4F res = new Matrix4x4F();
         for (int i = 0; i < 16; i++)
             res.values[i] = values[i] * scalar;
         return res;

@@ -1,4 +1,4 @@
-package game.experimental.engine;
+package game.experimental.utils;
 
 public class Vector2F implements Vector, Cloneable{
     private float x, y;
@@ -20,6 +20,19 @@ public class Vector2F implements Vector, Cloneable{
     Vector2F(float x, float y){
         this.x = x;
         this.y = y;
+    }
+
+    /**
+     * Get an entry at the specified index
+     * For performance reasons, no checks for bounds are done.
+     * 
+     * @return the value of the entry
+     */
+    @Override
+    public float get(int r) {
+        if (r == 0) return x;
+        else if (r == 1) return y;
+        else return 0;
     }
 
     /**
@@ -59,7 +72,7 @@ public class Vector2F implements Vector, Cloneable{
      * @return sum of the two vectors
      */
     @Override
-    public Vector2F sum(Vector anotherVector) {
+    public Vector2F add(Vector anotherVector) {
         Vector2F anotherVector2F = (Vector2F) anotherVector;
         Vector2F resultVector = new Vector2F(x + anotherVector2F.getX(), y + anotherVector2F.getY());
         return resultVector;
@@ -74,7 +87,7 @@ public class Vector2F implements Vector, Cloneable{
     public float dotProduct(Vector anotherVector) {
         Vector2F anotherVector2F = (Vector2F) anotherVector;
         float result = x * anotherVector2F.getX() + y * anotherVector2F.getY();
-        return 0;
+        return result;
     }
 
     /**
