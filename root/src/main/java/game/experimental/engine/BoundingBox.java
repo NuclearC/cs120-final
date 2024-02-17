@@ -1,6 +1,6 @@
 package game.experimental.engine;
 
-public class BoundingBox {
+public class BoundingBox implements Cloneable {
     private Vector2F position, size;
 
     /**
@@ -19,6 +19,11 @@ public class BoundingBox {
     public BoundingBox(Vector2F position, Vector2F size) {
         this.position = position.clone();
         this.size = size.clone();
+    }
+
+    public BoundingBox(float x, float y, float width, float height) {
+        this.position = new Vector2F(x, y);
+        this.size = new Vector2F(width, height);
     }
 
     /**
@@ -78,17 +83,26 @@ public class BoundingBox {
      */
     public boolean contains(BoundingBox box) {
         boolean result = (position.getX() <= box.position.getX() && getBottomRight().getX() >= box.getBottomRight().getX());
-        result = result && (position.getY() <= box.getPosition().getY() && getBottomRight().getY() >= getBottomRight().getY());
+        result = result && (position.getY() <= box.getPosition().getY() && getBottomRight().getY() >= box.getBottomRight().getY());
         return result;
     }
 
     /**
-     *  checks whether the given box is intersecting with it or not
+     * checks whether the given box is intersecting with it or not
      * @param box the box that is checked
      * @return true if the boxes interacts, false otherwise
      */
      public boolean intersects(BoundingBox box) {
         return !(position.getX() >= box.getTopRight().getX() || getTopRight().getX() <= box.getPosition().getX() || getPosition().getY() >= box.getBottomRight().getY() || getBottomRight().getY() <= box.getPosition().getY());
      }
+
+    public BoundingBox clone() {
+         BoundingBox newBox = new BoundingBox(this.position, this.size);
+         return newBox;
+    }
+
+    public String toString() {
+         return position.getX() + " " + position.getY() + " "  + size.getX() + " " + size.getY();
+    }
 
 }

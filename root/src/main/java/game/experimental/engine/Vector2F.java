@@ -93,7 +93,7 @@ public class Vector2F implements Vector, Cloneable{
      * @return the vector that gets multiplied by Scalar
      */
     @Override
-    public Vector2F multiplicationByScalar(float scalar) {
+    public Vector2F multiply(float scalar) {
         Vector2F resultVector = new Vector2F(x * scalar, y * scalar);
         return resultVector;
     }

@@ -27,7 +27,7 @@ public interface Vector {
      * @param scalar the scalar that gets multiplied by the vector
      * @return returns the vector multiplied by the scalar
      */
-    Vector multiplicationByScalar(float scalar);
+    Vector multiply(float scalar);
 
     /**
      *
