@@ -8,7 +8,7 @@ public class QuadTree<T> {
 
     private static final int CAPACITY = 4;
     private int totalObjectCount = 0;
-    private class Node<T> {
+    public class Node<T> {
         private final T object;
         private final BoundingBox boundingBox;
 
@@ -81,7 +81,7 @@ public class QuadTree<T> {
         return children;
     }
 
-    private ArrayList<Node<T>> getObjects() {
+    public ArrayList<Node<T>> getObjects() {
         return objects;
     }
 
@@ -141,8 +141,6 @@ public class QuadTree<T> {
 
     public void query(BoundingBox range, ArrayList<T> result) {
         if (this.range.intersects(range)) {
-            System.out.println("query works for this node " + this.range.getPosition().getX() + " "  + this.range.getPosition().getY() + " " + this.range.getSize().getX() + " " + this.range.getSize().getY());
-            System.out.println(objects.size());
             for (Node<T> node : objects) {
                 if (node.getBoundingBox().intersects(range)) {
                     result.add(node.getObject());

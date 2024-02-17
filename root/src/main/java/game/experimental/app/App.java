@@ -26,6 +26,7 @@ import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL13.GL_MULTISAMPLE;
 import static org.lwjgl.opengl.GL46.*;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -89,9 +90,13 @@ public class App {
 
         QuadTree<Integer> qt = new QuadTree<Integer>(null, new BoundingBox(new Vector2F(-300.f, -300.f), new Vector2F(600.f, 600.f)));
 
-        for (int i = 0; i < 100; i++) {
-            Random r = new Random();
-            if (false == qt.insert(i, new BoundingBox(new Vector2F(i * 6 - 300 ,i * 6 - 300), new Vector2F(2.f, 2.f)))) {
+		final int testBoxCount = 1000;
+		BoundingBox[] boxes = new BoundingBox[testBoxCount];
+
+		Random r = new Random();
+        for (int i = 0; i < testBoxCount; i++) {
+			boxes[i] = new BoundingBox(new Vector2F(r.nextFloat() * 600.f - 300.f, r.nextFloat() * 600.f - 300.f), new Vector2F(3.f, 3.f));
+            if (false == qt.insert(i, boxes[i])) {
                 System.out.println("failed to insert " + i);
             }
         }
@@ -107,6 +112,18 @@ public class App {
 			Gizmos.beginDrawing(projection);
 
 			drawQuadTree(qt);
+
+			Vector2F mousePos = gameWindow.getCursorPosition().subtract(new Vector2F(640.f, 360.f));
+
+			ArrayList<Integer> queryInts = new ArrayList<Integer>();
+			BoundingBox xdd = new BoundingBox(mousePos.subtract(new Vector2F(50.f, 50.f)), new Vector2F(100.f, 100.f));
+			final float[] rectColor3 = {0.8f, 0.1f, 0.1f, 1.0f};
+			Gizmos.drawBoundingBox(xdd, rectColor3);
+			qt.query(xdd, queryInts);
+			for (int i : queryInts) {
+				final float[] rectColor = {0.1f, 0.4f, 0.1f, 1.0f};
+				Gizmos.drawBoundingBox(boxes[i], rectColor);
+			}
 			
 			gameWindow.present();
 			// Poll for window events. The key callback above will only be
@@ -124,6 +141,12 @@ public class App {
 	private void drawQuadTree(QuadTree<Integer> qt) {
 		final float[] rectColor = {0.1f, 0.1f, 0.1f, 1.0f};
 		Gizmos.drawBoundingBox(qt.getRange(), rectColor);
+
+		// for (QuadTree<Integer>.Node<Integer> obj : qt.getObjects()) {
+		// 	final float[] rectColor2 = {0.1f, 0.5f, 0.1f, 1.0f};
+		// 	Gizmos.drawBoundingBox(obj.getBoundingBox(), rectColor2);
+		// }
+
 		if (qt.getChildren() != null) {
 			for (int i = 0; i < 4; i++) {
 				drawQuadTree(qt.getChildren()[i]);

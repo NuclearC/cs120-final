@@ -12,6 +12,8 @@ import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 
+import game.experimental.utils.Vector2F;
+
 /**
  * Wrapper over GLFW window
  */
@@ -77,6 +79,12 @@ public class GameWindow {
 
 	public boolean shouldClose() {
 		return glfwWindowShouldClose(windowHandle);
+	}
+
+	public Vector2F getCursorPosition() {
+		double[] xPos = {0.0}, yPos = { 0.0 };
+		glfwGetCursorPos(windowHandle, xPos, yPos);
+		return new Vector2F((float)xPos[0], (float)yPos[0]);
 	}
 
 	public void present() {
