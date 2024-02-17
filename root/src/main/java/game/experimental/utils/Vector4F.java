@@ -3,7 +3,7 @@ package game.experimental.utils;
 /**
  * Implements a 4 dimensional vector of floats.
  */
-public class Vector4F implements Vector {
+public class Vector4F implements Vector, Cloneable {
     // this is kind of stupid but whatever
     private float[] values;
 
@@ -158,6 +158,17 @@ public class Vector4F implements Vector {
     public float dotProduct(Vector other) {
         Vector4F other4F = (Vector4F)other;
         return getX() * other4F.getX() + getY() * other4F.getY() + getZ() * other4F.getZ() + getW() * other4F.getW();
+    }
+
+    /**
+     * gives the angel between two vectors(should be revised about the double)
+     * @param anotherVector is the second operand
+     * @return the angel between two vectors
+     */
+    @Override
+    public float getAngle(Vector anotherVector) {
+        double angle = this.dotProduct(anotherVector) / (this.length() * anotherVector.length());
+        return (float) Math.acos((double)angle);
     }
 
     /**

@@ -1,6 +1,9 @@
 package game.experimental.engine;
 import java.util.ArrayList;
 
+import game.experimental.utils.BoundingBox;
+import game.experimental.utils.Vector2F;
+
 public class QuadTree<T> {
 
     private static final int CAPACITY = 4;
@@ -26,8 +29,8 @@ public class QuadTree<T> {
 
     private ArrayList<Node<T>> objects;
     private BoundingBox range;
-    private QuadTree[] children;
-    private QuadTree parent;
+    private QuadTree<T>[] children;
+    private QuadTree<T> parent;
 
     public QuadTree() {
         parent = null;
@@ -36,7 +39,7 @@ public class QuadTree<T> {
         range = new BoundingBox();
     }
 
-    public QuadTree(QuadTree parent, BoundingBox range) {
+    public QuadTree(QuadTree<T> parent, BoundingBox range) {
         this.range = range.clone();
         this.parent = parent;
         objects = new ArrayList<Node<T>>();
@@ -65,7 +68,7 @@ public class QuadTree<T> {
         children[0] = new QuadTree<T>(this, new BoundingBox(range.getPosition(), newSize));
         children[1] = new QuadTree<T>(this, new BoundingBox(new Vector2F(range.getPosition().getX() + newSize.getX(), range.getPosition().getY()), newSize));
         children[2] = new QuadTree<T>(this, new BoundingBox(new Vector2F(range.getPosition().getX(), range.getPosition().getY() + newSize.getY()), newSize));
-        children[3] = new QuadTree<T>(this, new BoundingBox(range.getPosition().sum(newSize), newSize));
+        children[3] = new QuadTree<T>(this, new BoundingBox(range.getPosition().add(newSize), newSize));
 
         refactor();
     }

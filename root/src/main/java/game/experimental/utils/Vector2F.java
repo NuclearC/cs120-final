@@ -1,13 +1,13 @@
 package game.experimental.utils;
 
-public class Vector2F implements Vector, Cloneable{
+public class Vector2F implements Vector, Cloneable {
     private float x, y;
 
     /**
      * crates default vector
      * initialize the vectors x and y to zero
      */
-    Vector2F(){
+    public Vector2F(){
         x = 0;
         y = 0;
     }
@@ -17,7 +17,7 @@ public class Vector2F implements Vector, Cloneable{
      * @param x x position of the vector
      * @param y y position of the vector
      */
-    Vector2F(float x, float y){
+    public Vector2F(float x, float y){
         this.x = x;
         this.y = y;
     }
@@ -79,6 +79,18 @@ public class Vector2F implements Vector, Cloneable{
     }
 
     /**
+     * difference of the two vectors
+     * @param anotherVector is the second operand
+     * @return difference of the two vectors
+     */
+    @Override
+    public Vector2F subtract(Vector anotherVector) {
+        Vector2F anotherVector2F = (Vector2F) anotherVector;
+        Vector2F resultVector = new Vector2F(x - anotherVector2F.getX(), y - anotherVector2F.getY());
+        return resultVector;
+    }
+
+    /**
      * the dot product of the two vectors
      * @param anotherVector is the second operand
      * @return the dot product of the two vectors
@@ -88,16 +100,6 @@ public class Vector2F implements Vector, Cloneable{
         Vector2F anotherVector2F = (Vector2F) anotherVector;
         float result = x * anotherVector2F.getX() + y * anotherVector2F.getY();
         return result;
-    }
-
-    /**
-     * the cross product of the two vector
-     * @param anotherVector is the second operand
-     * @return null
-     */
-    @Override
-    public Vector2F crossProduct(Vector anotherVector) {
-        return null;
     }
 
     /**
@@ -140,17 +142,5 @@ public class Vector2F implements Vector, Cloneable{
     public Vector2F clone() {
         Vector2F vector = new Vector2F(this.x, this.y);
         return vector;
-
-    }
-    /**
-     * checks the equality between vectors.
-     * @param vector the second operand
-     * @return true when both vectors are equal, false otherwise.
-     */
-    @Override
-    public boolean equal(Vector vector) {
-        Vector2F anotherVector = (Vector2F) vector;
-        if(this.x == anotherVector.getX() && this.y == anotherVector.getY()) return true;
-        return false;
     }
 }

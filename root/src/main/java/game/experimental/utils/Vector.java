@@ -22,12 +22,6 @@ public interface Vector {
      * @return the dot product of two vectors
      */
     float dotProduct(Vector anotherVector);
-    /**
-     *
-     * @param anotherVector is the second operand
-     * @return the cross product of two vectors
-     */
-    Vector crossProduct(Vector anotherVector);
 
     /**
      *
@@ -55,13 +49,6 @@ public interface Vector {
      * @return the length of the vector
      */
     float length();
-
-    /**
-     * checks the equality between vectors.
-     * @param vector the second operand
-     * @return true when both vectors are equal, false otherwise.
-     */
-    boolean equal(Vector vector);
 
 
 }
