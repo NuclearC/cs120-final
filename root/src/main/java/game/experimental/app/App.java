@@ -5,13 +5,29 @@ import org.lwjgl.*;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
 
+import game.experimental.engine.QuadTree;
 import game.experimental.gl.*;
 import game.experimental.gl.Shader.ShaderException;
 import game.experimental.gl.Program.ProgramException;
 import game.experimental.gl.Shader.ShaderType;
+import game.experimental.utils.BoundingBox;
 import game.experimental.utils.Matrix4x4F;
+import game.experimental.utils.Vector2F;
 
+import static org.lwjgl.opengl.GL11.GL_BLEND;
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.glBlendFunc;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glClearColor;
+import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL13.GL_MULTISAMPLE;
 import static org.lwjgl.opengl.GL46.*;
+
+import java.util.Random;
+
 import static org.lwjgl.glfw.GLFW.*;
 
 public class App {
@@ -47,18 +63,11 @@ public class App {
 	}
 
 	private void loop() {
-        Program program = new Program();
+
+		Gizmos.initialize();
 
 		Texture texture, texture2, textureWall1, textureWall2;
 		try {
-			Shader vertexShader = new Shader(ShaderType.VERTEX_SHADER, "./assets/shaders/textured_vs.glsl");
-			Shader fragmentShader = new Shader(ShaderType.FRAGMENT_SHADER, "./assets/shaders/textured_fs.glsl");
-			program.attachShader(fragmentShader);
-			program.attachShader(vertexShader);
-			program.link();
-			vertexShader.destroy();
-			fragmentShader.destroy();
-
 			texture = new Texture("./assets/textures/texture_steel.psd");
 			texture2 = new Texture("./assets/textures/texture_pawn.psd");
 			textureWall1 = new Texture("./assets/textures/texture_wall_line.psd");
@@ -78,44 +87,27 @@ public class App {
 			return;
 		}
 
-		Shape circle = new Shape(Shape.buildCircle(36));
-		Shape quad = new Shape(Shape.buildQuad());
+        QuadTree<Integer> qt = new QuadTree<Integer>(null, new BoundingBox(new Vector2F(-300.f, -300.f), new Vector2F(600.f, 600.f)));
 
-		Matrix4x4F proj = Matrix4x4F.projectionOrthographic(-640.f, -360.f, 640.f, 360.f, 0.f, 1.0f);
+        for (int i = 0; i < 100; i++) {
+            Random r = new Random();
+            if (false == qt.insert(i, new BoundingBox(new Vector2F(i * 6 - 300 ,i * 6 - 300), new Vector2F(2.f, 2.f)))) {
+                System.out.println("failed to insert " + i);
+            }
+        }
 
-		float circleColor[] = new float[]{1.0f, 0.f, 0.f, 1.0f};
-		float quadColor[] = new float[]{0.f, 1.0f, 0.f, 0.5f};
+		Matrix4x4F projection = Matrix4x4F.projectionOrthographic(-640.f, -360.f, 640.f, 360.f, 0.f, 1.0f);
+
 		// Run the rendering loop until the user has attempted to close
 		// the window or has pressed the ESCAPE key.
 		while ( !gameWindow.shouldClose() ) {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
             glClearColor(229.f / 255.f, 207.f / 255.f, 163.f / 255.f, 1.0f);
 
+			Gizmos.beginDrawing(projection);
+
+			drawQuadTree(qt);
 			
-			program.use();
-
-			
-			Matrix4x4F pvm = proj.multiply(Matrix4x4F.transformScale(64.0f));
-			texture2.bind();
-			//pvm = Shape.buildProjection(320.f, 240.f, 100.0f, 100.0f, 0.f, 0.f);
-			glUniformMatrix4fv(program.getUniform("pvm"), false, pvm.getRaw());
-			glUniform4fv(program.getUniform("color"), circleColor);
-			circle.draw();
-
-			pvm = proj.multiply(Matrix4x4F.transformTranslate(0.f, 32.f).multiply(Matrix4x4F.transformScale(32.0f)));
-			textureWall1.bind();
-			//pvm = Shape.buildProjection(320.f, 240.f, 50.0f,30.0f, 100.f, 0.f);
-			glUniformMatrix4fv(program.getUniform("pvm"), false, pvm.getRaw());
-			glUniform4fv(program.getUniform("color"), quadColor);
-			quad.draw();
-
-			pvm = proj.multiply(Matrix4x4F.transformTranslate(0.f, 32.f - 64.f).multiply(Matrix4x4F.transformScale(32.0f)));
-			textureWall2.bind();
-			//pvm = Shape.buildProjection(320.f, 240.f, 50.0f,30.0f, 100.f, 0.f);
-			glUniformMatrix4fv(program.getUniform("pvm"), false, pvm.getRaw());
-			glUniform4fv(program.getUniform("color"), quadColor);
-			quad.draw();
-
 			gameWindow.present();
 			// Poll for window events. The key callback above will only be
 			// invoked during this call.
@@ -123,8 +115,21 @@ public class App {
 		}
 
 		//circle.destroy();
-		program.destroy();
-		quad.destroy();
+		//program.destroy();
+		//quad.destroy();
+
+		Gizmos.destroy();
+	}
+
+	private void drawQuadTree(QuadTree<Integer> qt) {
+		final float[] rectColor = {0.1f, 0.1f, 0.1f, 1.0f};
+		Gizmos.drawBoundingBox(qt.getRange(), rectColor);
+		if (qt.getChildren() != null) {
+			for (int i = 0; i < 4; i++) {
+				drawQuadTree(qt.getChildren()[i]);
+			}
+		}
+
 	}
 
 	public static void main(String[] args) {

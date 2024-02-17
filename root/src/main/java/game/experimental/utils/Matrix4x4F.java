@@ -43,21 +43,21 @@ public class Matrix4x4F {
         });
     }
 
-    static public Matrix4x4F transformScale(float v) {
+    static public Matrix4x4F transformScale(Vector2F vec) {
         return new Matrix4x4F(new float[] {  
-            v, 0.f, 0.f, 0.f,
-            0.f, v, 0.f, 0.f,
+            vec.getX(), 0.f, 0.f, 0.f,
+            0.f,  vec.getY(), 0.f, 0.f,
             0.f, 0.f, 1.f, 0.f,
             0.f, 0.f, 0.f, 1.f
         });
     }
 
-    static public Matrix4x4F transformTranslate(float x, float y) {
+    static public Matrix4x4F transformTranslate(Vector2F vec) {
         return new Matrix4x4F(new float[] {  
             1.f, 0.f, 0.f, 0.f,
             0.f, 1.f, 0.f, 0.f,
             0.f, 0.f, 1.f, 0.f,
-            x, y, 0.f, 1.f
+            vec.getX(), vec.getY(), 0.f, 1.f
         });
     }
 

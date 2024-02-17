@@ -73,9 +73,18 @@ public class QuadTree<T> {
         refactor();
     }
 
+    public BoundingBox getRange() {
+        return range;
+    }
+
+    public QuadTree<T>[] getChildren() {
+        return children;
+    }
+
     private ArrayList<Node<T>> getObjects() {
         return objects;
     }
+
     private void merge() {
         if (hasChildren()) {
             for (int i = 0; i < 4; i++)
@@ -91,6 +100,7 @@ public class QuadTree<T> {
     private boolean hasChildren() {
         return children != null;
     }
+
     private void cleanup() {
         if (hasChildren()) {
             if (totalObjectCount < CAPACITY) {
@@ -117,7 +127,7 @@ public class QuadTree<T> {
             }
 
             if (hasChildren())
-                for (QuadTree child : children) {
+                for (QuadTree<T> child : children) {
                     if (child.remove(object, boundingBox))
                     {
                         totalObjectCount--;
@@ -140,7 +150,7 @@ public class QuadTree<T> {
             }
 
             if (hasChildren())
-                for (QuadTree child : children)
+                for (QuadTree<T> child : children)
                     child.query(range, result);
         }
     }
