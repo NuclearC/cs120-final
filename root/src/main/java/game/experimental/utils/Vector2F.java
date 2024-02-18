@@ -143,4 +143,24 @@ public class Vector2F implements Vector, Cloneable {
         Vector2F vector = new Vector2F(this.x, this.y);
         return vector;
     }
+
+    
+    /**
+     * Gets a normalized vector from this one. 
+     * @return the normalized vector
+     */
+    @Override
+    public Vector2F getNormalized() {
+        Vector2F vector = new Vector2F(this.x / this.length(), this.y / this.length());
+        return vector;
+    }
+
+    /**
+     * Normalize vector in-place.
+     */
+    @Override
+    public void normalize() {
+        this.x /= this.length();
+        this.y /= this.length();
+    }
 }
