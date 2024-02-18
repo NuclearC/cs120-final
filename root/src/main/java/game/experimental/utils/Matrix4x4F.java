@@ -2,6 +2,7 @@ package game.experimental.utils;
 
 /**
  * Implements a 4x4 matrix of floats
+ * More docs                                                                            // TODO
  */
 public class Matrix4x4F {
     private float[] values;
@@ -157,7 +158,7 @@ public class Matrix4x4F {
      * Perform matrix multiplication with scalar.
      * Does not change the matrix of the callee object.
      * 
-     * @param other the scalar to multiply with.
+     * @param scalar the scalar to multiply with.
      * @return the newly resulting matrix.
      */
     public Matrix4x4F multiply(float scalar) {
