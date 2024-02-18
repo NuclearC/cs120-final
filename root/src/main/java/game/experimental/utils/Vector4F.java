@@ -181,4 +181,26 @@ public class Vector4F implements Vector, Cloneable {
         Vector4F vector = new Vector4F(values[0], values[1], values[2], values[3]);
         return vector;
     }
+
+    /**
+     * Gets a normalized vector from this one. 
+     * @return the normalized vector
+     */
+    @Override
+    public Vector4F getNormalized() {
+        Vector4F vector = new Vector4F(values[0] / this.length(), values[1] / this.length(), 
+            values[2] / this.length(), values[3] / this.length());
+        return vector;
+    }
+
+    /**
+     * Normalize vector in-place.
+     */
+    @Override
+    public void normalize() {
+        values[0] /= this.length();
+        values[1] /= this.length();
+        values[2] /= this.length();
+        values[3] /= this.length();
+    }
 }

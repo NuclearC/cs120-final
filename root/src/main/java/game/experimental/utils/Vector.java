@@ -50,5 +50,15 @@ public interface Vector {
      */
     float length();
 
+    /**
+     * Normalizes the vector in-place.
+     */
+    void normalize();
+
+    /**
+     * Gets a normalized vector from this one.
+     */
+    Vector getNormalized();
+
 
 }

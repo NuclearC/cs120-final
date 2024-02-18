@@ -115,6 +115,17 @@ public class BoundingBox implements Cloneable {
     }
 
     /**
+     * checks whether the given point is inside or not
+     * 
+     * @param vector the position of the point to check
+     * @return true when point is inside it, false otherwise.
+     */
+    public boolean contains(Vector2F vector) {
+        return (vector.getX() >= position.getX() && vector.getX() < getBottomRight().getX()) &&
+                (vector.getY() >= position.getY() && vector.getY() < getBottomRight().getY());
+    }
+
+    /**
      * checks whether the given box is intersecting with it or not
      * 
      * @param box the box that is checked

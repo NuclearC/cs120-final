@@ -8,7 +8,8 @@ public class QuadTree<T> {
 
     private static final int CAPACITY = 4;
     private int totalObjectCount = 0;
-    public class Node<T> {
+
+    public class Node {
         private final T object;
         private final BoundingBox boundingBox;
 
@@ -27,7 +28,7 @@ public class QuadTree<T> {
     }
 
 
-    private ArrayList<Node<T>> objects;
+    private ArrayList<Node> objects;
     private BoundingBox range;
     private QuadTree<T>[] children;
     private QuadTree<T> parent;
@@ -35,14 +36,14 @@ public class QuadTree<T> {
     public QuadTree() {
         parent = null;
         children = null;
-        objects = new ArrayList<Node<T>>();
+        objects = new ArrayList<Node>();
         range = new BoundingBox();
     }
 
     public QuadTree(QuadTree<T> parent, BoundingBox range) {
         this.range = range.clone();
         this.parent = parent;
-        objects = new ArrayList<Node<T>>();
+        objects = new ArrayList<Node>();
         children = null;
     }
 
@@ -51,14 +52,13 @@ public class QuadTree<T> {
             return;
         for (int j = 0; j < objects.size(); j++) {
             for (int i = 0; i < 4; i++)
-                if (children[i].insert(objects.get(j).getObject(), objects.get(j).getBoundingBox())) {
-                    objects.remove(j);
-                    totalObjectCount--;
-                    j--;
+                if (children[i].insert(objects.get(j).getObject(), objects.get(j).getBoundingBox().clone())) {
+                    objects.remove(j--);
                     break;
                 }
         }
     }
+
     private void split() {
         if (hasChildren())
             return;
@@ -81,7 +81,7 @@ public class QuadTree<T> {
         return children;
     }
 
-    public ArrayList<Node<T>> getObjects() {
+    public ArrayList<Node> getObjects() {
         return objects;
     }
 
@@ -103,7 +103,7 @@ public class QuadTree<T> {
 
     private void cleanup() {
         if (hasChildren()) {
-            if (totalObjectCount < CAPACITY) {
+            if (totalObjectCount <= CAPACITY) {
                 merge();
             }
         }
@@ -114,10 +114,14 @@ public class QuadTree<T> {
 
     public boolean remove(T object, BoundingBox boundingBox) {
         if (this.range.contains(boundingBox)) {
-
-            for (Node<T> node:  objects) {
-                if (node.getObject() == object) {
-                    objects.remove(node);
+            System.out.println("remove on " + this.range.toString() + " " + boundingBox.toString() + " " + object.toString());
+            for (Node node : objects) {
+                System.out.println(node.getObject() + " " + node.getBoundingBox().toString());
+                if (node.getObject().equals(object)) {
+                    System.out.println("removed");
+                    if (!objects.remove(node)){
+                        System.out.println("tf is this");
+                    }
                     totalObjectCount--;
                     if (parent != null)
                         parent.cleanup();
@@ -141,7 +145,7 @@ public class QuadTree<T> {
 
     public void query(BoundingBox range, ArrayList<T> result) {
         if (this.range.intersects(range)) {
-            for (Node<T> node : objects) {
+            for (Node node : objects) {
                 if (node.getBoundingBox().intersects(range)) {
                     result.add(node.getObject());
                 }
@@ -154,9 +158,8 @@ public class QuadTree<T> {
     }
 
     public boolean insert(T object, BoundingBox boundingBox) {
-
         if (this.range.contains(boundingBox)) {
-            if (objects.size() > CAPACITY) {
+            if (objects.size() >= CAPACITY) {
                 split();
             }
 
@@ -169,9 +172,9 @@ public class QuadTree<T> {
                     }
                 }
 
-            System.out.println("inserted object " + boundingBox.toString() + "  into " + range.toString());
-            objects.add(new Node<T>(object, boundingBox));
+            objects.add(new Node(object, boundingBox));
             totalObjectCount++;
+            System.out.println("inserted object " + boundingBox.toString() + " into " + range.toString() + " " + objects.size() + " " + totalObjectCount);
             return true;
         }
 
