@@ -160,7 +160,8 @@ public class Vector2F implements Vector, Cloneable {
      */
     @Override
     public void normalize() {
-        this.x /= this.length();
-        this.y /= this.length();
+        float vectorLength = this.length();
+        this.x /= vectorLength;
+        this.y /= vectorLength;
     }
 }

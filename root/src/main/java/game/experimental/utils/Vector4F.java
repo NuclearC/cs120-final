@@ -187,8 +187,9 @@ public class Vector4F implements Vector, Cloneable {
      */
     @Override
     public Vector4F getNormalized() {
-        Vector4F vector = new Vector4F(values[0] / this.length(), values[1] / this.length(), 
-            values[2] / this.length(), values[3] / this.length());
+        float vectorLength = this.length();
+        Vector4F vector = new Vector4F(values[0] / vectorLength, values[1] / vectorLength, 
+            values[2] / vectorLength, values[3] / vectorLength);
         return vector;
     }
 
@@ -197,9 +198,10 @@ public class Vector4F implements Vector, Cloneable {
      */
     @Override
     public void normalize() {
-        values[0] /= this.length();
-        values[1] /= this.length();
-        values[2] /= this.length();
-        values[3] /= this.length();
+        float vectorLength = this.length();
+        values[0] /= vectorLength;
+        values[1] /= vectorLength;
+        values[2] /= vectorLength;
+        values[3] /= vectorLength;
     }
 }

@@ -9,21 +9,10 @@ import game.experimental.engine.QuadTree;
 import game.experimental.gl.*;
 import game.experimental.gl.Shader.ShaderException;
 import game.experimental.gl.Program.ProgramException;
-import game.experimental.gl.Shader.ShaderType;
 import game.experimental.utils.BoundingBox;
 import game.experimental.utils.Matrix4x4F;
 import game.experimental.utils.Vector2F;
 
-import static org.lwjgl.opengl.GL11.GL_BLEND;
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.glBlendFunc;
-import static org.lwjgl.opengl.GL11.glClear;
-import static org.lwjgl.opengl.GL11.glClearColor;
-import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL13.GL_MULTISAMPLE;
 import static org.lwjgl.opengl.GL46.*;
 
 import java.util.ArrayList;
@@ -39,8 +28,6 @@ public class App {
 
         // bind GLFW error output to cerr
 		GLFWErrorCallback.createPrint(System.err).set();
-
-		
 
         if ( !glfwInit() )
 			throw new IllegalStateException("Unable to initialize GLFW");
