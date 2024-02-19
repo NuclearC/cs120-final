@@ -4,24 +4,47 @@ import java.util.ArrayList;
 import game.experimental.utils.BoundingBox;
 import game.experimental.utils.Vector2F;
 
+/**
+ * QuadTree data structure implementation.
+ *
+ * // something about generic                              // TODO
+ * @param <T>
+ */
 public class QuadTree<T> {
 
-    private static final int CAPACITY = 4;
-    private int totalObjectCount = 0;
+    private static final int CAPACITY = 4;         // max number of node to be stored in a single QuadTree
+    private int totalObjectCount = 0;              // total number of objects in current and children nodes
 
-    public class Node {
+    /**
+     * Represents a node in the Quadtree.
+     * Bounds the object and the bounding box together.
+     */
+     public class Node {
         private final T object;
         private final BoundingBox boundingBox;
 
+        /**
+         * Creates a Node.
+         * @param object object to be inserted in the quadtree.
+         * @param boundingBox bounding box associated with the object.
+         */
         public Node(T object, BoundingBox boundingBox) {
             this.object = object;
             this.boundingBox = boundingBox;
         }
 
+         /**
+          * Return the object bounded with the node
+          * @return object bounded with the node
+          */
         public T getObject() {
             return object;
         }
 
+         /**
+          * Return the bounding box associated with the node.
+          * @return bounding box associated with the node.
+          */
         public BoundingBox getBoundingBox() {
             return boundingBox;
         }
@@ -33,6 +56,10 @@ public class QuadTree<T> {
     private QuadTree<T>[] children;
     private QuadTree<T> parent;
 
+    /**
+     * Default constructor for the QuadTree
+     * All fields are initialized to null.
+     */
     public QuadTree() {
         parent = null;
         children = null;
@@ -40,6 +67,11 @@ public class QuadTree<T> {
         range = new BoundingBox();
     }
 
+    /**
+     * Creates a Quadtree.
+     * @param parent parent QuadTree
+     * @param range bounding box of the Quadtree
+     */
     public QuadTree(QuadTree<T> parent, BoundingBox range) {
         this.range = range.clone();
         this.parent = parent;
@@ -47,18 +79,53 @@ public class QuadTree<T> {
         children = null;
     }
 
-    private void refactor() {
-        if (children == null)
-            return;
-        for (int j = 0; j < objects.size(); j++) {
-            for (int i = 0; i < 4; i++)
-                if (children[i].insert(objects.get(j).getObject(), objects.get(j).getBoundingBox().clone())) {
-                    objects.remove(j--);
-                    break;
+    /**
+     * Inserts a new object into the QuadTree.
+     * @param object object to be inserted
+     * @param boundingBox bounded box associated with the object.
+     * @return true if the insertion happened, otherwise false.
+     */
+    public boolean insert(T object, BoundingBox boundingBox) {
+        if (this.range.contains(boundingBox)) {
+            if (objects.size() >= CAPACITY) {
+                split();                                                // split returns if hasChildren()
+            }
+
+            if (hasChildren())
+                for (int i = 0; i < 4; i++) {
+                    if (children[i].insert(object, boundingBox))
+                    {
+                        totalObjectCount++;
+                        return true;
+                    }
                 }
+
+            objects.add(new Node(object, boundingBox));
+            totalObjectCount++;
+            System.out.println("inserted object " + boundingBox.toString() + " into " + range.toString() + " " + objects.size() + " " + totalObjectCount);
+            return true;
         }
+
+        return false;
     }
 
+    /**
+     * Inserts a new object into the quadtree.
+     * @param object object to be inserted
+     * @param x x coordinate of the top-left corner
+     * @param y y coordinate of the top-left corner
+     * @param width width of the object
+     * @param height height of the object
+     * @return true if insertion happened, otherwise false
+     */
+    public boolean insert(T object, float x, float y, float width, float height){
+        BoundingBox boundingBox = new BoundingBox(x, y, width, height);
+        return this.insert(object, boundingBox);
+    }
+
+    /**
+     * Splits the current QuadTree into children QuadTrees.
+     */
     private void split() {
         if (hasChildren())
             return;
@@ -71,6 +138,49 @@ public class QuadTree<T> {
         children[3] = new QuadTree<T>(this, new BoundingBox(range.getPosition().add(newSize), newSize));
 
         refactor();
+    }
+
+    /**
+     * Distributes the nodes contained in the current quadtree to the child QuadTrees.
+     */
+    private void refactor() {
+        if (children == null)
+            return;
+        for (int j = 0; j < objects.size(); j++) {
+            for (int i = 0; i < 4; i++)
+                if (children[i].insert(objects.get(j).getObject(), objects.get(j).getBoundingBox().clone())) {   // Should we have insert(nodeReference)?
+                    objects.remove(j--);
+                    break;
+                }
+        }
+    }
+
+    /**
+     * Queries the quadtree for some range.
+     * Returns all the elements having intersection with the specified range.
+     * @param range range as a Bounding Box to be queried about
+     * @param foundObjects list of the found objects
+     */
+    public void query(BoundingBox range, ArrayList<T> foundObjects) {
+        if (this.range.intersects(range)) {
+            for (Node node : objects) {
+                if (node.getBoundingBox().intersects(range)) {
+                    foundObjects.add(node.getObject());
+                }
+            }
+
+            if (hasChildren())
+                for (QuadTree<T> child : children)
+                    child.query(range, foundObjects);
+        }
+    }
+
+    /**
+     * Checks whether the quadtree has children.
+     * @return true, if it has children, false otherwise.
+     */
+    private boolean hasChildren() {
+        return children != null;
     }
 
     public BoundingBox getRange() {
@@ -95,10 +205,6 @@ public class QuadTree<T> {
 
             children = null;
         }
-    }
-
-    private boolean hasChildren() {
-        return children != null;
     }
 
     private void cleanup() {
@@ -138,44 +244,6 @@ public class QuadTree<T> {
                         return true;
                     }
                 }
-        }
-
-        return false;
-    }
-
-    public void query(BoundingBox range, ArrayList<T> result) {
-        if (this.range.intersects(range)) {
-            for (Node node : objects) {
-                if (node.getBoundingBox().intersects(range)) {
-                    result.add(node.getObject());
-                }
-            }
-
-            if (hasChildren())
-                for (QuadTree<T> child : children)
-                    child.query(range, result);
-        }
-    }
-
-    public boolean insert(T object, BoundingBox boundingBox) {
-        if (this.range.contains(boundingBox)) {
-            if (objects.size() >= CAPACITY) {
-                split();
-            }
-
-            if (hasChildren())
-                for (int i = 0; i < 4; i++) {
-                    if (children[i].insert(object, boundingBox))
-                    {
-                        totalObjectCount++;
-                        return true;
-                    }
-                }
-
-            objects.add(new Node(object, boundingBox));
-            totalObjectCount++;
-            System.out.println("inserted object " + boundingBox.toString() + " into " + range.toString() + " " + objects.size() + " " + totalObjectCount);
-            return true;
         }
 
         return false;

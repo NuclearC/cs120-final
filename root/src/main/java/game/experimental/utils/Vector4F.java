@@ -2,6 +2,7 @@ package game.experimental.utils;
 
 /**
  * Implements a 4 dimensional vector of floats.
+ * More docs needed                                                       //TODO
  */
 public class Vector4F implements Vector, Cloneable {
     // this is kind of stupid but whatever

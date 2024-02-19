@@ -1,11 +1,16 @@
 package game.experimental.utils;
 
+/**
+ * Represents a 2D vector with floating point coordinates.
+ * Information should be added to how the vector is represented    // TODO
+ */
 public class Vector2F implements Vector, Cloneable {
     private float x, y;
 
     /**
      * crates default vector
-     * initialize the vectors x and y to zero
+     * Crates a default 2D vector.
+     * Initializes x = 0 and y = 0
      */
     public Vector2F(){
         x = 0;
@@ -13,9 +18,9 @@ public class Vector2F implements Vector, Cloneable {
     }
 
     /**
-     * creates vector with initial values of (x,y)
-     * @param x x position of the vector
-     * @param y y position of the vector
+     * creates vector with coordinates of (x,y)
+     * @param x x coordinate of the vector
+     * @param y y coordinate of the vector
      */
     public Vector2F(float x, float y){
         this.x = x;
@@ -23,15 +28,16 @@ public class Vector2F implements Vector, Cloneable {
     }
 
     /**
-     * Get an entry at the specified index
+     * Get the coordinate at the specified index.
      * For performance reasons, no checks for bounds are done.
-     * 
+     *
+     * @param coordinateIndex the index of the coordinate to be returned.
      * @return the value of the entry
      */
     @Override
-    public float get(int r) {
-        if (r == 0) return x;
-        else if (r == 1) return y;
+    public float get(int coordinateIndex) {
+        if (coordinateIndex == 0) return x;
+        else if (coordinateIndex == 1) return y;
         else return 0;
     }
 
@@ -67,9 +73,10 @@ public class Vector2F implements Vector, Cloneable {
     }
 
     /**
-     * sum of the two vectors
-     * @param anotherVector is the second operand
-     * @return sum of the two vectors
+     * Adds a 2D vector to the calling vector.
+     * Returns the result as a new vector.
+     * @param anotherVector summand vector.
+     * @return sum Vector of the two vectors
      */
     @Override
     public Vector2F add(Vector anotherVector) {
@@ -79,9 +86,11 @@ public class Vector2F implements Vector, Cloneable {
     }
 
     /**
-     * difference of the two vectors
-     * @param anotherVector is the second operand
-     * @return difference of the two vectors
+     * Subtracts a vector from the calling vector.
+     * Returns the result as a new Vector.
+     * @param anotherVector subtrahend vector
+     *
+     * @return difference Vector of the two vectors
      */
     @Override
     public Vector2F subtract(Vector anotherVector) {
@@ -103,8 +112,9 @@ public class Vector2F implements Vector, Cloneable {
     }
 
     /**
-     * the vector that gets multiplied by Scalar
-     * @param scalar the scalar that gets multiplied by the vector
+     * Multiply a Vector by a scalar.
+     * Returns a new vector.
+     * @param scalar the scalar that gets multiplied to the vector
      * @return the vector that gets multiplied by Scalar
      */
     @Override
@@ -114,9 +124,9 @@ public class Vector2F implements Vector, Cloneable {
     }
 
     /**
-     * gives the angel between two vectors(should be revised about the double)
+     * Gives the angel between two vectors(should be revised about the double)
      * @param anotherVector is the second operand
-     * @return the angel between two vectors
+     * @return the angel between two vectors in radians as float
      */
     @Override
     public float getAngle(Vector anotherVector) {
