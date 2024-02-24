@@ -22,6 +22,11 @@ public class CollectableEntity extends CollideableEntity {
         super(position, id, ownerID);
     }
 
+    @Override
+    public void simulate() {
+
+    }
+
     /**
      * Returns the value of the collectable.
      * @return value of the collectable object.

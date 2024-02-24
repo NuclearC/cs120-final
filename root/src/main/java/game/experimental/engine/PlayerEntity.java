@@ -1,7 +1,6 @@
 package game.experimental.engine;
 
 import game.experimental.utils.BoundingBox;
-import game.experimental.utils.Vector;
 import game.experimental.utils.Vector2F;
 
 public class PlayerEntity extends Entity{
@@ -10,6 +9,11 @@ public class PlayerEntity extends Entity{
         super(position,id,ownerID);
 
         this.size = new Vector2F(PLAYER_DEFAULT_SIZE, PLAYER_DEFAULT_SIZE);
+    }
+
+    @Override
+    public void simulate() {
+
     }
 
     @Override

@@ -3,8 +3,6 @@ package game.experimental.engine;
 import game.experimental.utils.BoundingBox;
 import game.experimental.utils.Vector2F;
 
-import java.util.ArrayList;
-
 /**
  * Represents a Room in the game.
  */
@@ -14,10 +12,14 @@ public class Room implements Settings{
     private QuadTree<Entity> quadTree;
 
 
+    
     private PlayerEntity[] playerEntities = new PlayerEntity[MAX_NUMBER_OF_PLAYERS];
     private PlayerEntity createPlayer(int id, int ownerID){
 
-        Vector2F playerPosition = new Vector2F(100, 100); // TODO
+        float randomX = (float)Math.random() * Settings.MAP_WIDTH;
+        float randomY = (float)Math.random() * Settings.MAP_HEIGHT;
+
+        Vector2F playerPosition = new Vector2F(randomX, randomY); // TODO
 
         PlayerEntity player = new PlayerEntity(playerPosition, id, ownerID);//add function to get the position vector
 

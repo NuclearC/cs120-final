@@ -1,9 +1,6 @@
 package game.experimental.engine;
-import java.util.ArrayList;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.ArrayList;
 
 /**
  * Main Environment of the game. Contains Rooms.
@@ -35,19 +32,19 @@ public class World {
      * Calls the simulate() methods of all rooms.
      */
     public void simulate(){
-        System.out.println(rooms);
-        Runnable simulationRunnable = new Runnable() {
-            public void run() {
-                System.out.println(rooms.toString());
-                for (Room room: rooms){
-                    room.simulate();
-                }
-            }
-        };
+        rooms.get(0).addPlayer(1);
+        rooms.get(0).addPlayer(2);
+        while (true) {
+            try {
+                Thread.sleep(1000);
 
-        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-        executor.scheduleAtFixedRate(simulationRunnable, 0, DELAY, TimeUnit);
-        System.out.println("HELLO");
+            } catch (InterruptedException e) {
+                System.out.println("couldnt sleep....");
+            }
+            for (Room room : rooms) {
+                room.simulate();
+            }
+        }
     }
 
     public int getNewRoomID(){

@@ -20,5 +20,10 @@ public class CollideableEntity extends Entity {
         return new BoundingBox();
     }
 
+    @Override
+    public void simulate() {
+
+    }
+
     // maybe some method to detect collision
 }

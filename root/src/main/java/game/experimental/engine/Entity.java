@@ -1,7 +1,6 @@
 package game.experimental.engine;
 
 import game.experimental.utils.BoundingBox;
-import game.experimental.utils.Vector;
 import game.experimental.utils.Vector2F;
 
 /**
@@ -46,6 +45,11 @@ public abstract class  Entity {
     public void setPosition(Vector2F position) {
         this.position = position;
     }
+
+    /**
+     * Simulate the entity.
+     */
+    abstract public void simulate();
 
 
     /**
