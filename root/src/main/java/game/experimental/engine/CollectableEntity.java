@@ -1,24 +1,25 @@
 package game.experimental.engine;
 
+import game.experimental.utils.*;
+
 /**
  * Represents collectable objects.
  */
-public class CollectableEntity extends ColladableEntity {
+public class CollectableEntity extends CollideableEntity {
 
     private int value;
     private int life;
 
     /**
      * Creates a collectable object.
-     * @param positionX X position of the entity
-     * @param positionY y position of the entity
+     * @param position position of the entity
      * @param id id of the entity
      * @param ownerID ID of the owner entity
      * @param value value of the object
      * @param life life of the object
      */
-    public CollectableEntity(float positionX, float positionY, int id, int ownerID, int value, int life) {
-        super(positionX, positionY, id, ownerID);
+    public CollectableEntity(Vector2F position, int id, int ownerID, int value, int life) {
+        super(position, id, ownerID);
     }
 
     /**

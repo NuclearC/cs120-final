@@ -46,7 +46,8 @@ public class World {
         };
 
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-        executor.scheduleAtFixedRate(simulationRunnable, 0, DELAY, TimeUnit.MILLISECONDS);
+        executor.scheduleAtFixedRate(simulationRunnable, 0, DELAY, TimeUnit);
+        System.out.println("HELLO");
     }
 
     public int getNewRoomID(){

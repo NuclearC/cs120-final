@@ -1,54 +1,50 @@
 package game.experimental.engine;
 
+import game.experimental.utils.BoundingBox;
+import game.experimental.utils.Vector;
+import game.experimental.utils.Vector2F;
+
 /**
  * Represents the Base class object for all other objects in the project.
  * Implements the main methods and instance variables that are common in all objects.
  */
-public class  Entity {
-
-    protected float positionX;
-    protected float positionY;
+public abstract class  Entity {
+    protected Vector2F size;
+    protected Vector2F position;
     protected int id;
     protected int ownerID;
+    public Entity(){
+
+    }
 
     /**
      * Constructor class of the Entity object.
      *
-     * @param positionX X coordinate of the Entity object
-     * @param positionY X coordinate of the Entity object
+     * @param position coordinate of the Entity object
      * @param id unique ID of the object
      * @param ownerID ID of the owner
      */
-    public Entity(float positionX, float positionY, int id, int ownerID){
-        this.positionX = positionX;
-        this.positionY = positionY;
+    public Entity(Vector2F position, int id, int ownerID){
+        this.position = position;
         this.id = id;
         this.ownerID = ownerID;
     }
 
     /**
-     * Returns the X position of the Entity type object.
-     * @return x coordinate of the Entity.
+     * Gets the player's position
+     * @return the position
      */
-    public float getPositionX() {
-        return positionX;
-    }
-
-    /**
-     * Returns the Y position of the Entity type object.
-     * @return y coordinate of the Entity.
-     */
-    public float getPositionY() {
-        return positionY;
+    public Vector2F getPosition() {
+        return position.clone();
     }
 
 
     /**
-     * Sets the new Y coordinate of the Entity.
-     * @param newPositionY new Y coordinate of the Entity.
+     * Set the player's position
+     * @param position the new position of the player
      */
-    public void setPositionY(float newPositionY){
-        this.positionY = newPositionY;
+    public void setPosition(Vector2F position) {
+        this.position = position;
     }
 
 
@@ -85,4 +81,5 @@ public class  Entity {
         this.ownerID = ownerID;
     }
 
+    abstract public BoundingBox getBoundingBox();
 }

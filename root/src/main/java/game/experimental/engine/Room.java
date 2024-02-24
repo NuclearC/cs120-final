@@ -1,5 +1,8 @@
 package game.experimental.engine;
 
+import game.experimental.utils.BoundingBox;
+import game.experimental.utils.Vector2F;
+
 import java.util.ArrayList;
 
 /**
@@ -8,9 +11,34 @@ import java.util.ArrayList;
 public class Room implements Settings{
 
     private int id;
-    private final int NUMBER_OF_COLLIDABLES = 30;
+    private QuadTree<Entity> quadTree;
 
-    private ArrayList<ColladableEntity> collidableEntitiesList = new ArrayList<>();
+
+    private PlayerEntity[] playerEntities = new PlayerEntity[MAX_NUMBER_OF_PLAYERS];
+    private PlayerEntity createPlayer(int id, int ownerID){
+
+        Vector2F playerPosition = new Vector2F(100, 100); // TODO
+
+        PlayerEntity player = new PlayerEntity(playerPosition, id, ownerID);//add function to get the position vector
+
+        return player;
+    }
+
+    public void addPlayer(int ownerID){
+        PlayerEntity player;
+        for(int i = 0; i < playerEntities.length; i++)
+            if(playerEntities[i] == null){
+                player = createPlayer(i, ownerID);
+                // insert the player into the quadtree for collision checks
+                quadTree.insert(player, player.getBoundingBox());
+
+                playerEntities[i] = player;
+
+                break;
+            }
+
+
+    }
 
     /**
      * Creates a new instance of the Room.
@@ -25,25 +53,27 @@ public class Room implements Settings{
      * Creates a new Quadtree.
      */
     public void createQuadTree(){
+        if(quadTree == null)
+            quadTree = new QuadTree<>(null, new BoundingBox(new Vector2F(), new Vector2F(MAP_WIDTH,MAP_HEIGHT)));
     }
 
     /**
      * Generates a new CollidableEntity randomly.
      * @return collidableEntity
      */
-    public  ColladableEntity generateCollidable(){
+    public CollideableEntity generateCollidable(){
         float randomX = (float)Math.random() * Settings.MAP_WIDTH;
         float randomY = (float)Math.random() * Settings.MAP_HEIGHT;
-        return new ColladableEntity(randomX,randomY,this.getNextColliadbleId(),this.id);
+        return new CollideableEntity(new Vector2F(randomX, randomY),this.getNextColliadbleId(),this.id);
     }
 
     /**
      * Fills the game collidable entities.
      */
     public void fillMapWithCollidables(){
-        for(int i=0; i < this.NUMBER_OF_COLLIDABLES; i++){
+       /* for(int i=0; i < this.NUMBER_OF_COLLIDABLES; i++){
             collidableEntitiesList.add(generateCollidable());
-        }
+        }*/
     }
 
     /**
@@ -66,6 +96,7 @@ public class Room implements Settings{
      * @return next id for the collidable.
      */
     public int getNextColliadbleId(){
-        return collidableEntitiesList.size();
+       /// return collidableEntitiesList.size();
+        return -12341234;
     }
 }
