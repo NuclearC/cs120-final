@@ -205,4 +205,9 @@ public class Vector4F implements Vector, Cloneable {
         values[2] /= vectorLength;
         values[3] /= vectorLength;
     }
+
+    @Override
+    public String toString(){
+        return "x: " + this.get(0) + " y: " + this.get(1) + " z: " + this.get(2) + " w: " + this.get(3);
+    }
 }

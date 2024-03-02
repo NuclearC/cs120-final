@@ -24,6 +24,8 @@ public class PlayerEntity extends MovableEntity {
     }
     @Override
     public void simulate() {
+        System.out.println("\t\tPlayer " + this.id + " simulated.");
+        System.out.print("\t\t From "+ this.position.toString() + "      To ");
         this.processActions();
         Vector2F newVelocity = this.processVelocity();
 
@@ -32,6 +34,7 @@ public class PlayerEntity extends MovableEntity {
         this.setVelocity(newVelocity);
 
         this.move();
+        System.out.println(this.position.toString());
     }
 
     @Override

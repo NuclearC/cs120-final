@@ -6,8 +6,8 @@ import game.experimental.utils.Vector2F;
  * Represents the API for all movable objects.
  */
 abstract public class MovableEntity extends Entity {
-    protected Vector2F velocity;
-    protected Vector2F impulse;
+    protected Vector2F velocity = new Vector2F();
+    protected Vector2F impulse = new Vector2F();
     public void setImpulse(Vector2F impulse) {
         this.impulse = impulse.clone();
     }

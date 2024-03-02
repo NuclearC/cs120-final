@@ -174,4 +174,9 @@ public class Vector2F implements Vector, Cloneable {
         this.x /= vectorLength;
         this.y /= vectorLength;
     }
+
+    @Override
+    public String toString(){
+        return "x: " + this.x + " y: " + this.y;
+    }
 }

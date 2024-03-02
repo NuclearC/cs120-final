@@ -60,5 +60,11 @@ public interface Vector {
      */
     Vector getNormalized();
 
+    /**
+     * Returns the string representation for the Vector.
+     * @return string representation.
+     */
+    String toString();
+
 
 }

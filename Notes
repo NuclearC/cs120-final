@@ -1,0 +1,9 @@
+Why we have vector as an interface. There is nowhere information on how vector is being represented.
+
+Vector2f class
+TODO vector class comment.
+get class checking?
+
+why we need get(index) and getX and getY.
+
+we have no usage for setX and setY: do we need them? also we dont have them in 
