@@ -36,7 +36,7 @@ public class World {
         rooms.get(0).addPlayer(2);
         while (true) {
             try {
-                Thread.sleep(1000);
+                Thread.sleep((long)(1.0f / Settings.ENGINE_FRAMERATE));
 
             } catch (InterruptedException e) {
                 System.out.println("couldnt sleep....");

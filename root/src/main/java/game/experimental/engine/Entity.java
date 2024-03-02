@@ -12,6 +12,8 @@ public abstract class  Entity {
     protected Vector2F position;
     protected int id;
     protected int ownerID;
+
+    protected float angle;
     public Entity(){
 
     }
@@ -27,6 +29,8 @@ public abstract class  Entity {
         this.position = position;
         this.id = id;
         this.ownerID = ownerID;
+
+        this.angle = 0;
     }
 
     /**
@@ -83,6 +87,14 @@ public abstract class  Entity {
      */
     public void setOwnerID(int ownerID) {
         this.ownerID = ownerID;
+    }
+
+    public void setAngle(float angle) {
+        this.angle = angle;
+    }
+
+    public float getAngle() {
+        return this.angle;
     }
 
     abstract public BoundingBox getBoundingBox();

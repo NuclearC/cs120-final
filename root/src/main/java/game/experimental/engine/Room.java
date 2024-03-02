@@ -12,7 +12,7 @@ public class Room implements Settings{
     private QuadTree<Entity> quadTree;
 
 
-    
+
     private PlayerEntity[] playerEntities = new PlayerEntity[MAX_NUMBER_OF_PLAYERS];
     private PlayerEntity createPlayer(int id, int ownerID){
 
@@ -82,7 +82,15 @@ public class Room implements Settings{
      * Simulates the game inside one room.
      */
     public void simulate(){
+        // checkCollide(); TODO;
+        
+
         System.out.println("Room simulated "+ this.getId());
+
+        for (int i = 0; i < MAX_NUMBER_OF_PLAYERS; i++){
+            if (playerEntities[i] != null)
+                playerEntities[i].simulate();
+        }
     }
 
     /**
