@@ -5,6 +5,7 @@ import game.experimental.utils.Vector2F;
 public class PlayerEntity extends MovableEntity {
 
     private Vector2F velocity;
+    private Vector2F deltaVelocity;
     private Vector2F impulse;
     private int userInputKey;
     private float userInputAngle;
@@ -14,6 +15,10 @@ public class PlayerEntity extends MovableEntity {
         super(position,id,ownerID);
 
         this.size = new Vector2F(PLAYER_DEFAULT_SIZE, PLAYER_DEFAULT_SIZE);
+
+        this.velocity = new Vector2F();
+        this.impulse = new Vector2F();
+        this.deltaVelocity = new Vector2F();
     }
 
     public void setUserInputKey(int inputKey){
@@ -22,16 +27,16 @@ public class PlayerEntity extends MovableEntity {
     public void setUserInputAngle(float angle){
         this.userInputAngle = angle;
     }
+
     @Override
     public void simulate() {
         System.out.println("\t\tPlayer " + this.id + " simulated.");
         System.out.print("\t\t From "+ this.position.toString() + "      To ");
-        this.processActions();
-        Vector2F newVelocity = this.processVelocity();
 
-        float a = Settings.PLAYER_MAX_VELOCITY / Settings.ENGINE_FRAMERATE;
-        //
-        this.setVelocity(newVelocity);
+        this.processActions();
+        this.processVelocity();
+
+//        float a = Settings.PLAYER_MAX_VELOCITY / Settings.ENGINE_FRAMERATE;
 
         this.move();
         System.out.println(this.position.toString());
@@ -48,17 +53,23 @@ public class PlayerEntity extends MovableEntity {
     }
 
     private void processActions() {
+
         if (PlayerCommand.SHOOT.isSet(this.userInputKey)) {
-
-            int a = PlayerCommand.SHOOT.set(0);
-            a = PlayerCommand.UP.set(a);
-
+            shoot();
+            for(PlayerCommand command: PlayerCommand.values()){
+                if(command.isSet(this.userInputKey)){
+                    deltaVelocity = deltaVelocity.add(command.deltaVector);
+                }
+            }
         }
     }
-    private Vector2F processVelocity() {
-        Vector2F newVelocity = new Vector2F(1.0f, 0.f);
+    private void processVelocity() {
+        this.setVelocity(velocity.multiply(0.8f));                          // multiple cloning is performed
+        this.setVelocity(velocity.add(deltaVelocity));                          // multiple cloning is performed TODO
+        this.setVelocity(velocity.add(impulse));
+    }
 
-
-        return newVelocity;
+    private void shoot(){
+        System.out.println("Shot");
     }
 }
