@@ -66,7 +66,6 @@ public class PlayerEntity extends MovableEntity {
     private void processVelocity() {
         this.setVelocity(velocity.multiply(0.8f));                          // multiple cloning is performed
         this.setVelocity(velocity.add(deltaVelocity));                          // multiple cloning is performed TODO
-        this.setVelocity(velocity.add(impulse));
     }
 
     private void shoot(){

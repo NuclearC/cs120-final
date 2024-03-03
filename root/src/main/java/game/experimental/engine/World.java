@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * Main Environment of the game. Contains Rooms.
  */
 public class World {
-
+    private final int id;
     private ArrayList<Room> rooms;
     private final int DELAY = 5000;                      // Needs to be stored with other constants.
 
@@ -15,7 +15,8 @@ public class World {
      * Creates a new instance of World.
      * Implicitly creates an empty Room.
      */
-    public World(){
+    public World(int id){
+        this.id = id;
         rooms = new ArrayList<>();
         this.addRoom();
     }
@@ -32,30 +33,33 @@ public class World {
      * Calls the simulate() methods of all rooms.
      */
     public void simulate(){
-        while (true) {
-            try {
-                System.out.println();
-                System.out.println("World Simulated");
-                Thread.sleep((long)(1000.0f / Settings.ENGINE_FRAMERATE));
 
-            } catch (InterruptedException e) {
-                System.out.println("couldnt sleep....");
-            }
-            for (Room room : rooms) {
-                room.simulate();
-            }
+        System.out.println("World "+ id + " Simulated");
+        for (Room room : rooms) {
+            room.simulate();
         }
+
     }
 
     /**
      * Adds a new player to a Room.
-     * @param ownerId Id of the Client with whom player is connected.
-     * @param roomId Id of the room where the new player is to be put.
+     * @param owner Client object with whom player is connected.
      */
-    public void addPlayer(int ownerId, int roomId){
-        rooms.get(roomId).addPlayer(ownerId);
+    public void addPlayer(Client owner){
+        int roomId = decideRoom(owner);
+        rooms.get(roomId).addPlayer(owner.id);
     }
 
+    /**
+     * NOT IMPLEMENTED
+     * Should decide to which room add the new player based on the client characteristics.
+     *
+     * @param client client for whom the player is added.
+     * @return the id of the room to which should be added.
+     */
+    private int decideRoom(Client client){
+        return 0;
+    }
     /**
      * Removes a player from a room.
      * @param ownerId id of the Client with whom the player is associated

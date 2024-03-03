@@ -10,12 +10,13 @@ public enum PlayerCommand {
     LEFT(1 << 4, new Vector2F(0.f,-5.f));
 
     public final Vector2F deltaVector;
-
     public final int key;
+
     private PlayerCommand(int key, Vector2F deltaVector){
         this.key = key;
         this.deltaVector = deltaVector;
     }
+
 
     public boolean isSet(int key) {
         return (this.key & key) == this.key;

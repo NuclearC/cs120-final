@@ -58,6 +58,8 @@ public class Room implements Settings{
                 playerEntities[i] = player;
                 break;
             }
+        System.out.println("\tPlayer Added to " + id + " Room");
+
     }
 
 
