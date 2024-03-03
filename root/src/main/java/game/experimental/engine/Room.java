@@ -26,7 +26,7 @@ public class Room implements Settings{
         movingCollectables = new CollectableEntity[this.level.MAX_NUMBER_OF_MOVING_COLLECTABLES];
 
         createQuadTree();
-        fillMapWithCollidables();
+        fillMapWithCollectable();
     }
 
 
@@ -49,10 +49,9 @@ public class Room implements Settings{
      * @param ownerID id of the Client with whom the player will be associated.
      */
     public void addPlayer(int ownerID){
-        PlayerEntity player;
         for(int i = 0; i < playerEntities.length; i++)
             if(playerEntities[i] == null){
-                player = createPlayer(i, ownerID);
+                PlayerEntity player = createPlayer(i, ownerID);
                 // insert the player into the quadtree for collision checks
                 quadTree.insert(player, player.getBoundingBox());
                 playerEntities[i] = player;
@@ -71,10 +70,7 @@ public class Room implements Settings{
      */
     private PlayerEntity createPlayer(int id, int ownerID){
 
-        float randomX = (float)Math.random() * Settings.MAP_WIDTH;
-        float randomY = (float)Math.random() * Settings.MAP_HEIGHT;
-
-        Vector2F playerPosition = new Vector2F(randomX, randomY); // TODO
+       Vector2F playerPosition = Vector2F.randomVector(0,MAP_HEIGHT,0, MAP_HEIGHT); // TODO
 
         PlayerEntity player = new PlayerEntity(playerPosition, id, ownerID);//add function to get the position vector
 
@@ -90,12 +86,78 @@ public class Room implements Settings{
         for(PlayerEntity player: playerEntities){
             if(player.ownerID == ownerId){
                 playerEntities[player.getId()] = null;
+                // shouldn't we remove it also from tree??????
                 return;
             }
         }
     }
 
+    /**
+     * creates MovingCollectable with the give id and type in random position(we need to change this!!!!!!)
+     * @param id the id of the collectable
+     * @param type the type of the collectable
+     * @return the created collectable
+     */
+    private CollectableEntity createMovingCollectable(int id, int type){
+        Vector2F position = Vector2F.randomVector(0,MAP_HEIGHT,0, MAP_HEIGHT); // TODO
+        return new CollectableEntity(position,id,-1,-1,-1);//TODO
+    }
 
+    /**
+     * adds moving collectable to the room
+     */
+    public void addMovingCollectable(){
+        for(int i = 0; i < movingCollectables.length; i++){
+            if(movingCollectables[i] == null){
+                CollectableEntity collectables = createMovingCollectable(i, 0);//change the type TODO
+                quadTree.insert(collectables, collectables.getBoundingBox());
+                movingCollectables[i] = collectables;
+                break;
+            }
+        }
+    }
+
+    /**
+     * removed  the moving collectable form the room
+     * @param id the id of the moving collectable that needs to be removed
+     */
+    public void removeMovingCollectable(int id){
+        quadTree.remove(movingCollectables[id],movingCollectables[id].getBoundingBox());
+        movingCollectables[id] = null;
+    }
+    /**
+     * creates Static Collectable with the give id and type in random position(we need to change this!!!!!!)
+     * @param id the id of the collectable
+     * @param type the type of the collectable
+     * @return the created collectable
+     */
+    private CollectableEntity createStaticCollectable(int id, int type){
+        Vector2F position = Vector2F.randomVector(0,MAP_HEIGHT,0, MAP_HEIGHT); // TODO
+        return new CollectableEntity(position,id,-1,-1,-1);//TODO
+    }
+
+    /**
+     * adds static collectable to the room
+     */
+    public void addStaticCollectable(){
+        for(int i = 0; i < staticCollectables.length; i++){
+            if(staticCollectables[i] == null){
+                CollectableEntity collectables = createStaticCollectable(i, 0);//change the type TODO
+                quadTree.insert(collectables, collectables.getBoundingBox());
+                staticCollectables[i] = collectables;
+                break;
+            }
+        }
+    }
+
+    /**
+     * removed  the static collectable form the room
+     * @param id the id of the static collectable that needs to be removed
+     */
+    public void removeStaticCollectable(int id){
+        quadTree.remove(staticCollectables[id],staticCollectables[id].getBoundingBox());
+        staticCollectables[id] = null;
+    }
     /**
      * Creates a new Quadtree.
      */
@@ -109,18 +171,18 @@ public class Room implements Settings{
      * @return collidableEntity
      */
     public CollideableEntity generateCollidable(){
-        float randomX = (float)Math.random() * Settings.MAP_WIDTH;
-        float randomY = (float)Math.random() * Settings.MAP_HEIGHT;
-        return new CollideableEntity(new Vector2F(randomX, randomY),this.getNextColliadbleId(),this.id);
+        Vector2F position = Vector2F.randomVector(0,MAP_HEIGHT,0, MAP_HEIGHT); // TODO
+        return new CollideableEntity(position,this.getNextColliadbleId(),this.id);
     }
 
     /**
      * Fills the game collidable entities.
      */
-    public void fillMapWithCollidables(){
-       /* for(int i=0; i < this.NUMBER_OF_COLLIDABLES; i++){
-            collidableEntitiesList.add(generateCollidable());
-        }*/
+    public void fillMapWithCollectable(){
+        for(int i = 0; i < this.level.MAX_NUMBER_OF_MOVING_COLLECTABLES; i++)
+            addMovingCollectable();
+        for(int i = 0; i < this.level.MAX_NUMBER_OF_STATIC_COLLECTABLES; i++)
+            addStaticCollectable();
     }
 
 

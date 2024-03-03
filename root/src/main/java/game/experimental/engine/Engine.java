@@ -1,7 +1,6 @@
 package game.experimental.engine;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Represents the Engine of the game. Starts the running  of the main loop.
@@ -31,7 +30,7 @@ public class Engine {
                 Thread.sleep((long)(1000.0f / Settings.ENGINE_FRAMERATE));
 
             } catch (InterruptedException e) {
-                System.out.println("couldnt sleep....");
+                System.out.println("couldn't sleep....");
             }
             for (World world : worlds) {
                 world.simulate();
@@ -63,7 +62,7 @@ public class Engine {
                 return i;
             }
         }
-        // A better way of handling needs to be implemented
+        //we need to change the type of exception
         throw  new ArrayIndexOutOfBoundsException("Number of clients exceeded");     // TODO
     }
 

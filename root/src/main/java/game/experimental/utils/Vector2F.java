@@ -174,7 +174,12 @@ public class Vector2F implements Vector, Cloneable {
         this.x /= vectorLength;
         this.y /= vectorLength;
     }
+    public static Vector2F randomVector(float xRangeBegging, float xRangeEnd, float yRangeBeggin, float yRangeEnd){
+        float randomX = (float)Math.random() * xRangeEnd + xRangeBegging;
+        float randomY = (float)Math.random() * yRangeEnd + yRangeBeggin;
 
+        return new Vector2F(randomX,randomY);
+    }
     @Override
     public String toString(){
         return "x: " + this.x + " y: " + this.y;
