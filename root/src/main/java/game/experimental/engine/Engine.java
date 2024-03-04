@@ -1,5 +1,7 @@
 package game.experimental.engine;
 
+import game.experimental.utils.Vector2F;
+
 import java.util.ArrayList;
 
 /**
@@ -8,57 +10,60 @@ import java.util.ArrayList;
  */
 public class Engine {
     private final ArrayList<World> worlds = new ArrayList<>();
-    private final Client[] clients = new Client[Settings.MAX_NUMBER_OF_CLIENTS];
-    private static final Engine SINGLE_ENGINE = new Engine();
+    private final ClientChannel[] clientChannels = new ClientChannel[Settings.MAX_NUMBER_OF_CLIENTS];
+    private static final Engine INSTANCE = new Engine();
 
 
     private Engine(){
         System.out.println("Engine created...");
         worlds.add(new World(worlds.size()));
+        worlds.get(0).addRoom(1);
     }
 
-    public static Engine createEngine(){
-        return SINGLE_ENGINE;
+    public static Engine getInstance(){
+        return INSTANCE;
     }
 
-    public void simulate(){
-        System.out.println("Engine simulation started...");
-        while (true) {
-            try {
-                System.out.println();
-                System.out.println("Engine Simulated");
-                Thread.sleep((long)(1000.0f / Settings.ENGINE_FRAMERATE));
 
-            } catch (InterruptedException e) {
-                System.out.println("couldn't sleep....");
-            }
-            for (World world : worlds) {
-                world.simulate();
-            }
+    public void runEngineFrame(){
+        try {
+            System.out.println();
+            System.out.println("Engine Simulated");
+            Thread.sleep((long)(1000.0f / Settings.ENGINE_FRAMERATE));
+
+        } catch (InterruptedException e) {
+            System.out.println("couldn't sleep....");
+        }
+        for (World world : worlds) {
+            world.simulate();
         }
     }
+
 
     /**
      * Connects a client to a world.
-     * @param worldID id of the world to be connected.
+     * @param newChannel Client instance
      */
-    public void connectClient(int worldID){
-        // new Client object is created.
-        // for that particular client a new player is added to a Room.
+    public void addClientChannel(ClientChannel newChannel){
+
+        int worldID = decideWorldID(newChannel);
         try {
-            Client newClient = new Client(getNextClientID());
-            System.out.println("Client connected... ");
-            worlds.get(worldID).addPlayer(newClient);
+            System.out.println("ClientChannel connected... ");
+            worlds.get(worldID).addPlayer(newClientChannel);
         }
         catch (ArrayIndexOutOfBoundsException e){
-            System.out.println("Client connection failed !!!");
+            System.out.println("ClientChannel connection failed !!!");
             System.out.println("Number of clients Exceeded");
         }
     }
 
-    public int getNextClientID() throws ArrayIndexOutOfBoundsException{
-        for (int i = 0; i < clients.length; i++){
-            if (clients[i] == null){
+    public int decideWorldID(ClientChannel newChannel){
+        return 0;
+    }
+
+    private int getNextClientID() throws ArrayIndexOutOfBoundsException{
+        for (int i = 0; i < clientChannels.length; i++){
+            if (clientChannels[i] == null){
                 return i;
             }
         }

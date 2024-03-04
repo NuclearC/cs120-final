@@ -18,14 +18,13 @@ public class World {
     public World(int id){
         this.id = id;
         rooms = new ArrayList<>();
-        this.addRoom();
     }
 
     /**
      * Creates a room and stores it in the list of the World.
      */
-    public void addRoom(){
-        rooms.add(new Room(getNewRoomID(), 1));
+    public void addRoom(int level){
+        rooms.add(new Room(getNewRoomID(), level));
     }
 
     /**
@@ -45,7 +44,7 @@ public class World {
      * Adds a new player to a Room.
      * @param owner Client object with whom player is connected.
      */
-    public void addPlayer(Client owner){
+    public void addPlayer(ClientChannel owner){
         int roomId = decideRoom(owner);
         rooms.get(roomId).addPlayer(owner.id);
     }
@@ -57,7 +56,7 @@ public class World {
      * @param client client for whom the player is added.
      * @return the id of the room to which should be added.
      */
-    private int decideRoom(Client client){
+    private int decideRoom(ClientChannel client){
         return 0;
     }
     /**

@@ -26,7 +26,7 @@ public class Room implements Settings{
         movingCollectables = new StaticCollectableEntity[this.level.MAX_NUMBER_OF_MOVING_COLLECTABLES];
 
         createQuadTree();
-        fillMapWithCollectable();
+        fillMapWithCollectable(); // TODO
     }
 
 
