@@ -5,7 +5,7 @@ import game.experimental.utils.*;
 /**
  * Represents Collideable Entities, extends Entity class.
  */
-public class CollideableEntity extends Entity {
+abstract class CollideableEntity extends Entity {
     /**
      * Creates a new colladable entity.
      * @param position adkjfbadkjgnla
@@ -16,9 +16,8 @@ public class CollideableEntity extends Entity {
         super(position, id, ownerID);
     }
 
-    @Override
-    public void simulate() {
 
+    public void onCollisison(CollideableEntity entity){
     }
-    // maybe some method to detect collision
+
 }

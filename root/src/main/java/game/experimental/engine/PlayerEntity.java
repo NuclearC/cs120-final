@@ -2,7 +2,11 @@ package game.experimental.engine;
 
 import game.experimental.utils.BoundingBox;
 import game.experimental.utils.Vector2F;
-public class PlayerEntity extends MovableEntity {
+
+/**
+ * Represents a player in the game.
+ */
+public class PlayerEntity extends CollideableEntity implements Movable{
 
     private Vector2F velocity;
     private Vector2F deltaVelocity;
@@ -10,7 +14,8 @@ public class PlayerEntity extends MovableEntity {
     private int userInputKey;
     private float userInputAngle;
 
-    private static final float PLAYER_DEFAULT_SIZE = 10.f;
+    private static final float PLAYER_DEFAULT_SIZE = 10.f;           // TODO  not the best place to keep it
+
     public PlayerEntity(Vector2F position, int id, int ownerID){
         super(position,id,ownerID);
 
@@ -48,12 +53,33 @@ public class PlayerEntity extends MovableEntity {
     }
 
     @Override
+    public void setVelocity(Vector2F velocity) {
+        this.velocity = velocity;
+    }
+
+    @Override
     public void setImpulse(Vector2F impulse) {
         this.impulse = impulse;
     }
 
-    private void processActions() {
+    @Override
+    public Vector2F getVelocity() {
+        return this.velocity;
+    }
 
+    @Override
+    public void move() {
+        this.position = this.position.add(this.velocity);
+        this.position = this.position.add(this.impulse);
+        this.impulse = new Vector2F();
+    }
+
+    @Override
+    public boolean checkBoundaries() {
+        return false;
+    }
+
+    private void processActions() {
         if (PlayerCommand.SHOOT.isSet(this.userInputKey)) {
             shoot();
             for(PlayerCommand command: PlayerCommand.values()){
