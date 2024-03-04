@@ -75,24 +75,11 @@ public class App {
 
 			return;
 		}
-
 		Logger.log("hello world");
 
-        QuadTree<Integer> qt = new QuadTree<Integer>(null, new BoundingBox(new Vector2F(-300, -300), new Vector2F(600.f, 600.f)));
- 
-		final int testBoxCount = 200;
-		BoundingBox[] boxes = new BoundingBox[testBoxCount];
-
-		Random r = new Random();
-        for (int i = 0; i < testBoxCount; i++) {
-			boxes[i] = new BoundingBox(new Vector2F(r.nextFloat() * 600.f - 300.f, r.nextFloat() * 600.f - 300.f), new Vector2F(8.f, 8.f));
-            if (false == qt.insert(i, boxes[i])) {
-                System.out.println("failed to insert " + i);
-				boxes[i] = null;
-            }
-        }
-
 		Matrix4x4F projection = Matrix4x4F.projectionOrthographic(-640.f, -360.f, 640.f, 360.f, 0.f, 1.0f);
+
+		Camera c = new Camera(1280, 720);
 
 		// Run the rendering loop until the user has attempted to close
 		// the window or has pressed the ESCAPE key.
@@ -100,38 +87,13 @@ public class App {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
             glClearColor(229.f / 255.f, 207.f / 255.f, 163.f / 255.f, 1.0f);
 
+			PlayerRenderer playerRenderer = PlayerRenderer.getSingleton();
+			playerRenderer.draw(c, 0.f, new Vector2F(100, 100), new Vector2F(100, 100));
+			playerRenderer.draw(c, 1.f, new Vector2F(100, 200), new Vector2F(100, 200));
+
 			Gizmos.beginDrawing(projection);
 
-			drawQuadTree(qt);
-
-			Vector2F mousePos = gameWindow.getCursorPosition().subtract(new Vector2F(640.f, 360.f));
-
-			ArrayList<Integer> queryInts = new ArrayList<Integer>();
-			BoundingBox xdd = new BoundingBox(mousePos.subtract(new Vector2F(100.f, 100.f)), new Vector2F(200.f, 200.f));
-			final float[] rectColor3 = {0.8f, 0.1f, 0.1f, 1.0f};
-			Gizmos.drawBoundingBox(xdd, rectColor3);
-
-			qt.query(xdd, queryInts);
-
-			for (int i : queryInts) {
-				final float[] rectColor = {0.1f, 0.4f, 0.1f, 1.0f};
-				if (boxes[i] == null) {
-					System.out.println("how does this even exist? " + i);
-				}
-				else
-					Gizmos.drawBoundingBox(boxes[i], rectColor);
-			}
-
-			for (int i = 0; i < testBoxCount; i++) {
-				if (boxes[i] != null && boxes[i].contains(mousePos)) {
-					if (!qt.remove(i, boxes[i])) {
-						System.out.println("FAILED REMOVE WTFFFF " + i);
-						qt.remove(i, boxes[i]);
-					} else
-						boxes[i] = null;
-				}
-			}
-			
+			Gizmos.drawBoundingBox(new BoundingBox(100.f, 100.f, 200.f, 200.f), new float[]{1.0f, 0.f, 0.f, 1.f});
 			gameWindow.present();
 			// Poll for window events. The key callback above will only be
 			// invoked during this call.
@@ -143,23 +105,6 @@ public class App {
 		//quad.destroy();
 
 		Gizmos.destroy();
-	}
-
-	private void drawQuadTree(QuadTree<Integer> qt) {
-		final float[] rectColor = {0.1f, 0.1f, 0.1f, 1.0f};
-		Gizmos.drawBoundingBox(qt.getRange(), rectColor);
-
-		// for (QuadTree<Integer>.Node<Integer> obj : qt.getObjects()) {
-		// 	final float[] rectColor2 = {0.1f, 0.5f, 0.1f, 1.0f};
-		// 	Gizmos.drawBoundingBox(obj.getBoundingBox(), rectColor2);
-		// }
-
-		if (qt.getChildren() != null) {
-			for (int i = 0; i < 4; i++) {
-				drawQuadTree(qt.getChildren()[i]);
-			}
-		}
-
 	}
 
 	public static void main(String[] args) {

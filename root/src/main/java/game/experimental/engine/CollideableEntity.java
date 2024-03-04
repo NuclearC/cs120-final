@@ -20,6 +20,5 @@ public class CollideableEntity extends Entity {
     public void simulate() {
 
     }
-
     // maybe some method to detect collision
 }

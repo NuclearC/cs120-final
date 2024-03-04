@@ -14,8 +14,12 @@ public interface EntityRenderer {
     
     /**
      * Draws the entity in the currently active OpenGL context. 
+     * @param camera the Camera specifiying projection and view. 
+     * @param rotation the rotation of the entity along Z axis.
+     * @param position the position of the entity.
+     * @param size the size of the entity
      */
-    void draw(Vector2F position, Vector2F size);
+    void draw(Camera camera, float rotation, Vector2F position, Vector2F size);
 
 
 }

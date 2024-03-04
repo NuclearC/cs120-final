@@ -19,9 +19,7 @@ public class Camera {
     }
 
     public void setPosition(Vector2F position) {
-
         this.view = Matrix4x4F.transformTranslate(position);
-
     }
 
 }

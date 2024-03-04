@@ -1,6 +1,5 @@
 package game.experimental.utils;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -10,6 +9,7 @@ public final class Logger {
     
 
     private static final String LOG_FILE_DATE_FORMAT = "yyyy-MM-dd_HH-mm-ss";
+    private static final String LOG_MESSAGE_DATE_FORMAT = "HH-mm-ss";
 
     private static Logger instance = null;
     
@@ -25,12 +25,17 @@ public final class Logger {
     }
 
     private String getFilename() {
-        return "game-" +  (new SimpleDateFormat(LOG_FILE_DATE_FORMAT)).format(new Date()) + ".log";
+        // return "game-" +  (new SimpleDateFormat(LOG_FILE_DATE_FORMAT)).format(new Date()) + ".log";
+        return "game-debug.log";
+    }
+
+    private String getTimePrefix() {
+        return "[" + (new SimpleDateFormat(LOG_MESSAGE_DATE_FORMAT)).format(new Date()) + "]";
     }
 
     private void writeMessage(String message) {
         try {
-            this.outputFile.write(message + "\n");
+            this.outputFile.write(getTimePrefix() + " " + message + "\n");
         } catch (IOException e) {
             System.out.println("Failed to write to file!");
         }
