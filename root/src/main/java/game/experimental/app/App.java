@@ -10,6 +10,7 @@ import game.experimental.gl.*;
 import game.experimental.gl.Shader.ShaderException;
 import game.experimental.gl.Program.ProgramException;
 import game.experimental.utils.BoundingBox;
+import game.experimental.utils.Logger;
 import game.experimental.utils.Matrix4x4F;
 import game.experimental.utils.Vector2F;
 
@@ -74,6 +75,8 @@ public class App {
 
 			return;
 		}
+
+		Logger.log("hello world");
 
         QuadTree<Integer> qt = new QuadTree<Integer>(null, new BoundingBox(new Vector2F(-300, -300), new Vector2F(600.f, 600.f)));
  
