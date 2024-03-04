@@ -76,7 +76,7 @@ public class App {
 		}
 
         QuadTree<Integer> qt = new QuadTree<Integer>(null, new BoundingBox(new Vector2F(-300, -300), new Vector2F(600.f, 600.f)));
-
+ 
 		final int testBoxCount = 200;
 		BoundingBox[] boxes = new BoundingBox[testBoxCount];
 

@@ -20,6 +20,8 @@ public class CollectableEntity extends CollideableEntity {
      */
     public CollectableEntity(Vector2F position, int id, int ownerID, int value, int life) {
         super(position, id, ownerID);
+
+        this.size = new Vector2F(10,10);
     }
 
     @Override

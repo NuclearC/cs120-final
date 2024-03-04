@@ -5,6 +5,9 @@ import static org.lwjgl.stb.STBImage.*;
 
 import java.nio.ByteBuffer;
 
+/**
+ * Represesents a texture (an image) residing within the GPU. 
+ */
 public class Texture {
     private int texture = 0;
 
@@ -28,7 +31,7 @@ public class Texture {
             glGenerateMipmap(GL_TEXTURE_2D);
 
         } else {
-            throw new Exception("Unable to load texture file: " + filename);
+            throw new Exception(ExceptionMessages.TEXTURE_NOT_FOUND);
         }
 
         glBindTexture(GL_TEXTURE_2D, 0);

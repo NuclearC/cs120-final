@@ -16,10 +16,6 @@ public class CollideableEntity extends Entity {
         super(position, id, ownerID);
     }
 
-    public BoundingBox getBoundingBox() {
-        return new BoundingBox();
-    }
-
     @Override
     public void simulate() {
 

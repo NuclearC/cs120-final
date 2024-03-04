@@ -97,5 +97,7 @@ public abstract class  Entity {
         return this.angle;
     }
 
-    abstract public BoundingBox getBoundingBox();
+    public BoundingBox getBoundingBox() {
+        return new BoundingBox(this.position, this.size);
+    }
 }

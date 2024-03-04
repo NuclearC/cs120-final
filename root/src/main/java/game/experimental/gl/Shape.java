@@ -8,6 +8,9 @@ import static org.lwjgl.system.MemoryStack.stackPush;
 
 import java.nio.FloatBuffer;
 
+/**
+ * Represents a graphics shape for drawing on the screen.
+ */
 public class Shape {
     private int vertexArray = 0;
     private int vertexBuffer = 0;
@@ -51,14 +54,6 @@ public class Shape {
 
         return res;
     }
-
-    // public static float[] buildProjection(float width, float height, float scaleX, float scaleY, float offsetX, float offsetY) {
-    //     return new float[]{
-    //         1.f / width * scaleX, 0.f, 0.f,  0.0f,
-	// 		0.f, 1.f / height * scaleY, 0.f, 0.0f,
-	// 		0.f, 0.f, 0.f, 0.f,
-	// 		offsetX / width, offsetY / height, 0.f, 1.f};
-    // }
 
     public Shape(float[] vertices) {
         vertexArray = glCreateVertexArrays();
