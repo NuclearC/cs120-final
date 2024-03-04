@@ -27,10 +27,10 @@ public class App {
 	public void run() {
 		System.out.println("Hello LWJGL " + Version.getVersion() + "!");
 
-        // bind GLFW error output to cerr
+		// bind GLFW error output to cerr
 		GLFWErrorCallback.createPrint(System.err).set();
 
-        if ( !glfwInit() )
+		if ( !glfwInit() )
 			throw new IllegalStateException("Unable to initialize GLFW");
 		// create the main output window
 		// this may be recreated if options are changed (such as window size of vsync)
@@ -38,9 +38,9 @@ public class App {
 
 		GL.createCapabilities();
 
-        glEnable(GL_MULTISAMPLE);
+		glEnable(GL_MULTISAMPLE);
 		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		loop();
 
@@ -85,9 +85,10 @@ public class App {
 		// the window or has pressed the ESCAPE key.
 		while ( !gameWindow.shouldClose() ) {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
-            glClearColor(229.f / 255.f, 207.f / 255.f, 163.f / 255.f, 1.0f);
+			glClearColor(229.f / 255.f, 207.f / 255.f, 163.f / 255.f, 1.0f);
 
 			PlayerRenderer playerRenderer = PlayerRenderer.getSingleton();
+			System.out.println("ygvvv");
 			playerRenderer.draw(c, 0.f, new Vector2F(100, 100), new Vector2F(100, 100));
 			playerRenderer.draw(c, 1.f, new Vector2F(100, 200), new Vector2F(100, 200));
 
