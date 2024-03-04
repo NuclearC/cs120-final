@@ -14,7 +14,7 @@ public class PlayerEntity extends CollideableEntity implements Movable{
     private int userInputKey;
     private float userInputAngle;
 
-    private static final float PLAYER_DEFAULT_SIZE = 10.f;           // TODO  not the best place to keep it
+    private static final float PLAYER_DEFAULT_SIZE = 50.f;           // TODO  not the best place to keep it
 
     public PlayerEntity(Vector2F position, int id, int ownerID){
         super(position,id,ownerID);
@@ -70,6 +70,7 @@ public class PlayerEntity extends CollideableEntity implements Movable{
     @Override
     public void move() {
         this.position = this.position.add(this.velocity);
+        this.position = this.position.add(new Vector2F(1,1));
         this.position = this.position.add(this.impulse);
         this.impulse = new Vector2F();
     }
@@ -97,4 +98,6 @@ public class PlayerEntity extends CollideableEntity implements Movable{
     private void shoot(){
         System.out.println("Shot");
     }
+
+
 }

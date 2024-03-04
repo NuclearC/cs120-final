@@ -7,7 +7,7 @@ import game.experimental.utils.Vector2F;
  */
 public class MovingCollectableEntity extends StaticCollectableEntity implements Movable{
     private Vector2F velocity;
-    private final Vector2F impulse = new Vector2F();     // initilized to
+    private final Vector2F impulse = new Vector2F();     // initilized to o
 
     public MovingCollectableEntity(Vector2F position, int id, int ownerID, int type){
         super(position, id, ownerID, type);

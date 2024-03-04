@@ -46,9 +46,14 @@ public class World {
      */
     public void addPlayer(ClientChannel owner){
         int roomId = decideRoom(owner);
-        rooms.get(roomId).addPlayer(owner.id);
+        PlayerEntity addedPlayerInstance = rooms.get(roomId).addPlayer(owner.getId());
+        owner.setRoomId(roomId);
+        owner.setPlayerId(addedPlayerInstance.id);
     }
 
+    public ArrayList<Entity> getViewBoxData(int roomId, int playerID){
+        return rooms.get(roomId).getViewBoxData(playerID);
+    }
     /**
      * NOT IMPLEMENTED
      * Should decide to which room add the new player based on the client characteristics.

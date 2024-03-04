@@ -40,6 +40,9 @@ public abstract class  Entity {
     public Vector2F getPosition() {
         return position.clone();
     }
+    public Vector2F getSize() {
+        return size.clone();
+    }
 
 
     /**
@@ -100,4 +103,12 @@ public abstract class  Entity {
     public BoundingBox getBoundingBox() {
         return new BoundingBox(this.position, this.size);
     }
+
+//    /**
+//     * Needs to formulated into what is going to be transferred and how
+//     * @return Vector[] so far size and position vectors
+//     */
+//    public Vector2F[] getDrawableData(){
+//        return new Vector2F[]{position, size};
+//    }
 }

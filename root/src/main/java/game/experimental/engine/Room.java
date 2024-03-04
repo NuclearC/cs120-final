@@ -3,6 +3,8 @@ package game.experimental.engine;
 import game.experimental.utils.BoundingBox;
 import game.experimental.utils.Vector2F;
 
+import java.util.ArrayList;
+
 /**
  * Represents a Room in the game.
  */
@@ -14,6 +16,9 @@ public class Room implements Settings{
     private final PlayerEntity[] playerEntities;
     private final StaticCollectableEntity[] staticCollectables;
     private final StaticCollectableEntity[] movingCollectables;
+
+    private final ArrayList<ArrayList<Entity>> viewBoxDataStorage;     // TODO
+
     /**
      * Creates a new instance of the Room.
      */
@@ -24,6 +29,7 @@ public class Room implements Settings{
         playerEntities = new PlayerEntity[this.level.MAX_NUMBER_OF_PLAYERS];
         staticCollectables = new StaticCollectableEntity[this.level.MAX_NUMBER_OF_STATIC_COLLECTABLES];
         movingCollectables = new StaticCollectableEntity[this.level.MAX_NUMBER_OF_MOVING_COLLECTABLES];
+        viewBoxDataStorage = new ArrayList<>(this.level.MAX_NUMBER_OF_PLAYERS);      //   TODO
 
         createQuadTree();
         fillMapWithCollectable(); // TODO
@@ -42,23 +48,53 @@ public class Room implements Settings{
             if (playerEntities[i] != null)
                 playerEntities[i].simulate();
         }
+        // generates DrawData for each player ViewBox
+        //
+        for (int i = 0; i < level.MAX_NUMBER_OF_PLAYERS; i++){
+            if (playerEntities[i] != null)
+                viewBoxDataStorage.add(i, generateViewBoxData(i));
+        }
+
+    }
+
+    /**
+     * Generates a ViewBox data for each player.  I don't know what this data should look like.
+     * Now it returns only the player in an array. But quadtree queries should be done and an array of entities should be returned.
+     * @param playerId the id of the player for which data is being generated.
+     */
+    public ArrayList<Entity> generateViewBoxData(int playerId){
+        ArrayList<Entity> foundObjects = new ArrayList<>();
+        quadTree.query(new BoundingBox(new Vector2F(-640.f, -360.f), new Vector2F(1280, 720)), foundObjects);
+        return foundObjects;
+    }
+
+    /**
+     * Returns the ViewBoxData for that particular player
+     * @param playerId player id
+     * @return ArrayList of entities in the ViewBox of the player
+     */
+    public ArrayList<Entity> getViewBoxData(int playerId){
+        return viewBoxDataStorage.get(playerId);
     }
 
     /**
      * Adds a new player to the Room for the given Client id.
      * @param ownerID id of the Client with whom the player will be associated.
      */
-    public void addPlayer(int ownerID){
+    public PlayerEntity addPlayer(int ownerID){
+
         for(int i = 0; i < playerEntities.length; i++)
             if(playerEntities[i] == null){
                 PlayerEntity player = createPlayer(i, ownerID);
                 // insert the player into the quadtree for collision checks
                 quadTree.insert(player, player.getBoundingBox());
                 playerEntities[i] = player;
-                break;
+                System.out.println("\tPlayer Added to " + id + " Room");
+                return player;
             }
-        System.out.println("\tPlayer Added to " + id + " Room");
-
+        System.out.println("No free place to add player");   //  a better ways needs to be implemented TODO
+        System.exit(0);
+        return null;      // not reached
     }
 
 
@@ -86,7 +122,7 @@ public class Room implements Settings{
         for(PlayerEntity player: playerEntities){
             if(player.ownerID == ownerId){
                 playerEntities[player.getId()] = null;
-                // shouldn't we remove it also from tree??????
+                // shouldn't we remove it also from tree??????     // TODO
                 return;
             }
         }

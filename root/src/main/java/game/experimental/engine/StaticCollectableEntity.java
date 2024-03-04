@@ -20,7 +20,7 @@ public class StaticCollectableEntity extends CollideableEntity {
      */
     public StaticCollectableEntity(Vector2F position, int id, int ownerID, int type) {
         super(position, id, ownerID);
-        this.size = new Vector2F(10,10);
+        this.size = new Vector2F(30,30);
         this.type = getType(type);
         this.value = this.type.value;
         this.life = this.type.life;

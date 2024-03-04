@@ -1,30 +1,32 @@
-
 package game.experimental.app;
 
 import game.experimental.engine.Client;
 import game.experimental.engine.ClientChannel;
-import game.experimental.engine.Engine;
-import org.lwjgl.*;
-import org.lwjgl.glfw.*;
-import org.lwjgl.opengl.GL;
-
+import game.experimental.engine.Entity;
 import game.experimental.gl.*;
-import game.experimental.gl.Shader.ShaderException;
-import game.experimental.gl.Program.ProgramException;
 import game.experimental.utils.BoundingBox;
 import game.experimental.utils.Logger;
 import game.experimental.utils.Matrix4x4F;
 import game.experimental.utils.Vector2F;
+import org.lwjgl.Version;
+import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.opengl.GL;
 
-import static org.lwjgl.opengl.GL46.*;
+import java.util.ArrayList;
 
 import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.glfw.GLFW.glfwPollEvents;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL13.GL_MULTISAMPLE;
 
-public class AppSomeExperiments {
+public class AppExperimental {
     private GameWindow gameWindow;
+
+    private ClientChannel myChannel;
 
     public void run() {
         System.out.println("Hello LWJGL " + Version.getVersion() + "!");
+        System.out.println("sdcsdcsdcsdcsd");
 
         // bind GLFW error output to cerr
         GLFWErrorCallback.createPrint(System.err).set();
@@ -60,11 +62,11 @@ public class AppSomeExperiments {
             texture2 = new Texture("./assets/textures/texture_pawn.psd");
             textureWall1 = new Texture("./assets/textures/texture_wall_line.psd");
             textureWall2 = new Texture("./assets/textures/texture_wall_corner.psd");
-        } catch(ShaderException e) {
+        } catch(Shader.ShaderException e) {
             System.out.println("Shader Compile error");
             System.out.println(e.getMessage());
             return;
-        } catch (ProgramException e) {
+        } catch (Program.ProgramException e) {
             System.out.println("Program link error");
             System.out.println(e.getMessage());
             return;
@@ -83,10 +85,12 @@ public class AppSomeExperiments {
 
         Client firstClient = new Client(1);
 
-        Engine myEngine = Engine.getInstance();
+        if (offlineGame()){
+            firstClient.makeLocalChannel();
+        }
+        ClientChannel myChannel = firstClient.getChannelInstance();
 
-        ClientChannel myChannel =  firstClient.getChannelInstance();
-        myEngine.addClientChannel(myChannel);
+
 
 
         // Run the rendering loop until the user has attempted to close
@@ -97,20 +101,20 @@ public class AppSomeExperiments {
 
             PlayerRenderer playerRenderer = PlayerRenderer.getSingleton();
 
-            Vector2F position = myChannel.getDrawableData();
+            ArrayList<Entity> viewBoxData = myChannel.getViewBoxData();
 
-            myEngine.runEngineFrame();
-
-            playerRenderer.draw(c, 0.f, position, new Vector2F(100, 100));
+            for(Entity ent: viewBoxData) {
+                playerRenderer.draw(c, 0.f, ent.getPosition(), ent.getSize());
+            }
 
             Gizmos.beginDrawing(projection);
 
-            Gizmos.drawBoundingBox(new BoundingBox(100.f, 100.f, 200.f, 200.f), new float[]{1.0f, 0.f, 0.f, 1.f});
             gameWindow.present();
             // Poll for window events. The key callback above will only be
             // invoked during this call.
             glfwPollEvents();
         }
+
 
         //circle.destroy();
         //program.destroy();
@@ -119,8 +123,12 @@ public class AppSomeExperiments {
         Gizmos.destroy();
     }
 
+    public static boolean offlineGame(){
+        return true;
+    }
+
     public static void main(String[] args) {
-        new AppSomeExperiments().run();
+        new AppExperimental().run();
     }
 
 }
