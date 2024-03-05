@@ -1,14 +1,12 @@
 package game.experimental.app;
 
 import game.experimental.app.input.InputSystem;
-import game.experimental.engine.Client;
-import game.experimental.engine.ClientChannel;
-import game.experimental.engine.Engine;
-import game.experimental.engine.Entity;
+import game.experimental.engine.*;
 import game.experimental.gl.*;
 import game.experimental.gl.renderers.CollectableRenderer;
 import game.experimental.gl.renderers.PlayerRenderer;
 import game.experimental.utils.Logger;
+import game.experimental.utils.Vector2F;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
@@ -98,6 +96,17 @@ public class AppExperimental {
             gameWindow.present();
             
             gameWindow.pollEvents();
+
+            int commandKey = PlayerCommand.RIGHT.set(0);   // needs to be generated using PlayerCommand set methods according to pressed keys
+            commandKey = PlayerCommand.UP.set(commandKey);   // needs to be generated using PlayerCommand set methods according to pressed keys
+
+
+            System.out.println("cscsdc " + commandKey);
+            myChannel.setUserCommandKey(commandKey);
+            myChannel.setCursorPosition(new Vector2F());
+
+            myChannel.sendControlData();
+
         }
 
 

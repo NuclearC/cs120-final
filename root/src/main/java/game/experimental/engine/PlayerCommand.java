@@ -4,10 +4,10 @@ import game.experimental.utils.Vector2F;
 
 public enum PlayerCommand {
     SHOOT(1 << 0, new Vector2F()),
-    UP(1 << 1, new Vector2F(5.f,0.f)),
-    DOWN(1 << 2, new Vector2F(-5.f, 0.f)),
-    RIGHT(1 << 3, new Vector2F(0.f,5.f)),
-    LEFT(1 << 4, new Vector2F(0.f,-5.f));
+    UP(1 << 1, new Vector2F(-1.f,0.f)),
+    DOWN(1 << 2, new Vector2F(1.f, 0.f)),
+    RIGHT(1 << 3, new Vector2F(0.f,1.f)),
+    LEFT(1 << 4, new Vector2F(0.f,-1.f));
 
     public final Vector2F deltaVector;
     public final int key;

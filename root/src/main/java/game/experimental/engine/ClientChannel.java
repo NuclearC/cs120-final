@@ -13,45 +13,30 @@ public interface ClientChannel {
     final float VIEWPORT_ZOOM_MAX = 1.5F; // todo: find proper values via trial-error method
 
     ArrayList<Entity> getViewBoxData();
+
     void setViewBoxData(ArrayList<Entity> visibleEntities);
 
     void setPlayerId(int playerId);
+
     int getPlayerId();
-    void setRoom(Room room);
-    Room getRoom();
+
+    void setRoomId(int roomId);
+
+    int getRoomId();
+
     int getId();
-    void unsetPlayer();
+
+    void setUserCommandKey(int commandKey);
+    void setCursorPosition(Vector2F cursorPosition);
+
+    void sendControlData();
 
     BoundingBox getViewport();
+
     float getViewportZoom();
 
     void updateViewport();
 
     void update();
-
-//    public final int clientId;
-//    public int channelId;
-//    private BoundingBox userViewBox;
-//    private PlayerEntity player;
-//
-//    /**
-//     * Representation for client in the Engine
-//     * @param clientId id of client
-//     */
-//    public ClientChannel(int clientId){
-//        this.clientId = clientId;
-//    }
-//
-//    public void setPlayer(PlayerEntity player){
-//        this.player = player;
-//    }
-//
-//    public void unsetPlayer(){
-//        this.player = null;
-//    }
-//
-//    public Vector2F getDrawableData(){
-//        return player.position;
-//    }
 
 }
