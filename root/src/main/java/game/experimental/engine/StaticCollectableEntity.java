@@ -7,6 +7,8 @@ import game.experimental.utils.*;
  */
 public class StaticCollectableEntity extends CollideableEntity {
 
+    private static final Vector2F COLLECTABLE_DEFAULT_SIZE = new Vector2F(15.f, 15.f);
+
     private final int value;
     private int life;                   // life will be changed in the process
     private final Type type;
@@ -20,7 +22,7 @@ public class StaticCollectableEntity extends CollideableEntity {
      */
     public StaticCollectableEntity(Vector2F position, int id, int ownerID, int type) {
         super(position, id, ownerID);
-        this.size = new Vector2F(30,30);
+        this.size = COLLECTABLE_DEFAULT_SIZE;
         this.type = getType(type);
         this.value = this.type.value;
         this.life = this.type.life;

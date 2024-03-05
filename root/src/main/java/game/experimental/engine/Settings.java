@@ -4,8 +4,8 @@ package game.experimental.engine;
  * Collects all the settings needed for the Room class. Is implemented by Room.
  */
 public interface Settings {
-    float MAP_HEIGHT = 300;
-    float MAP_WIDTH = 300;
+    float MAP_HEIGHT = 1000;
+    float MAP_WIDTH = 1000;
 
     float ENGINE_FRAMERATE = 20.F;    // to be changed to 20
     int MAX_NUMBER_OF_CLIENTS = 50;

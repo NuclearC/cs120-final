@@ -4,12 +4,10 @@ import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL46.*;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
 import org.lwjgl.glfw.GLFWVidMode;
-import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 
 import game.experimental.utils.Vector2F;
@@ -81,14 +79,15 @@ public class GameWindow {
 		return glfwWindowShouldClose(windowHandle);
 	}
 
-	public Vector2F getCursorPosition() {
-		// again this stupid C API
-		double[] xPos = {0.0}, yPos = { 0.0 };
-		glfwGetCursorPos(windowHandle, xPos, yPos);
-		return new Vector2F((float)xPos[0], (float)yPos[0]);
-	}
-
 	public void present() {
 		glfwSwapBuffers(windowHandle);
+	}
+
+	public void pollEvents() {
+		glfwPollEvents();
+	}
+
+	public long getNativeHandle() {
+		return windowHandle;
 	}
 }
