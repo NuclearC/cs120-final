@@ -37,6 +37,11 @@ public class LocalClientChannel implements ClientChannel{
     }
 
     @Override
+    public void update() {
+        localEngine.runEngineFrame();
+    }
+
+    @Override
     public float getViewportZoom() {
         return viewportZoom;
     }

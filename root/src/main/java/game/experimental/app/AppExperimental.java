@@ -67,7 +67,6 @@ public class AppExperimental {
         input.subscribeWindow(gameWindow);
 
         ClientChannel myChannel = myClient.getChannelInstance();
-        Engine engine = Engine.getInstance();
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
         while ( !gameWindow.shouldClose() ) {
@@ -76,7 +75,8 @@ public class AppExperimental {
 
             Gizmos.beginDrawing(c.getProjectionView());
 
-            engine.runEngineFrame();
+            myChannel.update();
+
             c.setViewport(myChannel.getViewport().getCenter(), myChannel.getViewportZoom());
 
             Gizmos.drawBoundingBox(myChannel.getViewport(), new float[]{1.f, 0.f, 0.f, 1.f});

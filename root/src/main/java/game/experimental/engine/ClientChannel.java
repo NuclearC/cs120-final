@@ -27,6 +27,8 @@ public interface ClientChannel {
 
     void updateViewport();
 
+    void update();
+
 //    public final int clientId;
 //    public int channelId;
 //    private BoundingBox userViewBox;

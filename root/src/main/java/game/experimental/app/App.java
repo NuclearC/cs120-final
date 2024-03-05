@@ -87,7 +87,7 @@ public class App {
 		while ( !gameWindow.shouldClose() ) {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 			glClearColor(229.f / 255.f, 207.f / 255.f, 163.f / 255.f, 1.0f);
-
+			
 			PlayerRenderer playerRenderer = PlayerRenderer.getSingleton();
 			System.out.println("ygvvv");
 			playerRenderer.draw(c, 0.f, new Vector2F(100, 100), new Vector2F(100, 100));
