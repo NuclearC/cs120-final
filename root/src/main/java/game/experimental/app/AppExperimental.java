@@ -26,7 +26,6 @@ public class AppExperimental {
 
     public void run() {
         System.out.println("Hello LWJGL " + Version.getVersion() + "!");
-        System.out.println("sdcsdcsdcsdcsd");
 
         // bind GLFW error output to cerr
         GLFWErrorCallback.createPrint(System.err).set();
@@ -83,12 +82,11 @@ public class AppExperimental {
 
         Camera c = new Camera(1280, 720);
 
-        Client firstClient = new Client(1);
+        Client myClient = new Client(1);
 
-        if (offlineGame()){
-            firstClient.makeLocalChannel();
-        }
-        ClientChannel myChannel = firstClient.getChannelInstance();
+        myClient.setConnectionMode(Client.ConnectionMode.REMOTE);  // this is where the rest of the structure is being decided
+
+        ClientChannel myChannel = myClient.getChannelInstance();
 
 
 
@@ -104,7 +102,7 @@ public class AppExperimental {
             ArrayList<Entity> viewBoxData = myChannel.getViewBoxData();
 
             for(Entity ent: viewBoxData) {
-                playerRenderer.draw(c, 0.f, ent.getPosition(), ent.getSize());
+                playerRenderer.draw(c, ent.getAngle(), ent.getPosition(), ent.getSize());
             }
 
             Gizmos.beginDrawing(projection);
@@ -123,9 +121,6 @@ public class AppExperimental {
         Gizmos.destroy();
     }
 
-    public static boolean offlineGame(){
-        return true;
-    }
 
     public static void main(String[] args) {
         new AppExperimental().run();
