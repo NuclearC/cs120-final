@@ -13,6 +13,9 @@ public class LocalClientChannel implements ClientChannel{
     private int playerId;
     private BoundingBox viewport;
 
+    private int commandKey;
+    private Vector2F cursorPosition;
+
     private ArrayList<Entity> visibleEntites;
 
     // center of the camera for this specific client (calculated from PlayerEntities)
@@ -39,6 +42,7 @@ public class LocalClientChannel implements ClientChannel{
 
     @Override
     public void update() {
+//        sendControlData();
         localEngine.runEngineFrame();
     }
 
@@ -81,10 +85,23 @@ public class LocalClientChannel implements ClientChannel{
     }
 
     @Override
-    public void setUserCommand(PlayerCommand command) {
+    public void setUserCommandKey(int commandKey) {
+        this.commandKey = commandKey;
     }
 
+    @Override
+    public void setCursorPosition(Vector2F cursorPosition){
+        this.cursorPosition = cursorPosition;
+    }
 
+    public void sendControlData(){
+        PlayerEntity player = localEngine.getWorld(worldId).getRoom(roomId).getPlayer(this.playerId);
+        player.setUserCommandKey(this.commandKey);
+        player.setAngle(processCursorPosition());
+    }
+    private float processCursorPosition(){
+        return 0f;
+    }
     @Override 
     public BoundingBox getViewport() {
         return viewport;

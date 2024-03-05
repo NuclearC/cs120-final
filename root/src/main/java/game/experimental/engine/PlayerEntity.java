@@ -11,7 +11,7 @@ public class PlayerEntity extends CollideableEntity implements Movable{
     private Vector2F velocity;
     private Vector2F deltaVelocity;
     private Vector2F impulse;
-    private int userInputKey;
+    private int userCommandKey;
     private float userInputAngle;
 
     private static final float PLAYER_DEFAULT_SIZE = 50.f;           // TODO  not the best place to keep it
@@ -26,8 +26,8 @@ public class PlayerEntity extends CollideableEntity implements Movable{
         this.deltaVelocity = new Vector2F();
     }
 
-    public void setUserInputKey(int inputKey){
-        this.userInputKey = inputKey;
+    public void setUserCommandKey(int commandKey){
+        this.userCommandKey = commandKey;
     }
     public void setUserInputAngle(float angle){
         this.userInputAngle = angle;
@@ -70,7 +70,7 @@ public class PlayerEntity extends CollideableEntity implements Movable{
     @Override
     public void move() {
         this.position = this.position.add(this.velocity);
-        this.position = this.position.add(new Vector2F(1,1));
+//        this.position = this.position.add(new Vector2F(1,1));
         this.position = this.position.add(this.impulse);
         this.impulse = new Vector2F();
     }
@@ -81,14 +81,15 @@ public class PlayerEntity extends CollideableEntity implements Movable{
     }
 
     private void processActions() {
-        if (PlayerCommand.SHOOT.isSet(this.userInputKey)) {
-            shoot();
-            for(PlayerCommand command: PlayerCommand.values()){
-                if(command.isSet(this.userInputKey)){
-                    deltaVelocity = deltaVelocity.add(command.deltaVector);
-                }
+//        if (PlayerCommand.SHOOT.isSet(this.userCommandKey))
+//            shoot();
+
+        for(PlayerCommand command: PlayerCommand.values()){
+            if(command.isSet(this.userCommandKey)){
+                deltaVelocity = deltaVelocity.add(command.deltaVector);
             }
         }
+
     }
     private void processVelocity() {
         this.setVelocity(velocity.multiply(0.8f));                          // multiple cloning is performed

@@ -2,6 +2,7 @@ package game.experimental.app.input;
 
 import static org.lwjgl.glfw.GLFW.*;
 
+import java.sql.SQLOutput;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
@@ -64,8 +65,12 @@ public class InputSystem {
     }
 
     private void onKeyPress(int key) {
-        RegisteredInput input = keyToInputMap.get(key);
+        RegisteredInput input = keyToInputMap.get((Integer)key);
+        System.out.println("The Problem is here");
+        // input is null
+        // next method throws exception
         inputToStateMap.put(input, true);
+        System.out.println("On key started");
     }
 
     private void onKeyRelease(int key) {
@@ -93,8 +98,12 @@ public class InputSystem {
             @Override
             public void invoke(long window, int key, int scancode, int action, int mods) {
                 if (action == GLFW_PRESS)
+                {
+                    System.out.println(key);
                     onKeyPress(key);
-                else if (action == GLFW_PRESS)
+                    System.out.println("scsdcsdcscscsdc");
+                }
+                else if (action == GLFW_RELEASE)
                     onKeyRelease(key);
             }
          });

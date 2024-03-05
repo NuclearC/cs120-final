@@ -26,7 +26,10 @@ public interface ClientChannel {
 
     int getId();
 
-    void setUserCommand(PlayerCommand command);
+    void setUserCommandKey(int commandKey);
+    void setCursorPosition(Vector2F cursorPosition);
+
+    void sendControlData();
 
     BoundingBox getViewport();
 
