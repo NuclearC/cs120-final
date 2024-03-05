@@ -28,9 +28,17 @@ public class StaticCollectableEntity extends CollideableEntity {
         this.life = this.type.life;
     }
 
+    public StaticCollectableEntity() {
+        this.type = getType(0);
+        this.value = this.type.value;
+        this.life = this.type.life;
+    }
+
     @Override
     public void simulate() {
-
+        if(this.life<0){
+            //erase it from the screen
+        }
     }
 
     /**
@@ -89,6 +97,26 @@ public class StaticCollectableEntity extends CollideableEntity {
         Type(int value, int life){
             this.value = value;
             this.life = life;
+        }
+        Type(){
+            value = 0;
+            life = 0;
+        }
+    }
+    public void onCollision(CollideableEntity collided){
+        if(collided.getClass() == new PlayerEntity().getClass()){
+            //life should get decreased here
+            //should be implemented on how to get removed TODO
+            System.out.println("collided with player");
+            //it should ignore this case
+        }
+        else if(collided.getClass() == new MovingCollectableEntity().getClass()){
+            System.out.println("collided with moving collectable");
+            ((MovingCollectableEntity) collided).setImpulse(new Vector2F());//TODO
+        }
+        else if(collided.getClass() == new StaticCollectableEntity().getClass()){
+            System.out.println("collided with static collectable");
+
         }
     }
 }

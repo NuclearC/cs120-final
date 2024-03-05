@@ -16,8 +16,12 @@ abstract class CollideableEntity extends Entity {
         super(position, id, ownerID);
     }
 
+    public CollideableEntity() {
 
-    public void onCollisison(CollideableEntity entity){
+    }
+
+
+    public void onCollision(CollideableEntity entity){
     }
 
 }

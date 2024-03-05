@@ -24,8 +24,11 @@ public class PlayerEntity extends CollideableEntity implements Movable{
         this.velocity = new Vector2F();
         this.impulse = new Vector2F();
         this.deltaVelocity = new Vector2F();
-    }
 
+    }
+    public PlayerEntity(){
+        super();
+    }
     public void setUserInputKey(int inputKey){
         this.userInputKey = inputKey;
     }
@@ -98,6 +101,20 @@ public class PlayerEntity extends CollideableEntity implements Movable{
     private void shoot(){
         System.out.println("Shot");
     }
+    @Override
+    public void onCollision(CollideableEntity collided){
+        if(collided.getClass() == new PlayerEntity().getClass()){
+            System.out.println("collided with player");
+        }
+        else if(collided.getClass() == new MovingCollectableEntity().getClass()){
+            collided.onCollision(this);
+            System.out.println("collided with moving collectable");
+        }
+        else if(collided.getClass() == new StaticCollectableEntity().getClass()){
+            collided.onCollision(this);
+            System.out.println("collided with static collectable");
 
+        }
+    }
 
 }

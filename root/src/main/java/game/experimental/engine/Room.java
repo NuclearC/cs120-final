@@ -16,7 +16,7 @@ public class Room implements Settings{
 
     private final PlayerEntity[] playerEntities;
     private final StaticCollectableEntity[] staticCollectables;
-    private final StaticCollectableEntity[] movingCollectables;
+    private final MovingCollectableEntity[] movingCollectables;
 
     /**
      * Creates a new instance of the Room.
@@ -27,7 +27,7 @@ public class Room implements Settings{
 
         playerEntities = new PlayerEntity[this.level.MAX_NUMBER_OF_PLAYERS];
         staticCollectables = new StaticCollectableEntity[this.level.MAX_NUMBER_OF_STATIC_COLLECTABLES];
-        movingCollectables = new StaticCollectableEntity[this.level.MAX_NUMBER_OF_MOVING_COLLECTABLES];
+        movingCollectables = new MovingCollectableEntity[this.level.MAX_NUMBER_OF_MOVING_COLLECTABLES];
 
         createQuadTree();
         fillMapWithCollectable(); // TODO
@@ -40,18 +40,55 @@ public class Room implements Settings{
     public void simulate(){
         Gizmos.drawBoundingBox(quadTree.getRange(), new float[]{1.f, 0.f, 1.f, 1.f});
         // checkCollide(); TODO;
-
+        for (int i = 0; i < level.MAX_NUMBER_OF_PLAYERS; i++){
+            if (playerEntities[i] != null) {
+                ArrayList<Entity> collidedEntities = new ArrayList<>();
+                quadTree.query(playerEntities[i].getBoundingBox(), collidedEntities);
+                for(Entity collided : collidedEntities){
+                    playerEntities[i].onCollision((CollideableEntity) collided);
+                }
+            }
+        }
+        for (int i = 0; i < level.MAX_NUMBER_OF_MOVING_COLLECTABLES; i++){
+            if (movingCollectables[i] != null) {
+                ArrayList<Entity> collidedEntities = new ArrayList<>();
+                quadTree.query(playerEntities[i].getBoundingBox(), collidedEntities);
+                for(Entity collided : collidedEntities){
+                    movingCollectables[i].onCollision((CollideableEntity) collided);
+                }
+            }
+        }
         System.out.println("\tRoom simulated "+ this.getId());
 
         for (int i = 0; i < level.MAX_NUMBER_OF_PLAYERS; i++){
             if (playerEntities[i] != null) {
                 PlayerEntity player = playerEntities[i];
                 quadTree.remove(player, player.getBoundingBox());
-                playerEntities[i].simulate();
+                player.simulate();
                 quadTree.insert(player, player.getBoundingBox());
             }
         }
 
+        for (int i = 0; i < level.MAX_NUMBER_OF_MOVING_COLLECTABLES; i++){
+            if (movingCollectables[i] != null) {
+                MovingCollectableEntity collectable = movingCollectables[i];
+                quadTree.remove(collectable, collectable.getBoundingBox());
+                collectable.simulate();
+                if(collectable.getLife() > 0)
+                    quadTree.insert(collectable, collectable.getBoundingBox());
+                else collectable = null;
+            }
+        }
+        for (int i = 0; i < level.MAX_NUMBER_OF_STATIC_COLLECTABLES; i++){
+            if (staticCollectables[i] != null) {
+                StaticCollectableEntity collectable = staticCollectables[i];
+                quadTree.remove(collectable, collectable.getBoundingBox());
+                collectable.simulate();
+                if(collectable.getLife() > 0)
+                    quadTree.insert(collectable, collectable.getBoundingBox());
+                else collectable = null;
+            }
+        }
         Engine engine = Engine.getInstance();
         // generates DrawData for each player ViewBox
         //
@@ -142,9 +179,9 @@ public class Room implements Settings{
      * @param type the type of the collectable
      * @return the created collectable
      */
-    private StaticCollectableEntity createMovingCollectable(int id, int type){
+    private MovingCollectableEntity createMovingCollectable(int id, int type){
         Vector2F position = Vector2F.randomVector(0,MAP_HEIGHT,0, MAP_HEIGHT); // TODO
-        return new StaticCollectableEntity(position,id,-1,1);                       //TODO
+        return new MovingCollectableEntity(position,id,-1,1);                       //TODO
     }
 
     /**
@@ -153,7 +190,7 @@ public class Room implements Settings{
     public void addMovingCollectable(){
         for(int i = 0; i < movingCollectables.length; i++){
             if(movingCollectables[i] == null){
-                StaticCollectableEntity collectables = createMovingCollectable(i, 0);//change the type TODO
+                MovingCollectableEntity collectables = createMovingCollectable(i, 0);//change the type TODO
                 quadTree.insert(collectables, collectables.getBoundingBox());
                 movingCollectables[i] = collectables;
                 break;
@@ -164,7 +201,7 @@ public class Room implements Settings{
      * adds moving collectable to the room in the given index
      */
     public void addMovingCollectable(int ind){
-        StaticCollectableEntity collectables = createMovingCollectable(ind, 0);//change the type TODO
+        MovingCollectableEntity collectables = createMovingCollectable(ind, 0);//change the type TODO
         quadTree.insert(collectables, collectables.getBoundingBox());
         movingCollectables[ind] = collectables;
     }

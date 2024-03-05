@@ -13,6 +13,10 @@ public class MovingCollectableEntity extends StaticCollectableEntity implements 
         super(position, id, ownerID, type);
     }
 
+    public MovingCollectableEntity() {
+        super();
+    }
+
     @Override
     public void setVelocity(Vector2F velocity) {
     }
@@ -34,5 +38,28 @@ public class MovingCollectableEntity extends StaticCollectableEntity implements 
     @Override
     public boolean checkBoundaries() {
         return false;
+    }
+
+    @Override
+    public void simulate(){
+        if(this.getLife() < 0){
+            //it should be erased
+        }
+    }
+    public void onCollision(CollideableEntity collided){
+        if(collided.getClass() == new PlayerEntity().getClass()){
+            System.out.println("collided with player");
+            //it should ignore it, cause it will be handeled by the player
+        }
+        else if(collided.getClass() == new MovingCollectableEntity().getClass()){
+            System.out.println("collided with moving collectable");
+            setImpulse(new Vector2F());//TODO
+            ((MovingCollectableEntity) collided).setImpulse(new Vector2F());//TODO
+        }
+        else if(collided.getClass() == new StaticCollectableEntity().getClass()){
+            System.out.println("collided with static collectable");
+            setImpulse(new Vector2F());//TODO
+
+        }
     }
 }
