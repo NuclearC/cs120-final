@@ -154,7 +154,14 @@ public class Room implements Settings{
             }
         }
     }
-
+    /**
+     * adds moving collectable to the room in the given index
+     */
+    public void addMovingCollectable(int ind){
+        StaticCollectableEntity collectables = createMovingCollectable(ind, 0);//change the type TODO
+        quadTree.insert(collectables, collectables.getBoundingBox());
+        movingCollectables[ind] = collectables;
+    }
     /**
      * removed  the moving collectable form the room
      * @param id the id of the moving collectable that needs to be removed
@@ -203,7 +210,14 @@ public class Room implements Settings{
             }
         }
     }
-
+    /**
+     * adds static collectable to the room in the give index
+     */
+    public void addStaticCollectable(int ind){
+        StaticCollectableEntity collectables = createStaticCollectable(ind, 0);//change the type TODO
+        quadTree.insert(collectables, collectables.getBoundingBox());
+        staticCollectables[ind] = collectables;
+    }
 
 
     public PlayerEntity getPlayer(int id) {
@@ -215,9 +229,9 @@ public class Room implements Settings{
      */
     public void fillMapWithCollectable(){
         for(int i = 0; i < this.level.MAX_NUMBER_OF_MOVING_COLLECTABLES; i++)
-            addMovingCollectable();
+            addMovingCollectable(i);
         for(int i = 0; i < this.level.MAX_NUMBER_OF_STATIC_COLLECTABLES; i++)
-            addStaticCollectable();
+            addStaticCollectable(i);
     }
 
 

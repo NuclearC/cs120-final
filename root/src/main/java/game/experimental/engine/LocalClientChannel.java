@@ -12,7 +12,7 @@ public class LocalClientChannel implements ClientChannel{
     private int playerId;
     private BoundingBox viewport;
 
-    private ArrayList<Entity> visibleEntites;
+    private ArrayList<Entity> visibleEntities;
 
     // center of the camera for this specific client (calculated from PlayerEntities)
     public Vector2F viewportCenter;
@@ -49,14 +49,14 @@ public class LocalClientChannel implements ClientChannel{
 
     @Override
     public void setViewBoxData(ArrayList<Entity> visibleEntities) {
-        this.visibleEntites = visibleEntities;
+        this.visibleEntities = visibleEntities;
     }
 
     /**
      * Returns the entities currently visible on Client's screen.
      */
     public ArrayList<Entity> getViewBoxData() {
-        return visibleEntites;
+        return visibleEntities;
     }
 
     @Override
