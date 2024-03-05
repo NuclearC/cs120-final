@@ -1,9 +1,14 @@
-package game.experimental.gl;
+package game.experimental.gl.renderers;
 
 import java.io.IOException;
 
 import static org.lwjgl.opengl.GL46.*;
 
+import game.experimental.gl.Camera;
+import game.experimental.gl.Program;
+import game.experimental.gl.Shader;
+import game.experimental.gl.Shape;
+import game.experimental.gl.Texture;
 import game.experimental.gl.Program.ProgramException;
 import game.experimental.gl.Shader.ShaderException;
 import game.experimental.gl.Shader.ShaderType;
@@ -12,14 +17,13 @@ import game.experimental.utils.Matrix4x4F;
 import game.experimental.utils.Vector2F;
 
 /**
- * Represents a flyweight for rendering PlayerEntities. 
+ * Represents a flyweight for rendering CollectableEntities. 
  */
-public final class PlayerRenderer implements EntityRenderer {
+public final class CollectableRenderer implements EntityRenderer {
 
-    private static PlayerRenderer INSTANCE;
+    private static CollectableRenderer INSTANCE;
 
     private Texture texture;
-    private Texture barrelTexture;
     private Shape shape;
     private Program program;
 
@@ -28,10 +32,9 @@ public final class PlayerRenderer implements EntityRenderer {
      */
     @Override
     public void load() {
-        Logger.log("Loading data for PlayerRenderer...");
+        Logger.log("Loading data for CollectableRenderer...");
         try {
-            texture = new Texture("./assets/textures/texture_pawn.psd");
-            barrelTexture = new Texture("./assets/textures/texture_steel.psd");
+            texture = new Texture("./assets/textures/texture_collect1.psd");
         } catch (Exception e) {
             Logger.error("Failed to load texture; " + e.getMessage());
         }
@@ -69,18 +72,8 @@ public final class PlayerRenderer implements EntityRenderer {
 
         int pvmLocation = program.getUniform("pvm");
 
-        Vector2F barrelSize = new Vector2F(size.getX() * 0.5f, size.getY() * 0.3f);
-        Vector2F barrelPosition = new Vector2F(size.getX() * 0.7f, size.getY() * 0.5f - barrelSize.getY() * 0.5f);
-
-        Matrix4x4F model = Matrix4x4F.transformTranslate(position.add(barrelPosition)).multiply(Matrix4x4F.transformScale(barrelSize));
+        Matrix4x4F model = Matrix4x4F.transformTranslate(position).multiply(Matrix4x4F.transformRotate(rotation).multiply(Matrix4x4F.transformScale(size)));
         Matrix4x4F pvm = camera.getProjectionView().multiply(model);
-        
-        glUniformMatrix4fv(pvmLocation, false, pvm.getRaw());
-        barrelTexture.bind();
-        shape.draw();
-
-        model = Matrix4x4F.transformTranslate(position).multiply(Matrix4x4F.transformScale(size));
-        pvm = camera.getProjectionView().multiply(model);
         glUniformMatrix4fv(pvmLocation, false, pvm.getRaw());
         texture.bind();
         shape.draw();
@@ -89,17 +82,17 @@ public final class PlayerRenderer implements EntityRenderer {
     /**
      * Only use singleton. 
      */
-    private PlayerRenderer() {
+    private CollectableRenderer() {
         this.load();
     }
 
     /**
-     * Acquire the singleton instance for PlayerRenderer.
+     * Acquire the singleton instance for CollectableRenderer.
      * @return the instance
      */
-    public static PlayerRenderer getSingleton() {
+    public static CollectableRenderer getSingleton() {
         if (INSTANCE == null)
-            INSTANCE = new PlayerRenderer();
+            INSTANCE = new CollectableRenderer();
         
         return INSTANCE;
     }

@@ -8,6 +8,7 @@ import org.lwjgl.opengl.GL;
 import game.experimental.engine.QuadTree;
 import game.experimental.gl.*;
 import game.experimental.gl.Shader.ShaderException;
+import game.experimental.gl.renderers.PlayerRenderer;
 import game.experimental.gl.Program.ProgramException;
 import game.experimental.utils.BoundingBox;
 import game.experimental.utils.Logger;

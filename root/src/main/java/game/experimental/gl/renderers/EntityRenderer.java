@@ -1,5 +1,6 @@
-package game.experimental.gl;
+package game.experimental.gl.renderers;
 
+import game.experimental.gl.Camera;
 import game.experimental.utils.Vector2F;
 
 /**

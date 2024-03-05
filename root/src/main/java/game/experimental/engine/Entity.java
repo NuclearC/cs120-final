@@ -7,7 +7,7 @@ import game.experimental.utils.Vector2F;
  * Represents the Base class object for all other objects in the project.
  * Implements the main methods and instance variables that are common in all objects.
  */
-public abstract class  Entity {
+public abstract class Entity {
     protected Vector2F size;
     protected Vector2F position;
     protected int id;

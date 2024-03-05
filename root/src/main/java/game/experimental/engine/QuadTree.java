@@ -102,7 +102,7 @@ public class QuadTree<T> {
 
             objects.add(new Node(object, boundingBox));
             totalObjectCount++;
-            System.out.println("inserted object " + boundingBox.toString() + " into " + range.toString() + " " + objects.size() + " " + totalObjectCount);
+            // System.out.println("inserted object " + boundingBox.toString() + " into " + range.toString() + " " + objects.size() + " " + totalObjectCount);
             return true;
         }
 
@@ -129,7 +129,7 @@ public class QuadTree<T> {
     private void split() {
         if (hasChildren())
             return;
-        System.out.println("---------split");
+        // System.out.println("---------split");
         children = new QuadTree[4];
         final Vector2F newSize = range.getSize().multiply(0.5f);
         children[0] = new QuadTree<T>(this, new BoundingBox(range.getPosition(), newSize));
@@ -220,11 +220,11 @@ public class QuadTree<T> {
 
     public boolean remove(T object, BoundingBox boundingBox) {
         if (this.range.contains(boundingBox)) {
-            System.out.println("remove on " + this.range.toString() + " " + boundingBox.toString() + " " + object.toString());
+            // System.out.println("remove on " + this.range.toString() + " " + boundingBox.toString() + " " + object.toString());
             for (Node node : objects) {
                 System.out.println(node.getObject() + " " + node.getBoundingBox().toString());
                 if (node.getObject().equals(object)) {
-                    System.out.println("removed");
+                    // System.out.println("removed");
                     if (!objects.remove(node)){
                         System.out.println("tf is this");
                     }
