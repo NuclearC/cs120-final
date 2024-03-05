@@ -52,7 +52,8 @@ public class Engine {
         try {
             System.out.println("ClientChannel connected... ");
             worlds.get(worldID).addPlayer(newChannel);
-            newChannel.setWorldId(worldID);
+            // TODO: do proper way
+            clientChannels[newChannel.getId()] = newChannel;
         }
         catch (ArrayIndexOutOfBoundsException e){
             System.out.println("ClientChannel connection failed !!!");
@@ -64,19 +65,19 @@ public class Engine {
         return 0;
     }
 
-    private int getNextClientID() throws ArrayIndexOutOfBoundsException{
-        for (int i = 0; i < clientChannels.length; i++){
-            if (clientChannels[i] == null){
-                return i;
-            }
-        }
-        //we need to change the type of exception
-        throw  new ArrayIndexOutOfBoundsException("Number of clients exceeded");     // TODO
+    public World getWorld(int id) {
+        return worlds.get(id);
     }
 
-    public ArrayList<Entity> getViewBoxData(ClientChannel channel){
-        return worlds.get(channel.getWorldId()).getViewBoxData(channel.getRoomId(), channel.getPlayerId());
-    }
+    /**
+     * Retrieve the ClientChannel with the specified ID
+     * @param id the ID of clientChannel
+     * @return the client channel with set ID or null if non existant
+     */
+    public ClientChannel getClientChannel(int id) {
+        if (id < 0 || id > clientChannels.length) return null;
 
+        return clientChannels[id];
+    }
 
 }

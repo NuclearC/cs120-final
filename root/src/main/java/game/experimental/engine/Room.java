@@ -17,8 +17,6 @@ public class Room implements Settings{
     private final StaticCollectableEntity[] staticCollectables;
     private final StaticCollectableEntity[] movingCollectables;
 
-    private final ArrayList<ArrayList<Entity>> viewBoxDataStorage;     // TODO
-
     /**
      * Creates a new instance of the Room.
      */
@@ -29,7 +27,6 @@ public class Room implements Settings{
         playerEntities = new PlayerEntity[this.level.MAX_NUMBER_OF_PLAYERS];
         staticCollectables = new StaticCollectableEntity[this.level.MAX_NUMBER_OF_STATIC_COLLECTABLES];
         movingCollectables = new StaticCollectableEntity[this.level.MAX_NUMBER_OF_MOVING_COLLECTABLES];
-        viewBoxDataStorage = new ArrayList<>(this.level.MAX_NUMBER_OF_PLAYERS);      //   TODO
 
         createQuadTree();
         fillMapWithCollectable(); // TODO
@@ -48,11 +45,23 @@ public class Room implements Settings{
             if (playerEntities[i] != null)
                 playerEntities[i].simulate();
         }
+
+        Engine engine = Engine.getInstance();
         // generates DrawData for each player ViewBox
         //
         for (int i = 0; i < level.MAX_NUMBER_OF_PLAYERS; i++){
-            if (playerEntities[i] != null)
-                viewBoxDataStorage.add(i, generateViewBoxData(i));
+            if (playerEntities[i] != null) {
+                PlayerEntity player = playerEntities[i];
+
+                ClientChannel channel = engine.getClientChannel(player.getOwnerID());
+                if (channel == null) continue;
+
+                channel.updateViewport();
+
+                ArrayList<Entity> visibleEntities = retrieveEntitiesInRange(channel.getViewport());
+
+                channel.setViewBoxData(visibleEntities);
+            }
         }
 
     }
@@ -62,19 +71,12 @@ public class Room implements Settings{
      * Now it returns only the player in an array. But quadtree queries should be done and an array of entities should be returned.
      * @param playerId the id of the player for which data is being generated.
      */
-    public ArrayList<Entity> generateViewBoxData(int playerId){
+    public ArrayList<Entity> retrieveEntitiesInRange(BoundingBox range){
         ArrayList<Entity> foundObjects = new ArrayList<>();
-        quadTree.query(new BoundingBox(new Vector2F(-640.f, -360.f), new Vector2F(1280, 720)), foundObjects);
-        return foundObjects;
-    }
+        
+        quadTree.query(range, foundObjects);
 
-    /**
-     * Returns the ViewBoxData for that particular player
-     * @param playerId player id
-     * @return ArrayList of entities in the ViewBox of the player
-     */
-    public ArrayList<Entity> getViewBoxData(int playerId){
-        return viewBoxDataStorage.get(playerId);
+        return foundObjects;
     }
 
     /**
@@ -202,6 +204,11 @@ public class Room implements Settings{
         }
     }
 
+
+
+    public PlayerEntity getPlayer(int id) {
+        return playerEntities[id];
+    }
 
     /**
      * Fills the game collectable entities.Changes the

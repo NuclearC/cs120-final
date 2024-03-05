@@ -82,6 +82,7 @@ public class GameWindow {
 	}
 
 	public Vector2F getCursorPosition() {
+		// again this stupid C API
 		double[] xPos = {0.0}, yPos = { 0.0 };
 		glfwGetCursorPos(windowHandle, xPos, yPos);
 		return new Vector2F((float)xPos[0], (float)yPos[0]);

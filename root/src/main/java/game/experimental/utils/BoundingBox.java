@@ -96,8 +96,7 @@ public class BoundingBox implements Cloneable {
      * @return the vector indicating the center of the box
      */
     public Vector2F getCenter() {
-        Vector2F vector = new Vector2F((position.getX() + size.getX()) / 2, (position.getY() + size.getY()) / 2);
-        return vector;
+        return position.add(size.multiply(0.5f));
     }
 
     /**

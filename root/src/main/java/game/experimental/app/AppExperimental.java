@@ -2,7 +2,9 @@ package game.experimental.app;
 
 import game.experimental.engine.Client;
 import game.experimental.engine.ClientChannel;
+import game.experimental.engine.Engine;
 import game.experimental.engine.Entity;
+import game.experimental.engine.LocalClientChannel;
 import game.experimental.gl.*;
 import game.experimental.utils.BoundingBox;
 import game.experimental.utils.Logger;
@@ -15,7 +17,6 @@ import org.lwjgl.opengl.GL;
 import java.util.ArrayList;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.glfw.GLFW.glfwPollEvents;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.GL_MULTISAMPLE;
 
@@ -87,25 +88,29 @@ public class AppExperimental {
         myClient.setConnectionMode(Client.ConnectionMode.LOCAL);  // this is where the rest of the structure is being decided
 
         ClientChannel myChannel = myClient.getChannelInstance();
-
-
-
-
+        Engine engine = Engine.getInstance();
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
         while ( !gameWindow.shouldClose() ) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
             glClearColor(229.f / 255.f, 207.f / 255.f, 163.f / 255.f, 1.0f);
 
+            Gizmos.beginDrawing(c.getProjectionView());
+
+            engine.runEngineFrame();
+            c.setViewport(myChannel.getViewport().getCenter(), myChannel.getViewportZoom());
+
+            Gizmos.drawBoundingBox(myChannel.getViewport(), new float[]{1.f, 0.f, 0.f, 1.f});
+
             PlayerRenderer playerRenderer = PlayerRenderer.getSingleton();
 
             ArrayList<Entity> viewBoxData = myChannel.getViewBoxData();
 
-            for(Entity ent: viewBoxData) {
-                playerRenderer.draw(c, ent.getAngle(), ent.getPosition(), ent.getSize());
-            }
+            if (viewBoxData != null)
+                for(Entity ent : viewBoxData) {
+                    playerRenderer.draw(c, ent.getAngle(), ent.getPosition(), ent.getSize());
+                }
 
-            Gizmos.beginDrawing(projection);
 
             gameWindow.present();
             // Poll for window events. The key callback above will only be

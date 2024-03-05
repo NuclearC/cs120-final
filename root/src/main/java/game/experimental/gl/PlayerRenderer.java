@@ -65,13 +65,12 @@ public final class PlayerRenderer implements EntityRenderer {
      */
     @Override
     public void draw(Camera camera, float rotation, Vector2F position, Vector2F size) {
-
         program.use();
 
         int pvmLocation = program.getUniform("pvm");
 
         Vector2F barrelSize = new Vector2F(size.getX() * 0.5f, size.getY() * 0.3f);
-        Vector2F barrelPosition = new Vector2F(size.getX() * 0.5f + 20.f, size.getY() * 0.5f - barrelSize.getY() * 0.5f);
+        Vector2F barrelPosition = new Vector2F(size.getX() * 0.7f, size.getY() * 0.5f - barrelSize.getY() * 0.5f);
 
         Matrix4x4F model = Matrix4x4F.transformTranslate(position.add(barrelPosition)).multiply(Matrix4x4F.transformScale(barrelSize));
         Matrix4x4F pvm = camera.getProjectionView().multiply(model);
@@ -85,8 +84,6 @@ public final class PlayerRenderer implements EntityRenderer {
         glUniformMatrix4fv(pvmLocation, false, pvm.getRaw());
         texture.bind();
         shape.draw();
-
-
     }
 
     /**

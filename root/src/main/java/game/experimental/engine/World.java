@@ -46,13 +46,10 @@ public class World {
      */
     public void addPlayer(ClientChannel owner){
         int roomId = decideRoom(owner);
-        PlayerEntity addedPlayerInstance = rooms.get(roomId).addPlayer(owner.getId());
-        owner.setRoomId(roomId);
+        Room decidedRoom = rooms.get(roomId);
+        PlayerEntity addedPlayerInstance = decidedRoom.addPlayer(owner.getId());
+        owner.setRoom(decidedRoom);
         owner.setPlayerId(addedPlayerInstance.id);
-    }
-
-    public ArrayList<Entity> getViewBoxData(int roomId, int playerID){
-        return rooms.get(roomId).getViewBoxData(playerID);
     }
     /**
      * NOT IMPLEMENTED

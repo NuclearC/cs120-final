@@ -18,8 +18,8 @@ public class Camera {
         return projection.multiply(view);
     }
 
-    public void setPosition(Vector2F position) {
-        this.view = Matrix4x4F.transformTranslate(position);
+    public void setViewport(Vector2F position, float scale) {
+        this.view = Matrix4x4F.transformTranslate(position.multiply(-1.0f));
     }
 
 }

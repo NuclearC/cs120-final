@@ -45,7 +45,7 @@ public class Client {
                 System.out.println("Remote Connection Not Implemented");
                 System.exit(10);
             }
-            else if(connectionMode == ConnectionMode.LOCALE){
+            else if(connectionMode == ConnectionMode.LOCAL){
                 makeLocalChannel();
             }
         }
@@ -54,7 +54,7 @@ public class Client {
     }
 
     public enum ConnectionMode{
-        LOCALE,
+        LOCAL,
         REMOTE;
     }
 }

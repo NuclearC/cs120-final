@@ -44,6 +44,14 @@ public abstract class  Entity {
         return size.clone();
     }
 
+    /**
+     * Retrieve the position of the center for this entity. 
+     * @return the Vector2F of center
+     */
+    public Vector2F getCenter() {
+        return position.add(size.multiply(0.5f));
+    }
+
 
     /**
      * Set the player's position
