@@ -84,7 +84,7 @@ public class AppExperimental {
 
         Client myClient = new Client(1);
 
-        myClient.setConnectionMode(Client.ConnectionMode.REMOTE);  // this is where the rest of the structure is being decided
+        myClient.setConnectionMode(Client.ConnectionMode.LOCAL);  // this is where the rest of the structure is being decided
 
         ClientChannel myChannel = myClient.getChannelInstance();
 
