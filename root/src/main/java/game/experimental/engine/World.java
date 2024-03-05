@@ -48,7 +48,7 @@ public class World {
         int roomId = decideRoom(owner);
         Room decidedRoom = rooms.get(roomId);
         PlayerEntity addedPlayerInstance = decidedRoom.addPlayer(owner.getId());
-        owner.setRoom(decidedRoom);
+        owner.setRoomId(roomId);
         owner.setPlayerId(addedPlayerInstance.id);
     }
     /**
@@ -76,5 +76,9 @@ public class World {
      */
     private int getNewRoomID(){
         return rooms.size();
+    }
+
+    public Room getRoom(int roomId) {
+        return rooms.get(roomId);
     }
 }

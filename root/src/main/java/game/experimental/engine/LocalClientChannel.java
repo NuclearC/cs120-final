@@ -8,7 +8,8 @@ import java.util.ArrayList;
 public class LocalClientChannel implements ClientChannel{
     private final Engine localEngine;
     private final int id;
-    private Room room;
+    private int worldId;
+    private int roomId;
     private int playerId;
     private BoundingBox viewport;
 
@@ -48,7 +49,7 @@ public class LocalClientChannel implements ClientChannel{
 
     @Override
     public void updateViewport() {
-        viewportCenter = room.getPlayer(this.playerId).getCenter();
+        viewportCenter = localEngine.getWorld(worldId).getRoom(roomId).getPlayer(this.playerId).getCenter();
         viewport = new BoundingBox(viewportCenter.add(VIEWPORT_BASE.multiply(viewportZoom * -0.5f)), VIEWPORT_BASE.multiply(viewportZoom));
     }
 
@@ -80,9 +81,9 @@ public class LocalClientChannel implements ClientChannel{
     }
 
     @Override
-    public void unsetPlayer() {
-
+    public void setUserCommand(PlayerCommand command) {
     }
+
 
     @Override 
     public BoundingBox getViewport() {
@@ -90,12 +91,12 @@ public class LocalClientChannel implements ClientChannel{
     }
 
     @Override
-    public void setRoom(Room room) {
-        this.room = room;
+    public void setRoomId(int roomId) {
+        this.roomId = roomId;
     }
 
     @Override
-    public Room getRoom() {
-        return room;
+    public int getRoomId() {
+        return roomId;
     }
 }

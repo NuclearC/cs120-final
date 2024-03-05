@@ -1,10 +1,7 @@
 package game.experimental.app;
 
 import game.experimental.app.input.InputSystem;
-import game.experimental.engine.Client;
-import game.experimental.engine.ClientChannel;
-import game.experimental.engine.Engine;
-import game.experimental.engine.Entity;
+import game.experimental.engine.*;
 import game.experimental.gl.*;
 import game.experimental.gl.renderers.CollectableRenderer;
 import game.experimental.gl.renderers.PlayerRenderer;
@@ -98,6 +95,9 @@ public class AppExperimental {
             gameWindow.present();
             
             gameWindow.pollEvents();
+            PlayerCommand command = PlayerCommand.RIGHT;   // needs to be generated according to pressed keys
+
+            myChannel.setUserCommand(command);
         }
 
 
