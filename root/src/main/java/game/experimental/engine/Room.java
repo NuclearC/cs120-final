@@ -1,5 +1,6 @@
 package game.experimental.engine;
 
+import game.experimental.gl.Gizmos;
 import game.experimental.utils.BoundingBox;
 import game.experimental.utils.Vector2F;
 
@@ -37,13 +38,18 @@ public class Room implements Settings{
      * Simulates the game inside one room.
      */
     public void simulate(){
+        Gizmos.drawBoundingBox(quadTree.getRange(), new float[]{1.f, 0.f, 1.f, 1.f});
         // checkCollide(); TODO;
 
         System.out.println("\tRoom simulated "+ this.getId());
 
         for (int i = 0; i < level.MAX_NUMBER_OF_PLAYERS; i++){
-            if (playerEntities[i] != null)
+            if (playerEntities[i] != null) {
+                PlayerEntity player = playerEntities[i];
+                quadTree.remove(player, player.getBoundingBox());
                 playerEntities[i].simulate();
+                quadTree.insert(player, player.getBoundingBox());
+            }
         }
 
         Engine engine = Engine.getInstance();

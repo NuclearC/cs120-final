@@ -227,6 +227,7 @@ public class QuadTree<T> {
                     // System.out.println("removed");
                     if (!objects.remove(node)){
                         System.out.println("tf is this");
+                        System.exit(-1);
                     }
                     totalObjectCount--;
                     if (parent != null)

@@ -68,7 +68,7 @@ public class AppExperimental {
 
         ClientChannel myChannel = myClient.getChannelInstance();
         // Run the rendering loop until the user has attempted to close
-        // the window or has pressed the ESCAPE key.
+        // the window or has pressed the ESCAPE key.f
         while ( !gameWindow.shouldClose() ) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
             glClearColor(229.f / 255.f, 207.f / 255.f, 163.f / 255.f, 1.0f);
