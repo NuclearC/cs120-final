@@ -222,7 +222,7 @@ public class QuadTree<T> {
         if (this.range.contains(boundingBox)) {
             // System.out.println("remove on " + this.range.toString() + " " + boundingBox.toString() + " " + object.toString());
             for (Node node : objects) {
-                System.out.println(node.getObject() + " " + node.getBoundingBox().toString());
+                // System.out.println(node.getObject() + " " + node.getBoundingBox().toString());
                 if (node.getObject().equals(object)) {
                     // System.out.println("removed");
                     if (!objects.remove(node)){

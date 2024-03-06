@@ -16,6 +16,7 @@ public class PlayerEntity extends CollideableEntity implements Movable{
     private float userInputAngle;
 
     private static final float PLAYER_DEFAULT_SIZE = 50.f;           // TODO  not the best place to keep it
+    private static final float PLAYER_MAX_VELOCITY = 10.0f;
 
     public PlayerEntity(Vector2F position, int id, int ownerID){
         super(position,id,ownerID);
@@ -25,8 +26,8 @@ public class PlayerEntity extends CollideableEntity implements Movable{
         this.velocity = new Vector2F();
         this.impulse = new Vector2F();
         this.deltaVelocity = new Vector2F();
-
     }
+
     public PlayerEntity(){
         super();
     }
@@ -43,8 +44,8 @@ public class PlayerEntity extends CollideableEntity implements Movable{
 
     @Override
     public void simulate() {
-        System.out.println("\t\tPlayer " + this.id + " simulated.");
-        System.out.print("\t\t From "+ this.position.toString() + "      To ");
+        // System.out.println("\t\tPlayer " + this.id + " simulated.");
+        // System.out.print("\t\t From "+ this.position.toString() + "      To ");
 
         this.processActions();
         this.processVelocity();
@@ -52,7 +53,7 @@ public class PlayerEntity extends CollideableEntity implements Movable{
 //        float a = Settings.PLAYER_MAX_VELOCITY / Settings.ENGINE_FRAMERATE;
 
         this.move();
-        System.out.println(this.position.toString());
+        // System.out.println(this.position.toString());
     }
 
     @Override
@@ -63,6 +64,9 @@ public class PlayerEntity extends CollideableEntity implements Movable{
     @Override
     public void setVelocity(Vector2F velocity) {
         this.velocity = velocity;
+        if (this.velocity.length() > PLAYER_MAX_VELOCITY) {
+            this.velocity = this.deltaVelocity.getNormalized().multiply(PLAYER_MAX_VELOCITY);
+        }   
     }
 
     @Override
@@ -92,8 +96,9 @@ public class PlayerEntity extends CollideableEntity implements Movable{
 //        if (PlayerCommand.SHOOT.isSet(this.userCommandKey))
 //            shoot();
 
+        deltaVelocity = new Vector2F(0, 0);
         for(PlayerCommand command: PlayerCommand.values()){
-            if(command.isSet(this.userCommandKey)){
+            if (command.isSet(this.userCommandKey)){
                 deltaVelocity = deltaVelocity.add(command.deltaVector);
             }
         }
@@ -111,15 +116,15 @@ public class PlayerEntity extends CollideableEntity implements Movable{
     @Override
     public void onCollision(CollideableEntity collided){
         if(collided.getClass() == new PlayerEntity().getClass()){
-            System.out.println("collided with player");
+            // System.out.println("collided with player");
         }
         else if(collided.getClass() == new MovingCollectableEntity().getClass()){
             collided.onCollision(this);
-            System.out.println("collided with moving collectable");
+            // System.out.println("collided with moving collectable");
         }
         else if(collided.getClass() == new StaticCollectableEntity().getClass()){
             collided.onCollision(this);
-            System.out.println("collided with static collectable");
+            // System.out.println("collided with static collectable");
 
         }
     }

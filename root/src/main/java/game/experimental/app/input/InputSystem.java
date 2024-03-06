@@ -52,7 +52,11 @@ public class InputSystem {
 
     private InputSystem() {
         keyToInputMap = new HashMap<Integer, RegisteredInput>();
-
+        keyToInputMap.put(GLFW_KEY_W, RegisteredInput.MOVE_UP);
+        keyToInputMap.put(GLFW_KEY_A, RegisteredInput.MOVE_LEFT);
+        keyToInputMap.put(GLFW_KEY_S, RegisteredInput.MOVE_DOWN);
+        keyToInputMap.put(GLFW_KEY_D, RegisteredInput.MOVE_RIGHT);
+        
         inputToStateMap = new EnumMap<RegisteredInput, Boolean>(RegisteredInput.class);
     }
 
@@ -61,21 +65,20 @@ public class InputSystem {
     }
 
     public boolean getInputState(RegisteredInput input) {
-        return inputToStateMap.get(input);
+        Boolean res = inputToStateMap.get(input);
+        return (res == null) ? false : res;
     }
 
     private void onKeyPress(int key) {
         RegisteredInput input = keyToInputMap.get((Integer)key);
-        System.out.println("The Problem is here");
-        // input is null
-        // next method throws exception
-        inputToStateMap.put(input, true);
-        System.out.println("On key started");
+        if (input != null)
+            inputToStateMap.put(input, true);
     }
 
     private void onKeyRelease(int key) {
         RegisteredInput input = keyToInputMap.get(key);
-        inputToStateMap.put(input, false);
+        if (input != null)
+            inputToStateMap.put(input, false);
     }
 
     private void setCursorPosition(double x, double y) {
@@ -99,9 +102,7 @@ public class InputSystem {
             public void invoke(long window, int key, int scancode, int action, int mods) {
                 if (action == GLFW_PRESS)
                 {
-                    System.out.println(key);
                     onKeyPress(key);
-                    System.out.println("scsdcsdcscscsdc");
                 }
                 else if (action == GLFW_RELEASE)
                     onKeyRelease(key);
