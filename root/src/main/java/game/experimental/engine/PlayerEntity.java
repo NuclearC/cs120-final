@@ -125,6 +125,7 @@ public class PlayerEntity extends CollideableEntity implements Movable{
 
     private void eatCollectible(CollectableEntity collectible){
         System.out.println(collectible.getClass() +  " is eaten");
+        collectible.setLife(0);
         this.life += collectible.getValue();
     }
 

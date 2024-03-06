@@ -22,5 +22,19 @@ public interface EntityRenderer {
      */
     void draw(Camera camera, float rotation, Vector2F position, Vector2F size);
 
+    /**
+     * Change the color modulation. 
+     * @param r new red
+     * @param g new green
+     * @param b new blue
+     */
+    void setColorModulation(float r, float g, float b);
+
+    /**
+     * Change the alpha modulation.
+     * @param alpha new alpha. 
+     */
+    void setAlphaModulation(float alpha);
+
 
 }

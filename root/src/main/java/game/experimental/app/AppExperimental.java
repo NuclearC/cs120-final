@@ -106,8 +106,14 @@ public class AppExperimental {
                 for(Entity ent : viewBoxData) {
                     if (ent.getClass().getName() == "game.experimental.engine.PlayerEntity")
                         playerRenderer.draw(c, ent.getAngle(), ent.getPosition(), ent.getSize());
-                    else if (ent.getClass().getName() == "game.experimental.engine.CollectableEntity")
+                    else if (ent.getClass().getName() == "game.experimental.engine.CollectableEntity"){
+                        collectableRenderer.setColorModulation(1.f, 0.5f, 1.f);
+                        collectableRenderer.draw(c, ent.getAngle(), ent.getPosition(), ent.getSize());}
+
+                    else if (ent.getClass().getName() == "game.experimental.engine.MovingCollectableEntity") {
+                        collectableRenderer.setColorModulation(1.f, 1.f, 0.5f);
                         collectableRenderer.draw(c, ent.getAngle(), ent.getPosition(), ent.getSize());
+                    }
                 }
 
 
@@ -140,7 +146,6 @@ public class AppExperimental {
 
         Gizmos.destroy();
     }
-
 
     public static void main(String[] args) {
         new AppExperimental().run();
