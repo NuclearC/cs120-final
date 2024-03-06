@@ -106,7 +106,7 @@ public class AppExperimental {
                 for(Entity ent : viewBoxData) {
                     if (ent.getClass().getName() == "game.experimental.engine.PlayerEntity")
                         playerRenderer.draw(c, ent.getAngle(), ent.getPosition(), ent.getSize());
-                    else if (ent.getClass().getName() == "game.experimental.engine.StaticCollectableEntity")
+                    else if (ent.getClass().getName() == "game.experimental.engine.CollectableEntity")
                         collectableRenderer.draw(c, ent.getAngle(), ent.getPosition(), ent.getSize());
                 }
 
@@ -126,7 +126,6 @@ public class AppExperimental {
                 commandKey = PlayerCommand.LEFT.set(commandKey);
 
 
-            // System.out.println("cscsdc " + commandKey);
             myChannel.setUserCommandKey(commandKey);
             myChannel.setCursorPosition(new Vector2F());
 

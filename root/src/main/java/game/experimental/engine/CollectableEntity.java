@@ -5,7 +5,7 @@ import game.experimental.utils.*;
 /**
  * Represents collectable objects.
  */
-public class StaticCollectableEntity extends CollideableEntity {
+public class CollectableEntity extends CollideableEntity {
 
     private static final Vector2F COLLECTABLE_DEFAULT_SIZE = new Vector2F(15.f, 15.f);
 
@@ -20,7 +20,7 @@ public class StaticCollectableEntity extends CollideableEntity {
      * @param ownerID ID of the owner entity
      * @param type integer to determine the type : 1 - Triangle , 2 - Square, 3- Diamond
      */
-    public StaticCollectableEntity(Vector2F position, int id, int ownerID, int type) {
+    public CollectableEntity(Vector2F position, int id, int ownerID, int type) {
         super(position, id, ownerID);
         this.size = COLLECTABLE_DEFAULT_SIZE;
         this.type = getType(type);
@@ -28,7 +28,7 @@ public class StaticCollectableEntity extends CollideableEntity {
         this.life = this.type.life;
     }
 
-    public StaticCollectableEntity() {
+    public CollectableEntity() {
         this.type = getType(0);
         this.value = this.type.value;
         this.life = this.type.life;
@@ -114,7 +114,7 @@ public class StaticCollectableEntity extends CollideableEntity {
             // System.out.println("collided with moving collectable");
             ((MovingCollectableEntity) collided).setImpulse(new Vector2F());//TODO
         }
-        else if(collided.getClass() == new StaticCollectableEntity().getClass()){
+        else if(collided.getClass() == new CollectableEntity().getClass()){
             // System.out.println("collided with static collectable");
 
         }

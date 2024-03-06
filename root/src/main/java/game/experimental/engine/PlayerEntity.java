@@ -15,6 +15,7 @@ public class PlayerEntity extends CollideableEntity implements Movable{
     private int userInputKey;
     private float userInputAngle;
 
+    private int life = 0;
     private static final float PLAYER_DEFAULT_SIZE = 50.f;           // TODO  not the best place to keep it
     private static final float PLAYER_MAX_VELOCITY = 10.0f;
 
@@ -110,18 +111,21 @@ public class PlayerEntity extends CollideableEntity implements Movable{
 
     @Override
     public void onCollision(CollideableEntity collided){
+        if (this == collided){
+            return;
+        }
         if(collided.getClass() == PlayerEntity.class) {
             System.out.println("collided with player");
         }
-        else if(collided.getClass() == MovingCollectableEntity.class){
+        else if(collided instanceof CollectableEntity){
+            eatCollectible((CollectableEntity)collided);
             collided.onCollision(this);
-            // System.out.println("collided with moving collectable");
         }
-        else if(collided.getClass() == StaticCollectableEntity.class){
-            collided.onCollision(this);
-            // System.out.println("collided with static collectable");
+    }
 
-        }
+    private void eatCollectible(CollectableEntity collectible){
+        System.out.println(collectible.getClass() +  " is eaten");
+        this.life += collectible.getValue();
     }
 
 }

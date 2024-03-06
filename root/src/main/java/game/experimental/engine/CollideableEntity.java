@@ -20,6 +20,7 @@ abstract public class CollideableEntity extends Entity {
     }
 
     public void onCollision(CollideableEntity entity){
+
     }
 
 }

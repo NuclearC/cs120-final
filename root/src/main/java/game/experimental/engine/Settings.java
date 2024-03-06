@@ -30,8 +30,8 @@ public interface Settings {
 
                 case 2:
                     MAX_NUMBER_OF_PLAYERS = 20;
-                    MAX_NUMBER_OF_MOVING_COLLECTABLES = 30;
-                    MAX_NUMBER_OF_STATIC_COLLECTABLES = 30;
+                    MAX_NUMBER_OF_MOVING_COLLECTABLES = 1;
+                    MAX_NUMBER_OF_STATIC_COLLECTABLES = 10;
                     break;
 
                 case 3:
@@ -42,8 +42,8 @@ public interface Settings {
 
                 default:  // case of 1 and more
                     MAX_NUMBER_OF_PLAYERS = 10;
-                    MAX_NUMBER_OF_MOVING_COLLECTABLES = 20;
-                    MAX_NUMBER_OF_STATIC_COLLECTABLES = 100;
+                    MAX_NUMBER_OF_MOVING_COLLECTABLES = 10;
+                    MAX_NUMBER_OF_STATIC_COLLECTABLES = 10;
 
             }
         }

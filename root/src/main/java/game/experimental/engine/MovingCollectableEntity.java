@@ -5,7 +5,7 @@ import game.experimental.utils.Vector2F;
 /**
  * Represents a Moving Collectable object in the game. Extends StaticCollectableEntity
  */
-public class MovingCollectableEntity extends StaticCollectableEntity implements Movable{
+public class MovingCollectableEntity extends CollectableEntity implements Movable{
     private Vector2F velocity;
     private final Vector2F impulse = new Vector2F();     // initilized to o
 
@@ -49,15 +49,15 @@ public class MovingCollectableEntity extends StaticCollectableEntity implements 
     }
     public void onCollision(CollideableEntity collided){
         if(collided.getClass() == PlayerEntity.class){
-            System.out.println("collided with player");
             //it should ignore it, cause it will be handeled by the player
         }
         else if(collided.getClass() == MovingCollectableEntity.class){
-            System.out.println("collided with moving collectable");
-            setImpulse(new Vector2F());//TODO
-            ((MovingCollectableEntity) collided).setImpulse(new Vector2F());//TODO
+//            System.out.println("collided with moving collectable");
+//            setImpulse(new Vector2F());//TODO
+//
+//            ((MovingCollectableEntity) collided).setImpulse(new Vector2F());//TODO
         }
-        else if(collided.getClass() == StaticCollectableEntity.class){
+        else if(collided.getClass() == CollectableEntity.class){
             System.out.println("collided with static collectable");
 
             setImpulse(new Vector2F());//TODO

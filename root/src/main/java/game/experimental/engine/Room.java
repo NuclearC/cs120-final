@@ -1,6 +1,5 @@
 package game.experimental.engine;
 
-import game.experimental.gl.Gizmos;
 import game.experimental.utils.BoundingBox;
 import game.experimental.utils.Vector2F;
 
@@ -15,7 +14,7 @@ public class Room implements Settings{
     private QuadTree<Entity> quadTree;
 
     private final PlayerEntity[] playerEntities;
-    private final StaticCollectableEntity[] staticCollectables;
+    private final CollectableEntity[] staticCollectables;
     private final MovingCollectableEntity[] movingCollectables;
 
     /**
@@ -26,7 +25,7 @@ public class Room implements Settings{
         this.level = Level.getLevel(level);
 
         playerEntities = new PlayerEntity[this.level.MAX_NUMBER_OF_PLAYERS];
-        staticCollectables = new StaticCollectableEntity[this.level.MAX_NUMBER_OF_STATIC_COLLECTABLES];
+        staticCollectables = new CollectableEntity[this.level.MAX_NUMBER_OF_STATIC_COLLECTABLES];
         movingCollectables = new MovingCollectableEntity[this.level.MAX_NUMBER_OF_MOVING_COLLECTABLES];
 
         createQuadTree();
@@ -42,7 +41,9 @@ public class Room implements Settings{
      */
     private void checkCollisions() {
         for (int i = 0; i < level.MAX_NUMBER_OF_PLAYERS; i++){
+
             if (playerEntities[i] != null) {
+
                 ArrayList<Entity> collidedEntities = new ArrayList<>();
                 quadTree.query(playerEntities[i].getBoundingBox(), collidedEntities);
                 for(Entity collided : collidedEntities){
@@ -67,7 +68,7 @@ public class Room implements Settings{
     public void simulate(){
         // Gizmos.drawBoundingBox(quadTree.getRange(), new float[]{1.f, 0.f, 1.f, 1.f});
         // checkCollide(); TODO;
-        
+        checkCollisions();
         // System.out.println("\tRoom simulated "+ this.getId());
 
         for (int i = 0; i < level.MAX_NUMBER_OF_PLAYERS; i++){
@@ -91,7 +92,7 @@ public class Room implements Settings{
         }
         for (int i = 0; i < level.MAX_NUMBER_OF_STATIC_COLLECTABLES; i++){
             if (staticCollectables[i] != null) {
-                StaticCollectableEntity collectable = staticCollectables[i];
+                CollectableEntity collectable = staticCollectables[i];
                 quadTree.remove(collectable, collectable.getBoundingBox());
                 collectable.simulate();
                 if(collectable.getLife() > 0)
@@ -229,9 +230,9 @@ public class Room implements Settings{
      * @param type the type of the collectable
      * @return the created collectable
      */
-    private StaticCollectableEntity createStaticCollectable(int id, int type){
+    private CollectableEntity createStaticCollectable(int id, int type){
         Vector2F position = Vector2F.randomVector(0,MAP_HEIGHT,0, MAP_HEIGHT); // TODO
-        return new StaticCollectableEntity(position,id,-1,1);//TODO
+        return new CollectableEntity(position,id,-1,1);//TODO
     }
 
     /**
@@ -256,7 +257,7 @@ public class Room implements Settings{
     public void addStaticCollectable(){
         for(int i = 0; i < staticCollectables.length; i++){
             if(staticCollectables[i] == null){
-                StaticCollectableEntity collectables = createStaticCollectable(i, 0);//change the type TODO
+                CollectableEntity collectables = createStaticCollectable(i, 0);//change the type TODO
                 quadTree.insert(collectables, collectables.getBoundingBox());
                 staticCollectables[i] = collectables;
                 break;
@@ -267,7 +268,7 @@ public class Room implements Settings{
      * adds static collectable to the room in the give index
      */
     public void addStaticCollectable(int ind){
-        StaticCollectableEntity collectables = createStaticCollectable(ind, 0);//change the type TODO
+        CollectableEntity collectables = createStaticCollectable(ind, 0);//change the type TODO
         quadTree.insert(collectables, collectables.getBoundingBox());
         staticCollectables[ind] = collectables;
     }
