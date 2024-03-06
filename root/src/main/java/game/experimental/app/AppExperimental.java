@@ -1,5 +1,4 @@
 package game.experimental.app;
-
 import game.experimental.app.input.InputSystem;
 import game.experimental.engine.*;
 import game.experimental.gl.*;

@@ -12,7 +12,7 @@ public abstract class Entity {
     protected Vector2F position;
     protected int id;
     protected int ownerID;
-
+    protected BoundingBox boundingBox;
     protected float angle;
     public Entity(){
 
@@ -29,7 +29,6 @@ public abstract class Entity {
         this.position = position;
         this.id = id;
         this.ownerID = ownerID;
-
         this.angle = 0;
     }
 
@@ -109,7 +108,13 @@ public abstract class Entity {
     }
 
     public BoundingBox getBoundingBox() {
-        return new BoundingBox(this.position, this.size);
+        if (boundingBox == null)
+            updateBoundingBox();
+        return boundingBox;
+    }
+
+    public void updateBoundingBox(){
+        this.boundingBox = new BoundingBox(this.position,this.size);
     }
 
 //    /**

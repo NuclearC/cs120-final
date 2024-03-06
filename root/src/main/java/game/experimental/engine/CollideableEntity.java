@@ -5,7 +5,7 @@ import game.experimental.utils.*;
 /**
  * Represents Collideable Entities, extends Entity class.
  */
-abstract class CollideableEntity extends Entity {
+abstract public class CollideableEntity extends Entity {
     /**
      * Creates a new colladable entity.
      * @param position adkjfbadkjgnla
@@ -17,9 +17,7 @@ abstract class CollideableEntity extends Entity {
     }
 
     public CollideableEntity() {
-
     }
-
 
     public void onCollision(CollideableEntity entity){
     }

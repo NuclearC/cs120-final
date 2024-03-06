@@ -25,6 +25,7 @@ public class PlayerEntity extends CollideableEntity implements Movable{
         this.velocity = new Vector2F();
         this.impulse = new Vector2F();
         this.deltaVelocity = new Vector2F();
+        this.boundingBox = new BoundingBox(this.position, this.size);
 
     }
     public PlayerEntity(){
@@ -56,11 +57,6 @@ public class PlayerEntity extends CollideableEntity implements Movable{
     }
 
     @Override
-    public BoundingBox getBoundingBox() {
-        return new BoundingBox(this.position, this.size);
-    }
-
-    @Override
     public void setVelocity(Vector2F velocity) {
         this.velocity = velocity;
     }
@@ -78,9 +74,9 @@ public class PlayerEntity extends CollideableEntity implements Movable{
     @Override
     public void move() {
         this.position = this.position.add(this.velocity);
-//        this.position = this.position.add(new Vector2F(1,1));
         this.position = this.position.add(this.impulse);
         this.impulse = new Vector2F();
+        updateBoundingBox();
     }
 
     @Override
@@ -89,8 +85,6 @@ public class PlayerEntity extends CollideableEntity implements Movable{
     }
 
     private void processActions() {
-//        if (PlayerCommand.SHOOT.isSet(this.userCommandKey))
-//            shoot();
 
         for(PlayerCommand command: PlayerCommand.values()){
             if(command.isSet(this.userCommandKey)){
@@ -110,14 +104,14 @@ public class PlayerEntity extends CollideableEntity implements Movable{
 
     @Override
     public void onCollision(CollideableEntity collided){
-        if(collided.getClass() == new PlayerEntity().getClass()){
+        if(collided.getClass() == PlayerEntity.class){
             System.out.println("collided with player");
         }
-        else if(collided.getClass() == new MovingCollectableEntity().getClass()){
+        else if(collided.getClass() == MovingCollectableEntity.class){
             collided.onCollision(this);
             System.out.println("collided with moving collectable");
         }
-        else if(collided.getClass() == new StaticCollectableEntity().getClass()){
+        else if(collided.getClass() == StaticCollectableEntity.class){
             collided.onCollision(this);
             System.out.println("collided with static collectable");
 

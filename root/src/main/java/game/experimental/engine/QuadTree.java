@@ -148,7 +148,7 @@ public class QuadTree<T> {
             return;
         for (int j = 0; j < objects.size(); j++) {
             for (int i = 0; i < 4; i++)
-                if (children[i].insert(objects.get(j).getObject(), objects.get(j).getBoundingBox().clone())) {   // Should we have insert(nodeReference)?
+                if (children[i].insert(objects.get(j).getObject(), objects.get(j).getBoundingBox())) {   // Should we have insert(nodeReference)?
                     objects.remove(j--);
                     break;
                 }

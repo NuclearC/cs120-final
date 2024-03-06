@@ -33,6 +33,7 @@ public class MovingCollectableEntity extends StaticCollectableEntity implements 
     public void move() {
         this.position = this.position.add(this.velocity);
         checkBoundaries();
+        this.updateBoundingBox();
     }
 
     @Override
@@ -47,16 +48,16 @@ public class MovingCollectableEntity extends StaticCollectableEntity implements 
         }
     }
     public void onCollision(CollideableEntity collided){
-        if(collided.getClass() == new PlayerEntity().getClass()){
+        if(collided.getClass() == PlayerEntity.class){
             System.out.println("collided with player");
             //it should ignore it, cause it will be handeled by the player
         }
-        else if(collided.getClass() == new MovingCollectableEntity().getClass()){
+        else if(collided.getClass() == MovingCollectableEntity.class){
             System.out.println("collided with moving collectable");
             setImpulse(new Vector2F());//TODO
             ((MovingCollectableEntity) collided).setImpulse(new Vector2F());//TODO
         }
-        else if(collided.getClass() == new StaticCollectableEntity().getClass()){
+        else if(collided.getClass() == StaticCollectableEntity.class){
             System.out.println("collided with static collectable");
             setImpulse(new Vector2F());//TODO
 
