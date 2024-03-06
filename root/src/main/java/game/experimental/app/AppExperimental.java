@@ -49,6 +49,21 @@ public class AppExperimental {
         glfwTerminate();
     }
 
+    private void drawQuadTree(QuadTree<Entity> qt) {
+        final float[] quadTreeBoxColor = {0.f, 0.7f, 0.f, 1.f};
+        final float[] objectBoxColor = {0.7f, 0.0f, 0.f, 1.f};
+
+        Gizmos.drawBoundingBox(qt.getRange(), quadTreeBoxColor);
+        for (QuadTree<Entity>.Node node : qt.getObjects()) {
+            Gizmos.drawBoundingBox(node.getBoundingBox(), objectBoxColor);
+        }
+
+        if (qt.getChildren() != null) {
+            for (int i = 0; i < 4; i++)
+                drawQuadTree(qt.getChildren()[i]);
+        }
+    }
+
     private void loop() {
 
         Gizmos.initialize();
@@ -78,6 +93,9 @@ public class AppExperimental {
             c.setViewport(myChannel.getViewport().getCenter(), myChannel.getViewportZoom());
 
             Gizmos.drawBoundingBox(myChannel.getViewport(), new float[]{1.f, 0.f, 0.f, 1.f});
+
+            QuadTree<Entity> qt = (Engine.getInstance()).getWorld(0).getRoom(0).getQuadTree();
+            drawQuadTree(qt);
 
             PlayerRenderer playerRenderer = PlayerRenderer.getSingleton();
             CollectableRenderer collectableRenderer = CollectableRenderer.getSingleton();

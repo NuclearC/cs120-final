@@ -33,6 +33,10 @@ public class Room implements Settings{
         fillMapWithCollectable(); // TODO
     }
 
+    public QuadTree<Entity> getQuadTree() {
+        return quadTree;
+    }
+
     /**
      * Performs collision checks between entities in the game. 
      */
