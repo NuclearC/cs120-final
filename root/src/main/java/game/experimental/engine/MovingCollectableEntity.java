@@ -59,6 +59,7 @@ public class MovingCollectableEntity extends StaticCollectableEntity implements 
         }
         else if(collided.getClass() == StaticCollectableEntity.class){
             System.out.println("collided with static collectable");
+
             setImpulse(new Vector2F());//TODO
 
         }

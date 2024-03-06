@@ -33,13 +33,10 @@ public class Room implements Settings{
         fillMapWithCollectable(); // TODO
     }
 
-
     /**
-     * Simulates the game inside one room.
+     * Performs collision checks between entities in the game. 
      */
-    public void simulate(){
-        Gizmos.drawBoundingBox(quadTree.getRange(), new float[]{1.f, 0.f, 1.f, 1.f});
-        // checkCollide(); TODO;
+    private void checkCollisions() {
         for (int i = 0; i < level.MAX_NUMBER_OF_PLAYERS; i++){
             if (playerEntities[i] != null) {
                 ArrayList<Entity> collidedEntities = new ArrayList<>();
@@ -58,7 +55,16 @@ public class Room implements Settings{
                 }
             }
         }
-        System.out.println("\tRoom simulated "+ this.getId());
+    }
+
+    /**
+     * Simulates the game inside one room.
+     */
+    public void simulate(){
+        Gizmos.drawBoundingBox(quadTree.getRange(), new float[]{1.f, 0.f, 1.f, 1.f});
+        // checkCollide(); TODO;
+        
+        // System.out.println("\tRoom simulated "+ this.getId());
 
         for (int i = 0; i < level.MAX_NUMBER_OF_PLAYERS; i++){
             if (playerEntities[i] != null) {

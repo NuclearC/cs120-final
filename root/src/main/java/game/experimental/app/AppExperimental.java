@@ -1,5 +1,6 @@
 package game.experimental.app;
 import game.experimental.app.input.InputSystem;
+import game.experimental.app.input.InputSystem.RegisteredInput;
 import game.experimental.engine.*;
 import game.experimental.gl.*;
 import game.experimental.gl.renderers.CollectableRenderer;
@@ -96,11 +97,18 @@ public class AppExperimental {
             
             gameWindow.pollEvents();
 
-            int commandKey = PlayerCommand.RIGHT.set(0);   // needs to be generated using PlayerCommand set methods according to pressed keys
-            commandKey = PlayerCommand.UP.set(commandKey);   // needs to be generated using PlayerCommand set methods according to pressed keys
+            int commandKey = 0;
+            if (input.getInputState(RegisteredInput.MOVE_DOWN))
+                commandKey = PlayerCommand.DOWN.set(commandKey);
+            if (input.getInputState(RegisteredInput.MOVE_UP))
+                commandKey = PlayerCommand.UP.set(commandKey);
+            if (input.getInputState(RegisteredInput.MOVE_RIGHT))
+                commandKey = PlayerCommand.RIGHT.set(commandKey);
+            if (input.getInputState(RegisteredInput.MOVE_LEFT))
+                commandKey = PlayerCommand.LEFT.set(commandKey);
 
 
-            System.out.println("cscsdc " + commandKey);
+            // System.out.println("cscsdc " + commandKey);
             myChannel.setUserCommandKey(commandKey);
             myChannel.setCursorPosition(new Vector2F());
 

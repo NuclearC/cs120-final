@@ -27,8 +27,8 @@ public class Engine {
 
     public void runEngineFrame(){
         try {
-            System.out.println();
-            System.out.println("Engine Simulated");
+            // System.out.println();
+            // System.out.println("Engine Simulated");
             Thread.sleep((long)(1000.0f / Settings.ENGINE_FRAMERATE));
 
         } catch (InterruptedException e) {

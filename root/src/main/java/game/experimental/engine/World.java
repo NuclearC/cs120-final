@@ -33,7 +33,7 @@ public class World {
      */
     public void simulate(){
 
-        System.out.println("World "+ id + " Simulated");
+        // System.out.println("World "+ id + " Simulated");
         for (Room room : rooms) {
             room.simulate();
         }

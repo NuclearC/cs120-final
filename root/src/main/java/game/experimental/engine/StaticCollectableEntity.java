@@ -107,15 +107,15 @@ public class StaticCollectableEntity extends CollideableEntity {
         if(collided.getClass() == new PlayerEntity().getClass()){
             //life should get decreased here
             //should be implemented on how to get removed TODO
-            System.out.println("collided with player");
+            // System.out.println("collided with player");
             //it should ignore this case
         }
         else if(collided.getClass() == new MovingCollectableEntity().getClass()){
-            System.out.println("collided with moving collectable");
+            // System.out.println("collided with moving collectable");
             ((MovingCollectableEntity) collided).setImpulse(new Vector2F());//TODO
         }
         else if(collided.getClass() == new StaticCollectableEntity().getClass()){
-            System.out.println("collided with static collectable");
+            // System.out.println("collided with static collectable");
 
         }
     }
