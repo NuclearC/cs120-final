@@ -2,6 +2,8 @@ package game.experimental.gl.renderers;
 
 import java.io.IOException;
 
+import static org.lwjgl.opengl.GL20.glUniform4fv;
+import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
 import static org.lwjgl.opengl.GL46.*;
 
 import game.experimental.gl.Camera;
@@ -26,6 +28,7 @@ public final class CollectableRenderer implements EntityRenderer {
     private Texture texture;
     private Shape shape;
     private Program program;
+    private float[] modulation;
 
     /**
      * Load the necessary assets for drawing the player. 
@@ -40,6 +43,7 @@ public final class CollectableRenderer implements EntityRenderer {
         }
 
         shape = new Shape(Shape.buildQuad());
+        modulation = new float[]{1.f, 1.f, 1.f, 1.f};
         
         try {
             program = new Program();
@@ -71,6 +75,8 @@ public final class CollectableRenderer implements EntityRenderer {
         program.use();
 
         int pvmLocation = program.getUniform("pvm");
+        int colorLocation = program.getUniform("color");
+        glUniform4fv(colorLocation, modulation);
 
         Matrix4x4F model = Matrix4x4F.transformTranslate(position).multiply(Matrix4x4F.transformRotate(rotation).multiply(Matrix4x4F.transformScale(size)));
         Matrix4x4F pvm = camera.getProjectionView().multiply(model);
@@ -95,5 +101,17 @@ public final class CollectableRenderer implements EntityRenderer {
             INSTANCE = new CollectableRenderer();
         
         return INSTANCE;
+    }
+
+    @Override
+    public void setColorModulation(float r, float g, float b) {
+        modulation[0] = r;
+        modulation[1] = g;
+        modulation[2] = b;
+    }
+
+    @Override
+    public void setAlphaModulation(float alpha) {
+        modulation[3] = alpha;
     }
 }

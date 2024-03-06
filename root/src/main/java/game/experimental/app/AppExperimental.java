@@ -106,8 +106,14 @@ public class AppExperimental {
                 for(Entity ent : viewBoxData) {
                     if (ent.getClass().getName() == "game.experimental.engine.PlayerEntity")
                         playerRenderer.draw(c, ent.getAngle(), ent.getPosition(), ent.getSize());
-                    else if (ent.getClass().getName() == "game.experimental.engine.StaticCollectableEntity")
+                    else if (ent.getClass().getName() == "game.experimental.engine.StaticCollectableEntity") {
+                        collectableRenderer.setColorModulation(1.f, 0.5f, 1.f);
                         collectableRenderer.draw(c, ent.getAngle(), ent.getPosition(), ent.getSize());
+                    }
+                    else if (ent.getClass().getName() == "game.experimental.engine.MovingCollectableEntity") {
+                        collectableRenderer.setColorModulation(1.f, 1.f, 0.5f);
+                        collectableRenderer.draw(c, ent.getAngle(), ent.getPosition(), ent.getSize());
+                    }
                 }
 
 
