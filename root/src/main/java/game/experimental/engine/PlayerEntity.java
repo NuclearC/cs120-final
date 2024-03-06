@@ -12,6 +12,7 @@ public class PlayerEntity extends CollideableEntity implements Movable{
     private Vector2F deltaVelocity;
     private Vector2F impulse;
     private int userCommandKey;
+    private int userInputKey;
     private float userInputAngle;
 
     private static final float PLAYER_DEFAULT_SIZE = 50.f;           // TODO  not the best place to keep it
@@ -25,17 +26,16 @@ public class PlayerEntity extends CollideableEntity implements Movable{
         this.impulse = new Vector2F();
         this.deltaVelocity = new Vector2F();
 
-<<<<<<< HEAD
     }
     public PlayerEntity(){
         super();
     }
-    public void setUserInputKey(int inputKey){
+    public void setUserInputKey(int inputKey) {
         this.userInputKey = inputKey;
-=======
+    }
+
     public void setUserCommandKey(int commandKey){
         this.userCommandKey = commandKey;
->>>>>>> c9b047fcbd615d3c2979429fefe9f26b2a12f115
     }
     public void setUserInputAngle(float angle){
         this.userInputAngle = angle;
@@ -107,6 +107,7 @@ public class PlayerEntity extends CollideableEntity implements Movable{
     private void shoot(){
         System.out.println("Shot");
     }
+
     @Override
     public void onCollision(CollideableEntity collided){
         if(collided.getClass() == new PlayerEntity().getClass()){

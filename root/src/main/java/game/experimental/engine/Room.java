@@ -52,7 +52,7 @@ public class Room implements Settings{
         for (int i = 0; i < level.MAX_NUMBER_OF_MOVING_COLLECTABLES; i++){
             if (movingCollectables[i] != null) {
                 ArrayList<Entity> collidedEntities = new ArrayList<>();
-                quadTree.query(playerEntities[i].getBoundingBox(), collidedEntities);
+                quadTree.query(movingCollectables[i].getBoundingBox(), collidedEntities);
                 for(Entity collided : collidedEntities){
                     movingCollectables[i].onCollision((CollideableEntity) collided);
                 }

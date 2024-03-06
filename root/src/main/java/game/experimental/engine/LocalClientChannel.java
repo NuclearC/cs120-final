@@ -13,14 +13,11 @@ public class LocalClientChannel implements ClientChannel{
     private int playerId;
     private BoundingBox viewport;
 
-<<<<<<< HEAD
     private ArrayList<Entity> visibleEntities;
-=======
     private int commandKey;
     private Vector2F cursorPosition;
 
     private ArrayList<Entity> visibleEntites;
->>>>>>> c9b047fcbd615d3c2979429fefe9f26b2a12f115
 
     // center of the camera for this specific client (calculated from PlayerEntities)
     public Vector2F viewportCenter;
