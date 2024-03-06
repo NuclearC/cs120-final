@@ -2,6 +2,7 @@ package game.experimental.engine;
 
 import game.experimental.utils.Vector2F;
 
+import java.util.Date;
 import java.util.ArrayList;
 
 /**
@@ -13,11 +14,18 @@ public class Engine {
     private final ClientChannel[] clientChannels = new ClientChannel[Settings.MAX_NUMBER_OF_CLIENTS];
     private static final Engine INSTANCE = new Engine();
 
+    private long lastFrameBeginTime;
 
     private Engine(){
         System.out.println("Engine created...");
         worlds.add(new World(worlds.size()));
         worlds.get(0).addRoom(1);
+
+        lastFrameBeginTime = 0;
+    }
+
+    private long getCurrentTime() {
+        return (new Date()).getTime();
     }
 
     public static Engine getInstance(){
@@ -25,17 +33,18 @@ public class Engine {
     }
 
 
-    public void runEngineFrame(){
-        try {
-            // System.out.println();
-            // System.out.println("Engine Simulated");
-            Thread.sleep((long)(1000.0f / Settings.ENGINE_FRAMERATE));
+    public void runEngineFrame() {
+        long currentTime = getCurrentTime(),
+            elapsedTime = currentTime - lastFrameBeginTime;
 
-        } catch (InterruptedException e) {
-            System.out.println("couldn't sleep....");
-        }
-        for (World world : worlds) {
-            world.simulate();
+        final float requiredFrameTime = 1000.0f / Settings.ENGINE_FRAMERATE;
+
+        if ((float)elapsedTime > requiredFrameTime) {
+            lastFrameBeginTime = currentTime;
+            
+            for (World world : worlds) {
+                world.simulate();
+            }
         }
     }
 

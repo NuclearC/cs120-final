@@ -61,7 +61,7 @@ public class Room implements Settings{
      * Simulates the game inside one room.
      */
     public void simulate(){
-        Gizmos.drawBoundingBox(quadTree.getRange(), new float[]{1.f, 0.f, 1.f, 1.f});
+        // Gizmos.drawBoundingBox(quadTree.getRange(), new float[]{1.f, 0.f, 1.f, 1.f});
         // checkCollide(); TODO;
         
         // System.out.println("\tRoom simulated "+ this.getId());
