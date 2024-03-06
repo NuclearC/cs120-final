@@ -79,16 +79,25 @@ public class PlayerEntity extends CollideableEntity implements Movable{
 
     @Override
     public void move() {
-        this.position = this.position.add(this.velocity);
-        this.position = this.position.add(this.impulse);
-        this.impulse = new Vector2F();
+        Vector2F newPosition = this.position.add(this.velocity);
+        newPosition = newPosition.add(this.impulse);
+
+        if (remainsWithinBoundary(newPosition)){
+            this.position = newPosition;
+            this.impulse = new Vector2F();
+        }
+
         updateBoundingBox();
     }
 
+
     @Override
-    public boolean checkBoundaries() {
-        return false;
+    public boolean remainsWithinBoundary(Vector2F newPosition) {
+        BoundingBox roomBox = new BoundingBox(new Vector2F(),new Vector2F(Settings.MAP_WIDTH, Settings.MAP_HEIGHT));
+        BoundingBox playerBox = new BoundingBox(newPosition, size);
+        return roomBox.contains(playerBox);
     }
+
 
     private void processActions() {
 
@@ -97,6 +106,7 @@ public class PlayerEntity extends CollideableEntity implements Movable{
             if (command.isSet(this.userCommandKey)){
                 deltaVelocity = deltaVelocity.add(command.deltaVector);
             }
+
         }
 
     }
@@ -118,12 +128,12 @@ public class PlayerEntity extends CollideableEntity implements Movable{
             System.out.println("collided with player");
         }
         else if(collided instanceof CollectableEntity){
-            eatCollectible((CollectableEntity)collided);
+            takeCollectible((CollectableEntity)collided);
             collided.onCollision(this);
         }
     }
 
-    private void eatCollectible(CollectableEntity collectible){
+    private void takeCollectible(CollectableEntity collectible){
         System.out.println(collectible.getClass() +  " is eaten");
         collectible.setLife(0);
         this.life += collectible.getValue();

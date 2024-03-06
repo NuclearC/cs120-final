@@ -32,13 +32,13 @@ public class MovingCollectableEntity extends CollectableEntity implements Movabl
     @Override
     public void move() {
         this.position = this.position.add(this.velocity);
-        checkBoundaries();
         this.updateBoundingBox();
     }
 
+
     @Override
-    public boolean checkBoundaries() {
-        return false;
+    public boolean remainsWithinBoundary(Vector2F newPosition) {
+        return true;
     }
 
     @Override
