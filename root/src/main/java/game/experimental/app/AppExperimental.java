@@ -95,7 +95,6 @@ public class AppExperimental {
 
             myChannel.update();
 
-
             Gizmos.drawBoundingBox(myChannel.getViewport(), new float[]{1.f, 0.f, 0.f, 1.f});
 
             QuadTree<Entity> qt = (Engine.getInstance()).getWorld(0).getRoom(0).getQuadTree();
@@ -123,11 +122,12 @@ public class AppExperimental {
                             intEnt.interpolate(myChannel.getTickCount());
                         }
                         
-                        Vector2F interpolatedPos = intEnt.getPosition(interpolationFactor);
-                        playerRenderer.draw(c, intEnt.getAngle(interpolationFactor), interpolatedPos, ent.getSize());
+                        Vector2F interpolatedPos = intEnt.getPosition(interpolationFactor);                      
                         if (ent.getOwnerID() == myChannel.getId()) {
                             c.setViewport(interpolatedPos, myChannel.getViewportZoom());
                         }
+                        playerRenderer.draw(c, intEnt.getAngle(interpolationFactor), interpolatedPos, ent.getSize());
+  
                     }
                     else if (ent.getClass().getName() == "game.experimental.engine.CollectableEntity"){
                         collectableRenderer.setColorModulation(1.f, 0.5f, 1.f);
