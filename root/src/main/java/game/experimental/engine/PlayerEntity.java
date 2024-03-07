@@ -18,6 +18,7 @@ public class PlayerEntity extends CollideableEntity implements Movable{
     private int life = 0;
     private static final float PLAYER_DEFAULT_SIZE = 50.f;           // TODO  not the best place to keep it
     private static final float PLAYER_MAX_VELOCITY = 10.0f;
+    private static final float PLAYER_MOVE_VELOCITY = 1.0f;
 
     public PlayerEntity(long beginTick, Vector2F position, int id, int ownerID){
         super(beginTick, position,id,ownerID);
@@ -104,13 +105,14 @@ public class PlayerEntity extends CollideableEntity implements Movable{
             if (command.isSet(this.userCommandKey)){
                 deltaVelocity = deltaVelocity.add(command.deltaVector);
             }
-
         }
+        // deltaVelocity.normalize();
 
     }
     private void processVelocity() {
-        this.setVelocity(velocity.multiply(0.8f));                          // multiple cloning is performed
-        this.setVelocity(velocity.add(deltaVelocity));                          // multiple cloning is performed TODO
+        Vector2F playerMoveVector = deltaVelocity.getNormalized().multiply(PLAYER_MOVE_VELOCITY);
+
+        this.setVelocity(velocity.multiply(0.9f).add(playerMoveVector));
     }
 
     private void shoot(){

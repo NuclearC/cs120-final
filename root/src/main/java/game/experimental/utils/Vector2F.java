@@ -162,7 +162,10 @@ public class Vector2F implements Vector, Cloneable {
      */
     @Override
     public Vector2F getNormalized() {
-        Vector2F vector = new Vector2F(this.x / this.length(), this.y / this.length());
+        final float length = this.length();
+        if (length == 0.f)
+            return this;
+        Vector2F vector = new Vector2F(this.x / length, this.y / length);
         return vector;
     }
 
@@ -172,9 +175,12 @@ public class Vector2F implements Vector, Cloneable {
     @Override
     public void normalize() {
         float vectorLength = this.length();
-        this.x /= vectorLength;
-        this.y /= vectorLength;
+        if (vectorLength != 0.f) {
+            this.x /= vectorLength;
+            this.y /= vectorLength;
+        }
     }
+
     public static Vector2F randomVector(float xRangeBegging, float xRangeEnd, float yRangeBeggin, float yRangeEnd){
         float randomX = (float)Math.random() * xRangeEnd + xRangeBegging;
         float randomY = (float)Math.random() * yRangeEnd + yRangeBeggin;
