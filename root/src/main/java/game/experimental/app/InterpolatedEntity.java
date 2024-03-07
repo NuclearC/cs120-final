@@ -77,9 +77,19 @@ public class InterpolatedEntity {
     };
 
     private static final InterpolationStrategy<Float> floatAngleLinearInterpolator = new InterpolationStrategy<Float>() {
+        float normalizeAngle(float angle) {
+            final float _2PI = 2.f * (float)Math.PI;
+            while (angle > _2PI) angle -= _2PI;
+            while (angle < 0.f) angle += _2PI;
+            return angle;
+        }
+
         @Override 
         public Float interpolate(Float start, Float end, float factor) {
-            return start + (end - start) * factor;
+            final float PI = (float)Math.PI;
+            float diff = normalizeAngle(end - start);
+            diff = normalizeAngle(diff + PI) - PI;
+            return normalizeAngle(start + diff * factor);
         }
     };
 
