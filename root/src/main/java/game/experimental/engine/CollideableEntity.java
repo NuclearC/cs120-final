@@ -12,11 +12,12 @@ abstract public class CollideableEntity extends Entity {
      * @param id id of the entity
      * @param ownerID id of the owner
      */
-    public CollideableEntity(Vector2F position, int id, int ownerID){
-        super(position, id, ownerID);
+    public CollideableEntity(long beginTick, Vector2F position, int id, int ownerID){
+        super(beginTick, position, id, ownerID);
     }
 
-    public CollideableEntity() {
+    public CollideableEntity(long beginTick) {
+        super(beginTick);
     }
 
     public void onCollision(CollideableEntity entity){

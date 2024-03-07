@@ -14,8 +14,11 @@ public abstract class Entity {
     protected int ownerID;
     protected BoundingBox boundingBox;
     protected float angle;
-    public Entity(){
 
+    protected long beginTick;
+
+    public Entity(long beginTick) {
+        this.beginTick = beginTick;
     }
 
     /**
@@ -25,11 +28,21 @@ public abstract class Entity {
      * @param id unique ID of the object
      * @param ownerID ID of the owner
      */
-    public Entity(Vector2F position, int id, int ownerID){
+    public Entity(long beginTick, Vector2F position, int id, int ownerID){
+        this(beginTick);
+
         this.position = position;
         this.id = id;
         this.ownerID = ownerID;
         this.angle = 0;
+    }
+
+    /**
+     * Retrieve the tick count when this entity was created. 
+     * @return the tick count (synchronized with Room's tickCount)
+     */
+    public long getBeginTick() {
+        return this.beginTick;
     }
 
     /**

@@ -19,8 +19,8 @@ public class PlayerEntity extends CollideableEntity implements Movable{
     private static final float PLAYER_DEFAULT_SIZE = 50.f;           // TODO  not the best place to keep it
     private static final float PLAYER_MAX_VELOCITY = 10.0f;
 
-    public PlayerEntity(Vector2F position, int id, int ownerID){
-        super(position,id,ownerID);
+    public PlayerEntity(long beginTick, Vector2F position, int id, int ownerID){
+        super(beginTick, position,id,ownerID);
 
         this.size = new Vector2F(PLAYER_DEFAULT_SIZE, PLAYER_DEFAULT_SIZE);
 
@@ -31,8 +31,8 @@ public class PlayerEntity extends CollideableEntity implements Movable{
 
     }
 
-    public PlayerEntity(){
-        super();
+    public PlayerEntity(long beginTick){
+        super(beginTick);
     }
     public void setUserInputKey(int inputKey) {
         this.userInputKey = inputKey;
@@ -90,14 +90,12 @@ public class PlayerEntity extends CollideableEntity implements Movable{
         updateBoundingBox();
     }
 
-
     @Override
     public boolean remainsWithinBoundary(Vector2F newPosition) {
         BoundingBox roomBox = new BoundingBox(new Vector2F(),new Vector2F(Settings.MAP_WIDTH, Settings.MAP_HEIGHT));
         BoundingBox playerBox = new BoundingBox(newPosition, size);
         return roomBox.contains(playerBox);
     }
-
 
     private void processActions() {
 
@@ -128,7 +126,7 @@ public class PlayerEntity extends CollideableEntity implements Movable{
             System.out.println("collided with player");
             this.setImpulse(calculateImpulse((PlayerEntity)collided));
 
-            int SMOOTHNESS_FACTOR = 2;    // Try 0, 1 ,2, 3
+            float SMOOTHNESS_FACTOR = 0.5f;    // Try 0, 1 ,2, 3
             this.velocity = this.velocity.add(this.impulse.multiply(SMOOTHNESS_FACTOR));
         }
         else if(collided instanceof CollectableEntity){

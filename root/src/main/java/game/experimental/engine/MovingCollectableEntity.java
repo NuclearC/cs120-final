@@ -9,12 +9,12 @@ public class MovingCollectableEntity extends CollectableEntity implements Movabl
     private Vector2F velocity;
     private final Vector2F impulse = new Vector2F();     // initilized to o
 
-    public MovingCollectableEntity(Vector2F position, int id, int ownerID, int type){
-        super(position, id, ownerID, type);
+    public MovingCollectableEntity(long beginTick, Vector2F position, int id, int ownerID, int type){
+        super(beginTick, position, id, ownerID, type);
     }
 
-    public MovingCollectableEntity() {
-        super();
+    public MovingCollectableEntity(long beginTick) {
+        super(beginTick);
     }
 
     @Override

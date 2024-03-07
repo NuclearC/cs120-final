@@ -7,7 +7,7 @@ public interface Settings {
     float MAP_HEIGHT = 1000;
     float MAP_WIDTH = 1000;
 
-    float ENGINE_FRAMERATE = 200.F;    // to be changed to 20
+    float ENGINE_FRAMERATE = 30.F;    // to be changed to 20
     int MAX_NUMBER_OF_CLIENTS = 50;
 
     float PLAYER_MAX_VELOCITY = 100.f;

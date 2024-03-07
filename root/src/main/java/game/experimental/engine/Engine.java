@@ -2,7 +2,7 @@ package game.experimental.engine;
 
 import game.experimental.utils.Vector2F;
 
-import java.util.Date;
+import java.time.*;
 import java.util.ArrayList;
 
 /**
@@ -14,32 +14,44 @@ public class Engine {
     private final ClientChannel[] clientChannels = new ClientChannel[Settings.MAX_NUMBER_OF_CLIENTS];
     private static final Engine INSTANCE = new Engine();
 
-    private long lastFrameBeginTime;
+    private Instant engineStartTime;
+    private Instant lastFrameBeginTime;
 
-    private Engine(){
+    private Engine() {
         System.out.println("Engine created...");
         worlds.add(new World(worlds.size()));
         worlds.get(0).addRoom(1);
 
-        lastFrameBeginTime = 0;
-    }
-
-    private long getCurrentTime() {
-        return (new Date()).getTime();
+        lastFrameBeginTime = Instant.now();
+        engineStartTime = lastFrameBeginTime;
     }
 
     public static Engine getInstance(){
         return INSTANCE;
     }
 
+    public float getTimeSinceLastFrame() {
+        Duration elapsedTime = Duration.between(lastFrameBeginTime, Instant.now());
+        float elapsedTimeFl = (float)(elapsedTime.toNanos() / 1000) / 1.e6f;
+
+        return elapsedTimeFl;
+    }
+
+    public float getSimulationTime() {
+        Duration elapsedTime = Duration.between(engineStartTime, Instant.now());
+        float elapsedTimeFl = (float)(elapsedTime.toNanos() / 1000) / 1.e6f;
+
+        return elapsedTimeFl;
+    }
 
     public void runEngineFrame() {
-        long currentTime = getCurrentTime(),
-            elapsedTime = currentTime - lastFrameBeginTime;
+        Instant currentTime = Instant.now();
+        Duration elapsedTime = Duration.between(lastFrameBeginTime, currentTime);
+        float elapsedTimeFl = (float)(elapsedTime.toNanos() / 1000) / 1000.0f;
 
         final float requiredFrameTime = 1000.0f / Settings.ENGINE_FRAMERATE;
 
-        if ((float)elapsedTime > requiredFrameTime) {
+        if ((float)elapsedTimeFl > requiredFrameTime) {
             lastFrameBeginTime = currentTime;
             
             for (World world : worlds) {

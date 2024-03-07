@@ -11,7 +11,7 @@ import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 
-import java.util.ArrayList;
+import java.util.*;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -80,8 +80,13 @@ public class AppExperimental {
         input.subscribeWindow(gameWindow);
 
         ClientChannel myChannel = myClient.getChannelInstance();
+
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.f
+
+        Map<Entity, InterpolatedEntity> interpolateMap = new HashMap<>();
+        ArrayList<Entity> viewBoxData;
+        
         while ( !gameWindow.shouldClose() ) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
             glClearColor(229.f / 255.f, 207.f / 255.f, 163.f / 255.f, 1.0f);
@@ -90,7 +95,6 @@ public class AppExperimental {
 
             myChannel.update();
 
-            c.setViewport(myChannel.getViewport().getCenter(), myChannel.getViewportZoom());
 
             Gizmos.drawBoundingBox(myChannel.getViewport(), new float[]{1.f, 0.f, 0.f, 1.f});
 
@@ -100,12 +104,31 @@ public class AppExperimental {
             PlayerRenderer playerRenderer = PlayerRenderer.getSingleton();
             CollectableRenderer collectableRenderer = CollectableRenderer.getSingleton();
 
-            ArrayList<Entity> viewBoxData = myChannel.getViewBoxData();
+            viewBoxData = myChannel.getViewBoxData();
+
+            // timeSinceLastFrame = seconds passed since engine last time simulated a frame
+            // we get how much we are 'into' the frame
+            final float frameTime = 1.0f / Settings.ENGINE_FRAMERATE;
+            final float interpolationFactor = myChannel.getTimeSinceLastFrame() / (frameTime);
 
             if (viewBoxData != null)
                 for(Entity ent : viewBoxData) {
-                    if (ent.getClass().getName() == "game.experimental.engine.PlayerEntity")
-                        playerRenderer.draw(c, ent.getAngle(), ent.getPosition(), ent.getSize());
+                    if (ent.getClass().getName() == "game.experimental.engine.PlayerEntity") {
+
+                        InterpolatedEntity intEnt = interpolateMap.get(ent);
+                        if (intEnt == null) {
+                            intEnt = new InterpolatedEntity(ent);
+                            interpolateMap.put(ent, intEnt);
+                        } else {
+                            intEnt.interpolate(myChannel.getTickCount());
+                        }
+                        
+                        Vector2F interpolatedPos = intEnt.getPosition(interpolationFactor);
+                        playerRenderer.draw(c, intEnt.getAngle(interpolationFactor), interpolatedPos, ent.getSize());
+                        if (ent.getOwnerID() == myChannel.getId()) {
+                            c.setViewport(interpolatedPos, myChannel.getViewportZoom());
+                        }
+                    }
                     else if (ent.getClass().getName() == "game.experimental.engine.CollectableEntity"){
                         collectableRenderer.setColorModulation(1.f, 0.5f, 1.f);
                         collectableRenderer.draw(c, ent.getAngle(), ent.getPosition(), ent.getSize());}

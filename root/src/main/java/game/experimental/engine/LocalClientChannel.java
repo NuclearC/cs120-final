@@ -5,7 +5,7 @@ import game.experimental.utils.Vector2F;
 
 import java.util.ArrayList;
 
-public class LocalClientChannel implements ClientChannel{
+public class LocalClientChannel implements ClientChannel {
     private final Engine localEngine;
     private final int id;
     private int worldId;
@@ -17,9 +17,8 @@ public class LocalClientChannel implements ClientChannel{
     private int commandKey;
     private Vector2F cursorPosition;
 
-    private ArrayList<Entity> visibleEntites;
-
-    // center of the camera for this specific client (calculated from PlayerEntities)
+    // center of the camera for this specific client (calculated from
+    // PlayerEntities)
     public Vector2F viewportCenter;
     // zoom level of camera for this client
     // >1.0 zoom out
@@ -28,6 +27,7 @@ public class LocalClientChannel implements ClientChannel{
 
     /**
      * Representation for client in the Engine
+     * 
      * @param id id of the channel
      */
     public LocalClientChannel(int id) {
@@ -42,8 +42,23 @@ public class LocalClientChannel implements ClientChannel{
     }
 
     @Override
+    public long getTickCount() {
+        return localEngine.getWorld(worldId).getRoom(roomId).getTickCount();
+    }
+
+    @Override
+    public float getTimeSinceLastFrame() {
+        return localEngine.getTimeSinceLastFrame();
+    }
+
+    @Override
+    public float getSimulationTime() {
+        return localEngine.getSimulationTime();
+    }
+
+    @Override
     public void update() {
-//        sendControlData();
+        // sendControlData();
         localEngine.runEngineFrame();
     }
 
@@ -55,7 +70,8 @@ public class LocalClientChannel implements ClientChannel{
     @Override
     public void updateViewport() {
         viewportCenter = localEngine.getWorld(worldId).getRoom(roomId).getPlayer(this.playerId).getCenter();
-        viewport = new BoundingBox(viewportCenter.add(VIEWPORT_BASE.multiply(viewportZoom * -0.5f)), VIEWPORT_BASE.multiply(viewportZoom));
+        viewport = new BoundingBox(viewportCenter.add(VIEWPORT_BASE.multiply(viewportZoom * -0.5f)),
+                VIEWPORT_BASE.multiply(viewportZoom));
     }
 
     @Override
@@ -91,19 +107,21 @@ public class LocalClientChannel implements ClientChannel{
     }
 
     @Override
-    public void setCursorPosition(Vector2F cursorPosition){
+    public void setCursorPosition(Vector2F cursorPosition) {
         this.cursorPosition = cursorPosition;
     }
 
-    public void sendControlData(){
+    public void sendControlData() {
         PlayerEntity player = localEngine.getWorld(worldId).getRoom(roomId).getPlayer(this.playerId);
         player.setUserCommandKey(this.commandKey);
         player.setAngle(processCursorPosition());
     }
-    private float processCursorPosition(){
+
+    private float processCursorPosition() {
         return 0f;
     }
-    @Override 
+
+    @Override
     public BoundingBox getViewport() {
         return viewport;
     }

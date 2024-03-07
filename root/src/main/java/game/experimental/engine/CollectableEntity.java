@@ -20,15 +20,16 @@ public class CollectableEntity extends CollideableEntity {
      * @param ownerID ID of the owner entity
      * @param type integer to determine the type : 1 - Triangle , 2 - Square, 3- Diamond
      */
-    public CollectableEntity(Vector2F position, int id, int ownerID, int type) {
-        super(position, id, ownerID);
+    public CollectableEntity(long beginTick, Vector2F position, int id, int ownerID, int type) {
+        super(beginTick, position, id, ownerID);
         this.size = COLLECTABLE_DEFAULT_SIZE;
         this.type = getType(type);
         this.value = this.type.value;
         this.life = this.type.life;
     }
 
-    public CollectableEntity() {
+    public CollectableEntity(long beginTick) {
+        super(beginTick);
         this.type = getType(0);
         this.value = this.type.value;
         this.life = this.type.life;
@@ -104,17 +105,17 @@ public class CollectableEntity extends CollideableEntity {
         }
     }
     public void onCollision(CollideableEntity collided){
-        if(collided.getClass() == new PlayerEntity().getClass()){
+        if(collided.getClass() == new PlayerEntity(0).getClass()){
             //life should get decreased here
             //should be implemented on how to get removed TODO
             // System.out.println("collided with player");
             //it should ignore this case
         }
-        else if(collided.getClass() == new MovingCollectableEntity().getClass()){
+        else if(collided.getClass() == new MovingCollectableEntity(0).getClass()){
             // System.out.println("collided with moving collectable");
             ((MovingCollectableEntity) collided).setImpulse(new Vector2F());//TODO
         }
-        else if(collided.getClass() == new CollectableEntity().getClass()){
+        else if(collided.getClass() == new CollectableEntity(0).getClass()){
             // System.out.println("collided with static collectable");
 
         }

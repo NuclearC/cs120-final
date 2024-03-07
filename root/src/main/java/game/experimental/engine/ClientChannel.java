@@ -39,4 +39,8 @@ public interface ClientChannel {
 
     void update();
 
+    float getTimeSinceLastFrame();
+    float getSimulationTime();
+    
+    long getTickCount();
 }
