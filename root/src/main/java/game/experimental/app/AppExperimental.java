@@ -127,8 +127,7 @@ public class AppExperimental {
                         Vector2F interpolatedPos = intEnt.getPosition(interpolationFactor);                      
                         if (ent.getOwnerID() == myChannel.getId()) {
                             viewportCenter = interpolatedPos.add(new Vector2F(PlayerEntity.PLAYER_DEFAULT_SIZE / 2.f, PlayerEntity.PLAYER_DEFAULT_SIZE / 2.f));
-                            c.setViewport(interpolatedPos, myChannel.getViewportZoom());
-                            
+                            c.setViewport(viewportCenter, myChannel.getViewportZoom());
                         }
                         playerRenderer.draw(c, intEnt.getAngle(interpolationFactor), interpolatedPos, ent.getSize());
   
