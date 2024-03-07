@@ -31,7 +31,7 @@ public final class CollectableRenderer implements EntityRenderer {
     private float[] modulation;
 
     /**
-     * Load the necessary assets for drawing the player. 
+     * Load the necessary assets for drawing the collectable. 
      */
     @Override
     public void load() {
@@ -68,7 +68,7 @@ public final class CollectableRenderer implements EntityRenderer {
     }
     
     /**
-     * Draw the player with the specified Camera (view and projection), position and size
+     * Draw the collectable with the specified Camera (view and projection), position and size
      */
     @Override
     public void draw(Camera camera, float rotation, Vector2F position, Vector2F size) {
