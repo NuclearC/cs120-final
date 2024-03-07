@@ -17,6 +17,7 @@ public class Vector2F implements Vector, Cloneable {
         y = 0;
     }
 
+
     /**
      * creates vector with coordinates of (x,y)
      * @param x x coordinate of the vector

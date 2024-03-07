@@ -30,6 +30,9 @@ public class Room implements Settings{
 
         createQuadTree();
         fillMapWithCollectable(); // TODO
+        addPlayer(100);                     /////// WARNING TODO JUST FOR TEST
+        addPlayer(100);                     /////// WARNING TODO JUST FOR TEST
+
     }
 
     public QuadTree<Entity> getQuadTree() {
@@ -286,6 +289,7 @@ public class Room implements Settings{
             addMovingCollectable(i);
         for(int i = 0; i < this.level.MAX_NUMBER_OF_STATIC_COLLECTABLES; i++)
             addStaticCollectable(i);
+
     }
 
 

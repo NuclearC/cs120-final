@@ -126,6 +126,10 @@ public class PlayerEntity extends CollideableEntity implements Movable{
         }
         if(collided.getClass() == PlayerEntity.class) {
             System.out.println("collided with player");
+            this.setImpulse(calculateImpulse((PlayerEntity)collided));
+
+            int SMOOTHNESS_FACTOR = 2;    // Try 0, 1 ,2, 3
+            this.velocity = this.velocity.add(this.impulse.multiply(SMOOTHNESS_FACTOR));
         }
         else if(collided instanceof CollectableEntity){
             takeCollectible((CollectableEntity)collided);

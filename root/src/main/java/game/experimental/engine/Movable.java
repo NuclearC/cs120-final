@@ -34,7 +34,6 @@ public interface Movable {
      * While moving checks whether the object is still in the boundaries of the map.
      * @return true if the objects is within boundaries, false otherwise
      */
-
     boolean remainsWithinBoundary(Vector2F newPosition);
 
 }
