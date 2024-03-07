@@ -62,6 +62,7 @@ public class Room implements Settings {
                 }
             }
         }
+
         for (int i = 0; i < level.MAX_NUMBER_OF_MOVING_COLLECTABLES; i++) {
             if (movingCollectables[i] != null) {
                 ArrayList<Entity> collidedEntities = new ArrayList<>();
@@ -85,9 +86,20 @@ public class Room implements Settings {
         for (int i = 0; i < level.MAX_NUMBER_OF_PLAYERS; i++) {
             if (playerEntities[i] != null) {
                 PlayerEntity player = playerEntities[i];
+
+                for(int j =0 ; j < player.getProjectiles().size(); j ++) {
+                    quadTree.remove(player.getProjectiles().get(j), player.getProjectiles().get(j).getBoundingBox());
+                }
+
                 quadTree.remove(player, player.getBoundingBox());
                 player.simulate();
                 quadTree.insert(player, player.getBoundingBox());
+
+                for(int j =0 ; j < player.getProjectiles().size(); j ++) {
+                    Projectile  projectile = player.getProjectiles().get(j);
+                    if(projectile.remainsWithinBoundary(projectile.getPosition()))
+                        quadTree.insert(player.getProjectiles().get(j), player.getProjectiles().get(j).getBoundingBox());
+                }
             }
         }
 
@@ -141,7 +153,7 @@ public class Room implements Settings {
      * Now it returns only the player in an array. But quadtree queries should be
      * done and an array of entities should be returned.
      * 
-     * @param playerId the id of the player for which data is being generated.
+     * @param range the id of the player for which data is being generated.
      */
     public ArrayList<Entity> retrieveEntitiesInRange(BoundingBox range) {
         ArrayList<Entity> foundObjects = new ArrayList<>();

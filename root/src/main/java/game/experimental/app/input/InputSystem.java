@@ -2,7 +2,6 @@ package game.experimental.app.input;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-import java.sql.SQLOutput;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +10,7 @@ import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 
 import game.experimental.app.GameWindow;
-import game.experimental.utils.Vector2F;
+import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
 
 /**
  * Implements functionality for registering user input. 
@@ -42,6 +41,7 @@ public class InputSystem {
     private EnumMap<RegisteredInput, Boolean> inputToStateMap;
 
     private float cursorX, cursorY;
+    private boolean cursorState;
 
     public static InputSystem getInstance() {
         if (INSTANCE == null)
@@ -58,7 +58,8 @@ public class InputSystem {
         keyToInputMap.put(GLFW_KEY_D, RegisteredInput.MOVE_RIGHT);
         
         inputToStateMap = new EnumMap<RegisteredInput, Boolean>(RegisteredInput.class);
-    }
+    }    private float userInputAngle;
+
 
     public void setMapping(Map<Integer, RegisteredInput> keyToInputMap) {
         this.keyToInputMap = keyToInputMap;
@@ -85,6 +86,9 @@ public class InputSystem {
         cursorX = (float)x;
         cursorY = (float)y;
     }
+    public void onMouseClick(Boolean state) {
+        this.cursorState = state;
+    }
 
     public float getCursorX() {
         return cursorX;
@@ -92,6 +96,14 @@ public class InputSystem {
 
     public float getCursorY() {
         return cursorY;
+    }
+
+    public void updateShooting(){
+        if (cursorState){
+            inputToStateMap.put(RegisteredInput.ATTACK1, true);
+        }else{
+            inputToStateMap.put(RegisteredInput.ATTACK1, false);
+        }
     }
 
     public void subscribeWindow(GameWindow window) {
@@ -106,6 +118,8 @@ public class InputSystem {
                 }
                 else if (action == GLFW_RELEASE)
                     onKeyRelease(key);
+
+
             }
          });
 
@@ -114,6 +128,18 @@ public class InputSystem {
             public void invoke(long window, double x, double y) {
                 setCursorPosition(x, y);
             }
+         });
+
+         glfwSetMouseButtonCallback(windowHandle, new GLFWMouseButtonCallbackI() {
+             @Override
+             public void invoke(long l, int i, int i1, int i2) {
+
+                 if(i == 0 && i1 == 1 && i2 == 0){
+                     onMouseClick(true);}
+                 else
+                     onMouseClick(false);
+
+             }
          });
     }
 }

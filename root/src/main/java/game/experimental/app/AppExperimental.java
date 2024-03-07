@@ -147,7 +147,10 @@ public class AppExperimental {
             
             gameWindow.pollEvents();
 
+            input.updateShooting();
             int commandKey = 0;
+            if (input.getInputState(RegisteredInput.ATTACK1))
+                commandKey = PlayerCommand.SHOOT.set(commandKey);
             if (input.getInputState(RegisteredInput.MOVE_DOWN))
                 commandKey = PlayerCommand.DOWN.set(commandKey);
             if (input.getInputState(RegisteredInput.MOVE_UP))

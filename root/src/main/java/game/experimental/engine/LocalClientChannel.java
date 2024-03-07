@@ -16,6 +16,7 @@ public class LocalClientChannel implements ClientChannel {
     private ArrayList<Entity> visibleEntities;
     private int commandKey;
     private Vector2F cursorPosition;
+    private Boolean cursorState;
 
     // center of the camera for this specific client (calculated from
     // PlayerEntities)
@@ -109,6 +110,10 @@ public class LocalClientChannel implements ClientChannel {
     @Override
     public void setCursorPosition(Vector2F cursorPosition) {
         this.cursorPosition = cursorPosition;
+    }
+
+    public void setCursorState(Boolean state){
+        this.cursorState = state;
     }
 
     public void sendControlData() {

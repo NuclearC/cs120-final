@@ -4,6 +4,8 @@ import game.experimental.utils.BoundingBox;
 import game.experimental.utils.Vector2F;
 import game.experimental.engine.Settings;
 
+import java.util.ArrayList;
+
 /**
  * Represents a player in the game.
  */
@@ -13,8 +15,7 @@ public class PlayerEntity extends CollideableEntity implements Movable{
     private Vector2F deltaVelocity;
     private Vector2F impulse;
     private int userCommandKey;
-    private int userInputKey;
-    private float userInputAngle;
+    private ArrayList<Projectile> projectiles;
 
     private int life = 0;
     public static final float PLAYER_DEFAULT_SIZE = 50.f;           // TODO  not the best place to keep it
@@ -30,35 +31,30 @@ public class PlayerEntity extends CollideableEntity implements Movable{
         this.impulse = new Vector2F();
         this.deltaVelocity = new Vector2F();
         this.boundingBox = new BoundingBox(this.position, this.size);
-
+        this.projectiles = new ArrayList<>();
     }
 
     public PlayerEntity(long beginTick){
         super(beginTick);
     }
-    public void setUserInputKey(int inputKey) {
-        this.userInputKey = inputKey;
-    }
+
 
     public void setUserCommandKey(int commandKey){
         this.userCommandKey = commandKey;
     }
-    public void setUserInputAngle(float angle){
-        this.userInputAngle = angle;
-    }
-
     @Override
     public void simulate() {
-        // System.out.println("\t\tPlayer " + this.id + " simulated.");
-        // System.out.print("\t\t From "+ this.position.toString() + "      To ");
 
         this.processActions();
         this.processVelocity();
 
+        for(int i = 0; i < projectiles.size(); i++){
+            projectiles.get(i).simulate();
+        }
+
 //        float a = Settings.PLAYER_MAX_VELOCITY / Settings.ENGINE_FRAMERATE;
 
         this.move();
-        // System.out.println(this.position.toString());
     }
 
     @Override
@@ -79,6 +75,10 @@ public class PlayerEntity extends CollideableEntity implements Movable{
         return this.velocity;
     }
 
+    public ArrayList<Projectile> getProjectiles(){
+        return projectiles;
+    }
+
     @Override
     public void move() {
         Vector2F newPosition = this.position.add(this.velocity);
@@ -91,11 +91,10 @@ public class PlayerEntity extends CollideableEntity implements Movable{
             float x = Math.min(Math.max(newPosition.getX(),0),Settings.MAP_WIDTH - size.getX());
             float y = Math.min(Math.max(newPosition.getY(),0),Settings.MAP_HEIGHT - size.getY());
             this.position = new Vector2F(x, y);
-            System.out.println(this.position);
-            System.out.println("this is the porblem");
         }
 
         updateBoundingBox();
+
     }
 
     @Override
@@ -108,6 +107,9 @@ public class PlayerEntity extends CollideableEntity implements Movable{
     private void processActions() {
 
         deltaVelocity = new Vector2F(0, 0);
+        if(PlayerCommand.SHOOT.isSet(this.userCommandKey)){
+            shoot();
+        }
         for(PlayerCommand command: PlayerCommand.values()){
             if (command.isSet(this.userCommandKey)){
                 deltaVelocity = deltaVelocity.add(command.deltaVector);
@@ -124,6 +126,7 @@ public class PlayerEntity extends CollideableEntity implements Movable{
 
     private void shoot(){
         System.out.println("Shot");
+        projectiles.add(new Projectile(beginTick, angle,position, 1,this.id));
     }
 
     @Override
