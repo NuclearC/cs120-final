@@ -76,6 +76,13 @@ public class InterpolatedEntity {
         }
     };
 
+    private static final InterpolationStrategy<Float> floatAngleLinearInterpolator = new InterpolationStrategy<Float>() {
+        @Override 
+        public Float interpolate(Float start, Float end, float factor) {
+            return start + (end - start) * factor;
+        }
+    };
+
     /**
      * Create an interpolated entity wrapper around the given entity. 
      * @param entity the given entity
@@ -117,7 +124,7 @@ public class InterpolatedEntity {
      * @return the interpolated angle
      */
     public float getAngle(float factor) {
-        return angle.get(factor, floatLinearInterpolator);
+        return angle.get(factor, floatAngleLinearInterpolator);
     }
 
     /**

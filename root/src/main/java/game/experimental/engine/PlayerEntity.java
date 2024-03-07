@@ -16,7 +16,7 @@ public class PlayerEntity extends CollideableEntity implements Movable{
     private float userInputAngle;
 
     private int life = 0;
-    private static final float PLAYER_DEFAULT_SIZE = 50.f;           // TODO  not the best place to keep it
+    public static final float PLAYER_DEFAULT_SIZE = 50.f;           // TODO  not the best place to keep it
     private static final float PLAYER_MAX_VELOCITY = 10.0f;
     private static final float PLAYER_MOVE_VELOCITY = 1.0f;
 

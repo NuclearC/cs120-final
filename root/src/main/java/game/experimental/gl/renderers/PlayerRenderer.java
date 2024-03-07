@@ -82,8 +82,14 @@ public final class PlayerRenderer implements EntityRenderer {
         Vector2F barrelSize = new Vector2F(size.getX() * 0.5f, size.getY() * 0.3f);
         Vector2F barrelPosition = new Vector2F(size.getX() * 0.7f, size.getY() * 0.5f - barrelSize.getY() * 0.5f);
 
-        Matrix4x4F model = Matrix4x4F.transformTranslate(barrelPosition).multiply(Matrix4x4F.transformScale(barrelSize));
-        model = Matrix4x4F.transformTranslate(position).multiply(Matrix4x4F.transformRotate(rotation).multiply(model));
+
+        
+        Matrix4x4F model = Matrix4x4F.transformScale(barrelSize);
+        model = Matrix4x4F.transformTranslate(size.multiply(-0.5f)).multiply(model);
+        model = Matrix4x4F.transformTranslate(barrelPosition).multiply(model);
+        model = Matrix4x4F.transformRotate(rotation).multiply(model);
+
+        model = Matrix4x4F.transformTranslate(position.add(size.multiply(0.5f))).multiply(model);
         Matrix4x4F pvm = camera.getProjectionView().multiply(model);
 
         glUniform4fv(colorLocation, modulation);
@@ -92,7 +98,11 @@ public final class PlayerRenderer implements EntityRenderer {
         barrelTexture.bind();
         shape.draw();
 
-        model = Matrix4x4F.transformTranslate(position).multiply(Matrix4x4F.transformRotate(rotation).multiply(Matrix4x4F.transformScale(size)));
+        model = Matrix4x4F.transformScale(size);
+        model = Matrix4x4F.transformTranslate(size.multiply(-0.5f)).multiply(model);
+        model = Matrix4x4F.transformRotate(rotation).multiply(model);
+
+        model = Matrix4x4F.transformTranslate(position.add(size.multiply(0.5f))).multiply(model);
 
         pvm = camera.getProjectionView().multiply(model);
         glUniformMatrix4fv(pvmLocation, false, pvm.getRaw());

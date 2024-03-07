@@ -86,6 +86,8 @@ public class AppExperimental {
 
         Map<Entity, InterpolatedEntity> interpolateMap = new HashMap<>();
         ArrayList<Entity> viewBoxData;
+
+        Vector2F viewportCenter = new Vector2F();
         
         while ( !gameWindow.shouldClose() ) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
@@ -124,7 +126,9 @@ public class AppExperimental {
                         
                         Vector2F interpolatedPos = intEnt.getPosition(interpolationFactor);                      
                         if (ent.getOwnerID() == myChannel.getId()) {
+                            viewportCenter = interpolatedPos.add(new Vector2F(PlayerEntity.PLAYER_DEFAULT_SIZE / 2.f, PlayerEntity.PLAYER_DEFAULT_SIZE / 2.f));
                             c.setViewport(interpolatedPos, myChannel.getViewportZoom());
+                            
                         }
                         playerRenderer.draw(c, intEnt.getAngle(interpolationFactor), interpolatedPos, ent.getSize());
   
@@ -156,7 +160,8 @@ public class AppExperimental {
 
 
             myChannel.setUserCommandKey(commandKey);
-            myChannel.setCursorPosition(new Vector2F());
+            myChannel.setCursorPosition(new Vector2F(input.getCursorX() - 1280.f / 2.f, 
+                720.f / 2.f - input.getCursorY()));
 
             myChannel.sendControlData();
 

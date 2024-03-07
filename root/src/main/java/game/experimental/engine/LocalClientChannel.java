@@ -118,7 +118,7 @@ public class LocalClientChannel implements ClientChannel {
     }
 
     private float processCursorPosition() {
-        return 0f;
+        return (float)Math.atan2(this.cursorPosition.getY(), this.cursorPosition.getX());
     }
 
     @Override
