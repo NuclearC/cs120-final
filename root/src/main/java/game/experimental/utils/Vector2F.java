@@ -127,7 +127,7 @@ public class Vector2F implements Vector, Cloneable {
     /**
      * Gives the angel between two vectors(should be revised about the double)
      * @param anotherVector is the second operand
-     * @return the angel between two vectors in radians as float
+     * @return the angel between two vectors in radians as float, NaN if one of the vectors is 0.
      */
     @Override
     public float getAngle(Vector anotherVector) {

@@ -2,6 +2,7 @@ package game.experimental.engine;
 
 import game.experimental.utils.BoundingBox;
 import game.experimental.utils.Vector2F;
+import game.experimental.engine.Settings;
 
 /**
  * Represents a player in the game.
@@ -86,6 +87,12 @@ public class PlayerEntity extends CollideableEntity implements Movable{
         if (remainsWithinBoundary(newPosition)){
             this.position = newPosition;
             this.impulse = new Vector2F();
+        }else {
+            float x = Math.min(Math.max(newPosition.getX(),0),Settings.MAP_WIDTH - size.getX());
+            float y = Math.min(Math.max(newPosition.getY(),0),Settings.MAP_HEIGHT - size.getY());
+            this.position = new Vector2F(x, y);
+            System.out.println(this.position);
+            System.out.println("this is the porblem");
         }
 
         updateBoundingBox();
