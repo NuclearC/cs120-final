@@ -76,8 +76,8 @@ public final class ProjectileRenderer implements EntityRenderer {
         int colorLocation = program.getUniform("color");
         glUniform4fv(colorLocation, modulation);
 
-        Matrix4x4F model = Matrix4x4F.transformScale(size);
-        model = Matrix4x4F.transformTranslate(size.multiply(-0.5f)).multiply(model);
+        Matrix4x4F model = Matrix4x4F.transformScale(size.multiply(2.f));
+        model = Matrix4x4F.transformTranslate(size.multiply(-1.0f)).multiply(model);
         model = Matrix4x4F.transformRotate(rotation).multiply(model);
         model = Matrix4x4F.transformTranslate(position.add(size.multiply(0.5f))).multiply(model);
 

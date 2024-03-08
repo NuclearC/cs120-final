@@ -6,16 +6,16 @@ import game.experimental.utils.Vector2F;
 public class Projectile extends CollideableEntity implements Movable {
 
     private Vector2F velocity;
-    int SOME_FACTOR = 25;
+    int SOME_FACTOR = 50;
 
     private static final float PROJECTILE_SIZE = 10.f;
     private static final float PI = (float)Math.PI;
 
     public Projectile(long beginTick, float angle, Vector2F position, int id, int ownerID) {
 
-        super(beginTick, position.add(new Vector2F(
-            (float) Math.cos(angle) * 20.f + (float) Math.sin(-angle) * PROJECTILE_SIZE * 0.5f, 
-            (float) Math.sin(-angle) * 20.f - (float) Math.cos(angle) * PROJECTILE_SIZE * 0.5f)),
+        super(beginTick, position.subtract(new Vector2F(
+             PROJECTILE_SIZE * 0.5f, 
+            PROJECTILE_SIZE * 0.5f)),
                 id, ownerID);
 
         this.velocity = new Vector2F((float) Math.cos(angle), (float) Math.sin(-angle)).multiply(SOME_FACTOR);
