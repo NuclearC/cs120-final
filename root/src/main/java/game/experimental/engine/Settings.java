@@ -42,8 +42,8 @@ public interface Settings {
 
                 default:  // case of 1 and more
                     MAX_NUMBER_OF_PLAYERS = 10;
-                    MAX_NUMBER_OF_MOVING_COLLECTABLES = 1;
-                    MAX_NUMBER_OF_STATIC_COLLECTABLES = 1;
+                    MAX_NUMBER_OF_MOVING_COLLECTABLES = 100;
+                    MAX_NUMBER_OF_STATIC_COLLECTABLES = 100;
 
             }
         }

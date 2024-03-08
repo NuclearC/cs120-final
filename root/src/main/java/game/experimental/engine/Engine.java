@@ -1,8 +1,7 @@
 package game.experimental.engine;
 
-import game.experimental.utils.Vector2F;
+import game.experimental.utils.Clock;
 
-import java.time.*;
 import java.util.ArrayList;
 
 /**
@@ -14,44 +13,35 @@ public class Engine {
     private final ClientChannel[] clientChannels = new ClientChannel[Settings.MAX_NUMBER_OF_CLIENTS];
     private static final Engine INSTANCE = new Engine();
 
-    private Instant engineStartTime;
-    private Instant lastFrameBeginTime;
+    private float lastFrameBeginTime;
 
     private Engine() {
         System.out.println("Engine created...");
         worlds.add(new World(worlds.size()));
         worlds.get(0).addRoom(1);
 
-        lastFrameBeginTime = Instant.now();
-        engineStartTime = lastFrameBeginTime;
+        lastFrameBeginTime = this.getSimulationTime();
     }
 
     public static Engine getInstance(){
         return INSTANCE;
     }
 
-    public float getTimeSinceLastFrame() {
-        Duration elapsedTime = Duration.between(lastFrameBeginTime, Instant.now());
-        float elapsedTimeFl = (float)(elapsedTime.toNanos() / 1000) / 1.e6f;
-
-        return elapsedTimeFl;
+    public float getSimulationTime() {
+        return Clock.now();
     }
 
-    public float getSimulationTime() {
-        Duration elapsedTime = Duration.between(engineStartTime, Instant.now());
-        float elapsedTimeFl = (float)(elapsedTime.toNanos() / 1000) / 1.e6f;
-
-        return elapsedTimeFl;
+    public float getTimeSinceLastFrame() {
+        return (getSimulationTime() - this.lastFrameBeginTime);
     }
 
     public void runEngineFrame() {
-        Instant currentTime = Instant.now();
-        Duration elapsedTime = Duration.between(lastFrameBeginTime, currentTime);
-        float elapsedTimeFl = (float)(elapsedTime.toNanos() / 1000) / 1000.0f;
+        final float currentTime = getSimulationTime();
+        final float elapsedTime = currentTime - lastFrameBeginTime;
 
-        final float requiredFrameTime = 1000.0f / Settings.ENGINE_FRAMERATE;
+        final float requiredFrameTime = 1.0f / Settings.ENGINE_FRAMERATE;
 
-        if ((float)elapsedTimeFl > requiredFrameTime) {
+        if (elapsedTime > requiredFrameTime) {
             lastFrameBeginTime = currentTime;
             
             for (World world : worlds) {

@@ -1,6 +1,7 @@
 package game.experimental.engine;
 
 import game.experimental.utils.BoundingBox;
+import game.experimental.utils.Clock;
 import game.experimental.utils.Vector2F;
 
 import java.util.ArrayList;
@@ -21,6 +22,9 @@ public class PlayerEntity extends CollideableEntity implements Movable {
     private static final float PLAYER_MAX_VELOCITY = 10.0f;
     private static final float PLAYER_MOVE_VELOCITY = 1.0f;
 
+    // time in seconds when this player last time shot a projectile
+    private float lastShotTime;
+
     public PlayerEntity(long beginTick, Vector2F position, int id, int ownerID) {
         super(beginTick, position, id, ownerID);
 
@@ -31,6 +35,8 @@ public class PlayerEntity extends CollideableEntity implements Movable {
         this.deltaVelocity = new Vector2F();
         this.boundingBox = new BoundingBox(this.position, this.size);
         this.projectiles = new ArrayList<>();
+
+        this.lastShotTime = 0;
     }
 
     public PlayerEntity(long beginTick) {
@@ -127,6 +133,11 @@ public class PlayerEntity extends CollideableEntity implements Movable {
     }
 
     private void shoot(){
+        final float currentTime = Clock.now();
+        final float elapsedTimeSinceLastShot = currentTime - this.lastShotTime;
+        if (elapsedTimeSinceLastShot < 0.2f)
+            return;
+        this.lastShotTime = currentTime;
 
         int index = getNextProjectileIndex();
         if (index == projectiles.size())
