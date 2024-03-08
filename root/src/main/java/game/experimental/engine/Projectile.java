@@ -7,7 +7,7 @@ public class Projectile extends CollideableEntity implements Movable {
 
     private Vector2F velocity;
     
-    private final int FORCE = 5;
+    private final int FORCE = 15;
     int SOME_FACTOR = 25;
     Boolean tobeRemoved;
 

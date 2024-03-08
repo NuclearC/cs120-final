@@ -2,8 +2,6 @@ package game.experimental.gl.renderers;
 
 import java.io.IOException;
 
-import static org.lwjgl.opengl.GL20.glUniform4fv;
-import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
 import static org.lwjgl.opengl.GL46.*;
 
 import game.experimental.gl.*;
