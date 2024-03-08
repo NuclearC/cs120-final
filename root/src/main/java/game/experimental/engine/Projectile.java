@@ -17,6 +17,7 @@ public class Projectile extends CollideableEntity implements Movable{
     @Override
     public void simulate() {
         move();
+        updateBoundingBox();
     }
 
     @Override

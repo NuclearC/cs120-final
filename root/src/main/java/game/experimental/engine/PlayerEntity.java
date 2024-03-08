@@ -158,7 +158,7 @@ public class PlayerEntity extends CollideableEntity implements Movable{
     }
 
     public void removeProjectileFromList(int projectileIndex){
-        this.projectiles.set(projectileIndex, null);
+        this.projectiles.remove(null);
     }
     private int getNextProjectileIndex(){
         for (int i = 0; i < projectiles.size(); i++){
