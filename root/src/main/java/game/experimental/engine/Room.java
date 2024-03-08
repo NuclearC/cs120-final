@@ -34,8 +34,8 @@ public class Room implements Settings {
 
         createQuadTree();
         fillMapWithCollectable(); // TODO
-        addPlayer(100); /////// WARNING TODO JUST FOR TEST
-        addPlayer(100); /////// WARNING TODO JUST FOR TEST
+        addPlayer(2); /////// WARNING TODO JUST FOR TEST
+        addPlayer(3); /////// WARNING TODO JUST FOR TEST
 
     }
 
@@ -93,11 +93,16 @@ public class Room implements Settings {
 
                 quadTree.remove(player, player.getBoundingBox());
                 player.simulate();
-                quadTree.insert(player, player.getBoundingBox());
+                if (player.getLifeLevel() > 0){
+                    quadTree.insert(player, player.getBoundingBox());
+                }
+                else{
+                    removePlayer(player.id);
+                }
 
                 for(int j =0 ; j < player.getProjectiles().size(); j ++) {
                     Projectile  projectile = player.getProjectiles().get(j);
-                    if (projectile.remainsWithinBoundary(projectile.getPosition()))
+                    if (projectile.remainsWithinBoundary(projectile.getPosition()) && !projectile.tobeRemoved)
                         quadTree.insert(player.getProjectiles().get(j), player.getProjectiles().get(j).getBoundingBox());
                     else{
                         player.removeProjectileFromList(j);
@@ -114,7 +119,7 @@ public class Room implements Settings {
                 if (collectable.getLife() > 0)
                     quadTree.insert(collectable, collectable.getBoundingBox());
                 else
-                    collectable = null;
+                    movingCollectables[i] = null;
             }
         }
         for (int i = 0; i < level.MAX_NUMBER_OF_STATIC_COLLECTABLES; i++) {
@@ -179,7 +184,7 @@ public class Room implements Settings {
                 // insert the player into the quadtree for collision checks
                 quadTree.insert(player, player.getBoundingBox());
                 playerEntities[i] = player;
-                System.out.println("\tPlayer Added to " + id + " Room");
+                System.out.println("\tPlayer"+ player.getId() +"Added to " + id + " Room");
                 return player;
             }
         System.out.println("No free place to add player"); // a better ways needs to be implemented TODO
@@ -209,11 +214,11 @@ public class Room implements Settings {
      * 
      * @param ownerId id of the client whose player is to be removed.
      */
-    public void removePlayer(int ownerId) {
+    public void removePlayer(int playerId) {
         for (PlayerEntity player : playerEntities) {
-            if (player.ownerID == ownerId) {
-                playerEntities[player.getId()] = null;
-                // shouldn't we remove it also from tree?????? // TODO
+            if (player != null && player.getId() == playerId) {
+                System.out.println(player.getId() + " removed");
+                playerEntities[playerId] = null;
                 return;
             }
         }

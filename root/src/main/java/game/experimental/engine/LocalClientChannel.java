@@ -118,7 +118,12 @@ public class LocalClientChannel implements ClientChannel {
 
     public void sendControlData() {
         PlayerEntity player = localEngine.getWorld(worldId).getRoom(roomId).getPlayer(this.playerId);
-        player.setUserCommandKey(this.commandKey);
+        try {
+            player.setUserCommandKey(this.commandKey);
+        }
+        catch (NullPointerException e){
+            System.out.println(getPlayerId() + " failed");
+        }
         player.setAngle(processCursorPosition());
     }
 

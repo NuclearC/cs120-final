@@ -25,7 +25,7 @@ public class PlayerEntity extends CollideableEntity implements Movable{
         super(beginTick, position,id,ownerID);
 
         this.size = new Vector2F(PLAYER_DEFAULT_SIZE, PLAYER_DEFAULT_SIZE);
-
+        this.life = 100;
         this.velocity = new Vector2F();
         this.impulse = new Vector2F();
         this.deltaVelocity = new Vector2F();
@@ -110,7 +110,8 @@ public class PlayerEntity extends CollideableEntity implements Movable{
         if(PlayerCommand.SHOOT.isSet(this.userCommandKey)){
             shoot();
         }
-        for(PlayerCommand command: PlayerCommand.values()){
+        for(PlayerCommand command
+: PlayerCommand.values()){
             if (command.isSet(this.userCommandKey)){
                 deltaVelocity = deltaVelocity.add(command.deltaVector);
             }
@@ -125,7 +126,6 @@ public class PlayerEntity extends CollideableEntity implements Movable{
     }
 
     private void shoot(){
-        System.out.println("Shot");
         int index = getNextProjectileIndex();
         if(index == projectiles.size())
             projectiles.add( new Projectile(beginTick, angle,getCenter(), index, this.id));
@@ -139,11 +139,16 @@ public class PlayerEntity extends CollideableEntity implements Movable{
             return;
         }
         if(collided.getClass() == PlayerEntity.class) {
-            System.out.println("collided with player");
             this.setImpulse(calculateImpulse((PlayerEntity)collided));
-
             float SMOOTHNESS_FACTOR = 0.5f;    // Try 0, 1 ,2, 3
             this.velocity = this.velocity.add(this.impulse.multiply(SMOOTHNESS_FACTOR));
+        }
+        else if(collided instanceof Projectile){
+            Projectile projectile = (Projectile) collided;
+            if(projectile.ownerID == this.id)
+                return;
+            this.life -= projectile.getForce();
+            projectile.onCollision(this);
         }
         else if(collided instanceof CollectableEntity){
             takeCollectible((CollectableEntity)collided);
@@ -169,4 +174,7 @@ public class PlayerEntity extends CollideableEntity implements Movable{
         return projectiles.size();
     }
 
+    public int getLifeLevel(){
+        return this.life;
+    }
 }
