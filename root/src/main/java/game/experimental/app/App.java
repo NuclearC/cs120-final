@@ -89,7 +89,6 @@ public class App {
 			glClearColor(229.f / 255.f, 207.f / 255.f, 163.f / 255.f, 1.0f);
 			
 			PlayerRenderer playerRenderer = PlayerRenderer.getSingleton();
-			System.out.println("ygvvv");
 			playerRenderer.draw(c, 0.f, new Vector2F(100, 100), new Vector2F(100, 100));
 			playerRenderer.draw(c, 1.f, new Vector2F(100, 200), new Vector2F(100, 200));
 

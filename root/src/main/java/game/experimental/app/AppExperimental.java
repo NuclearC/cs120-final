@@ -105,6 +105,7 @@ public class AppExperimental {
 
             PlayerRenderer playerRenderer = PlayerRenderer.getSingleton();
             CollectableRenderer collectableRenderer = CollectableRenderer.getSingleton();
+
             ProjectileRenderer projectileRenderer = ProjectileRenderer.getSingleton();
 
             viewBoxData = myChannel.getViewBoxData();

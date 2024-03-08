@@ -16,11 +16,9 @@ public class Projectile extends CollideableEntity implements Movable {
 
     public Projectile(long beginTick,float angle, Vector2F position, int id, int ownerID) {
 
-
-
         super(beginTick, position.subtract(new Vector2F(
-             PROJECTILE_SIZE * 0.5f, 
-            PROJECTILE_SIZE * 0.5f)),
+                        PROJECTILE_SIZE * 0.5f,
+                        PROJECTILE_SIZE * 0.5f).subtract(new Vector2F((float) Math.cos(angle), (float) Math.sin(-angle)).multiply(22))),
                 id, ownerID);
 
         this.velocity = new Vector2F((float) Math.cos(angle), (float) Math.sin(-angle)).multiply(SOME_FACTOR);
@@ -66,14 +64,10 @@ public class Projectile extends CollideableEntity implements Movable {
 
     @Override
     public void onCollision(CollideableEntity collided) {
-//        if (this == collided){
-//            return;
-//        }
 
         if(collided.getClass() == PlayerEntity.class && collided.getId() != this.ownerID) {
             tobeRemoved = true;
         }
-
     }
 
     public int getForce(){

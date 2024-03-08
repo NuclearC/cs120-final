@@ -37,7 +37,8 @@ public class Client {
      * Returns the ClientChannel of the client.
      * Pre-condition: ConnectionMode is set
      * Post-condition: Channel between client and server is established
-     * @return the channel of the client
+     * @return the channel			System.out.println("ygvvv");
+ of the client
      */
     public ClientChannel getChannelInstance(){
         if(channelInstance == null){

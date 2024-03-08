@@ -6,7 +6,6 @@ import game.experimental.utils.*;
  * Represents collectable objects.
  */
 public class CollectableEntity extends CollideableEntity {
-
     private static final Vector2F COLLECTABLE_DEFAULT_SIZE = new Vector2F(15.f, 15.f);
 
     private final int value;
