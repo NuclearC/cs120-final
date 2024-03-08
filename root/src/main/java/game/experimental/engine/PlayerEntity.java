@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * Represents a player in the game.
  */
-public class PlayerEntity extends CollideableEntity implements Movable{
+public class PlayerEntity extends CollideableEntity implements Movable {
 
     private Vector2F velocity;
     private Vector2F deltaVelocity;
@@ -17,12 +17,12 @@ public class PlayerEntity extends CollideableEntity implements Movable{
     private ArrayList<Projectile> projectiles;
 
     private int life = 0;
-    public static final float PLAYER_DEFAULT_SIZE = 50.f;           // TODO  not the best place to keep it
+    public static final float PLAYER_DEFAULT_SIZE = 50.f; // TODO not the best place to keep it
     private static final float PLAYER_MAX_VELOCITY = 10.0f;
     private static final float PLAYER_MOVE_VELOCITY = 1.0f;
 
-    public PlayerEntity(long beginTick, Vector2F position, int id, int ownerID){
-        super(beginTick, position,id,ownerID);
+    public PlayerEntity(long beginTick, Vector2F position, int id, int ownerID) {
+        super(beginTick, position, id, ownerID);
 
         this.size = new Vector2F(PLAYER_DEFAULT_SIZE, PLAYER_DEFAULT_SIZE);
         this.life = 100;
@@ -33,26 +33,26 @@ public class PlayerEntity extends CollideableEntity implements Movable{
         this.projectiles = new ArrayList<>();
     }
 
-    public PlayerEntity(long beginTick){
+    public PlayerEntity(long beginTick) {
         super(beginTick);
     }
 
-
-    public void setUserCommandKey(int commandKey){
+    public void setUserCommandKey(int commandKey) {
         this.userCommandKey = commandKey;
     }
+
     @Override
     public void simulate() {
 
         this.processActions();
         this.processVelocity();
 
-        for(int i = 0; i < projectiles.size(); i++){
+        for (int i = 0; i < projectiles.size(); i++) {
             if (projectiles.get(i) != null)
                 projectiles.get(i).simulate();
         }
 
-//        float a = Settings.PLAYER_MAX_VELOCITY / Settings.ENGINE_FRAMERATE;
+        // float a = Settings.PLAYER_MAX_VELOCITY / Settings.ENGINE_FRAMERATE;
 
         this.move();
     }
@@ -62,7 +62,7 @@ public class PlayerEntity extends CollideableEntity implements Movable{
         this.velocity = velocity;
         if (this.velocity.length() > PLAYER_MAX_VELOCITY) {
             this.velocity = this.deltaVelocity.getNormalized().multiply(PLAYER_MAX_VELOCITY);
-        }   
+        }
     }
 
     @Override
@@ -75,7 +75,7 @@ public class PlayerEntity extends CollideableEntity implements Movable{
         return this.velocity;
     }
 
-    public ArrayList<Projectile> getProjectiles(){
+    public ArrayList<Projectile> getProjectiles() {
         return projectiles;
     }
 
@@ -84,12 +84,12 @@ public class PlayerEntity extends CollideableEntity implements Movable{
         Vector2F newPosition = this.position.add(this.velocity);
         newPosition = newPosition.add(this.impulse);
 
-        if (remainsWithinBoundary(newPosition)){
+        if (remainsWithinBoundary(newPosition)) {
             this.position = newPosition;
             this.impulse = new Vector2F();
-        }else {
-            float x = Math.min(Math.max(newPosition.getX(),0),Settings.MAP_WIDTH - size.getX());
-            float y = Math.min(Math.max(newPosition.getY(),0),Settings.MAP_HEIGHT - size.getY());
+        } else {
+            float x = Math.min(Math.max(newPosition.getX(), 0), Settings.MAP_WIDTH - size.getX());
+            float y = Math.min(Math.max(newPosition.getY(), 0), Settings.MAP_HEIGHT - size.getY());
             this.position = new Vector2F(x, y);
         }
 
@@ -99,7 +99,7 @@ public class PlayerEntity extends CollideableEntity implements Movable{
 
     @Override
     public boolean remainsWithinBoundary(Vector2F newPosition) {
-        BoundingBox roomBox = new BoundingBox(new Vector2F(),new Vector2F(Settings.MAP_WIDTH, Settings.MAP_HEIGHT));
+        BoundingBox roomBox = new BoundingBox(new Vector2F(), new Vector2F(Settings.MAP_WIDTH, Settings.MAP_HEIGHT));
         BoundingBox playerBox = new BoundingBox(newPosition, size);
         return roomBox.contains(playerBox);
     }
@@ -107,37 +107,49 @@ public class PlayerEntity extends CollideableEntity implements Movable{
     private void processActions() {
 
         deltaVelocity = new Vector2F(0, 0);
-        if(PlayerCommand.SHOOT.isSet(this.userCommandKey)){
+        if (PlayerCommand.SHOOT.isSet(this.userCommandKey)) {
             shoot();
         }
+<<<<<<< HEAD
         for(PlayerCommand command
 : PlayerCommand.values()){
             if (command.isSet(this.userCommandKey)){
+=======
+        for (PlayerCommand command : PlayerCommand.values()) {
+            if (command.isSet(this.userCommandKey)) {
+>>>>>>> 50f5ee9da1f51e66acf9143a35220f298d29686a
                 deltaVelocity = deltaVelocity.add(command.deltaVector);
             }
         }
         // deltaVelocity.normalize();
 
     }
+
     private void processVelocity() {
         Vector2F playerMoveVector = deltaVelocity.getNormalized().multiply(PLAYER_MOVE_VELOCITY);
 
         this.setVelocity(velocity.multiply(0.9f).add(playerMoveVector));
     }
 
+<<<<<<< HEAD
     private void shoot(){
+=======
+    private void shoot() {
+        // System.out.println("Shot");
+>>>>>>> 50f5ee9da1f51e66acf9143a35220f298d29686a
         int index = getNextProjectileIndex();
-        if(index == projectiles.size())
-            projectiles.add( new Projectile(beginTick, angle,getCenter(), index, this.id));
+        if (index == projectiles.size())
+            projectiles.add(new Projectile(beginTick, angle, getCenter(), index, this.id));
         else
-            projectiles.set(index, new Projectile(beginTick, angle,getCenter(), index, this.id));
+            projectiles.set(index, new Projectile(beginTick, angle, getCenter(), index, this.id));
     }
 
     @Override
-    public void onCollision(CollideableEntity collided){
-        if (this == collided){
+    public void onCollision(CollideableEntity collided) {
+        if (this == collided) {
             return;
         }
+<<<<<<< HEAD
         if(collided.getClass() == PlayerEntity.class) {
             this.setImpulse(calculateImpulse((PlayerEntity)collided));
             float SMOOTHNESS_FACTOR = 0.5f;    // Try 0, 1 ,2, 3
@@ -152,22 +164,33 @@ public class PlayerEntity extends CollideableEntity implements Movable{
         }
         else if(collided instanceof CollectableEntity){
             takeCollectible((CollectableEntity)collided);
+=======
+        if (collided.getClass() == PlayerEntity.class) {
+            System.out.println("collided with player");
+            this.setImpulse(calculateImpulse((PlayerEntity) collided));
+
+            float SMOOTHNESS_FACTOR = 0.5f; // Try 0, 1 ,2, 3
+            this.velocity = this.velocity.add(this.impulse.multiply(SMOOTHNESS_FACTOR));
+        } else if (collided instanceof CollectableEntity) {
+            takeCollectible((CollectableEntity) collided);
+>>>>>>> 50f5ee9da1f51e66acf9143a35220f298d29686a
             collided.onCollision(this);
         }
     }
 
-    private void takeCollectible(CollectableEntity collectible){
-        System.out.println(collectible.getClass() +  " is eaten");
+    private void takeCollectible(CollectableEntity collectible) {
+        System.out.println(collectible.getClass() + " is eaten");
         collectible.setLife(0);
         this.life += collectible.getValue();
     }
 
-    public void removeProjectileFromList(int projectileIndex){
+    public void removeProjectileFromList(int projectileIndex) {
         this.projectiles.remove(null);
     }
-    private int getNextProjectileIndex(){
-        for (int i = 0; i < projectiles.size(); i++){
-            if(projectiles.get(i) == null){
+
+    private int getNextProjectileIndex() {
+        for (int i = 0; i < projectiles.size(); i++) {
+            if (projectiles.get(i) == null) {
                 return i;
             }
         }
