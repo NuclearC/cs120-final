@@ -1,8 +1,0 @@
-World : addPlayer, removePlayer()
-Room : remove player
-Settings: inner class enum for defining different levels for game 
-	Added level instance variable in Room
-Vector: toString methods
-
-Main: a little simulation workflow for World.
-# Please enter the commit message for your changes. Lines starting

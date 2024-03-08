@@ -28,3 +28,5 @@ target/
 # vscode
 .vscode/
 .idea/
+# stupid platform again
+root/pom.xml
