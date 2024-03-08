@@ -8,20 +8,14 @@ public class Projectile extends CollideableEntity implements Movable {
     private Vector2F velocity;
     private final int FORCE = 5;
     int SOME_FACTOR = 25;
-<<<<<<< HEAD
     Boolean tobeRemoved;
-    public Projectile(long beginTick,float angle, Vector2F position, int id, int ownerID) {
-
-        super(beginTick, position.add(new Vector2F((float)Math.cos(-angle), (float)Math.sin(-angle)).multiply(20)), id, ownerID);
-        this.velocity = new Vector2F((float)Math.cos(angle), (float)Math.sin(-angle)).multiply(SOME_FACTOR);
-        this.size = new Vector2F(10,10);
-        this.tobeRemoved = false;
-=======
 
     private static final float PROJECTILE_SIZE = 10.f;
     private static final float PI = (float)Math.PI;
 
-    public Projectile(long beginTick, float angle, Vector2F position, int id, int ownerID) {
+    public Projectile(long beginTick,float angle, Vector2F position, int id, int ownerID) {
+
+
 
         super(beginTick, position.add(new Vector2F(
             (float) Math.cos(angle) * 20.f + (float) Math.sin(-angle) * PROJECTILE_SIZE * 0.5f, 
@@ -32,7 +26,8 @@ public class Projectile extends CollideableEntity implements Movable {
 
         this.angle = angle;
         this.size = new Vector2F(PROJECTILE_SIZE, PROJECTILE_SIZE);
->>>>>>> 50f5ee9da1f51e66acf9143a35220f298d29686a
+        this.tobeRemoved = false;
+
     }
 
     @Override

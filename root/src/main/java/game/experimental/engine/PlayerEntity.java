@@ -110,14 +110,9 @@ public class PlayerEntity extends CollideableEntity implements Movable {
         if (PlayerCommand.SHOOT.isSet(this.userCommandKey)) {
             shoot();
         }
-<<<<<<< HEAD
-        for(PlayerCommand command
-: PlayerCommand.values()){
+        for(PlayerCommand command : PlayerCommand.values()){
             if (command.isSet(this.userCommandKey)){
-=======
-        for (PlayerCommand command : PlayerCommand.values()) {
-            if (command.isSet(this.userCommandKey)) {
->>>>>>> 50f5ee9da1f51e66acf9143a35220f298d29686a
+
                 deltaVelocity = deltaVelocity.add(command.deltaVector);
             }
         }
@@ -131,12 +126,8 @@ public class PlayerEntity extends CollideableEntity implements Movable {
         this.setVelocity(velocity.multiply(0.9f).add(playerMoveVector));
     }
 
-<<<<<<< HEAD
     private void shoot(){
-=======
-    private void shoot() {
-        // System.out.println("Shot");
->>>>>>> 50f5ee9da1f51e66acf9143a35220f298d29686a
+
         int index = getNextProjectileIndex();
         if (index == projectiles.size())
             projectiles.add(new Projectile(beginTick, angle, getCenter(), index, this.id));
@@ -149,7 +140,6 @@ public class PlayerEntity extends CollideableEntity implements Movable {
         if (this == collided) {
             return;
         }
-<<<<<<< HEAD
         if(collided.getClass() == PlayerEntity.class) {
             this.setImpulse(calculateImpulse((PlayerEntity)collided));
             float SMOOTHNESS_FACTOR = 0.5f;    // Try 0, 1 ,2, 3
@@ -164,16 +154,6 @@ public class PlayerEntity extends CollideableEntity implements Movable {
         }
         else if(collided instanceof CollectableEntity){
             takeCollectible((CollectableEntity)collided);
-=======
-        if (collided.getClass() == PlayerEntity.class) {
-            System.out.println("collided with player");
-            this.setImpulse(calculateImpulse((PlayerEntity) collided));
-
-            float SMOOTHNESS_FACTOR = 0.5f; // Try 0, 1 ,2, 3
-            this.velocity = this.velocity.add(this.impulse.multiply(SMOOTHNESS_FACTOR));
-        } else if (collided instanceof CollectableEntity) {
-            takeCollectible((CollectableEntity) collided);
->>>>>>> 50f5ee9da1f51e66acf9143a35220f298d29686a
             collided.onCollision(this);
         }
     }
