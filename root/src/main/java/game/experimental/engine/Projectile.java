@@ -6,12 +6,17 @@ import game.experimental.utils.Vector2F;
 public class Projectile extends CollideableEntity implements Movable {
 
     private Vector2F velocity;
-    int SOME_FACTOR = 50;
+    
+    private final int FORCE = 5;
+    int SOME_FACTOR = 25;
+    Boolean tobeRemoved;
 
     private static final float PROJECTILE_SIZE = 10.f;
     private static final float PI = (float)Math.PI;
 
-    public Projectile(long beginTick, float angle, Vector2F position, int id, int ownerID) {
+    public Projectile(long beginTick,float angle, Vector2F position, int id, int ownerID) {
+
+
 
         super(beginTick, position.subtract(new Vector2F(
              PROJECTILE_SIZE * 0.5f, 
@@ -22,6 +27,8 @@ public class Projectile extends CollideableEntity implements Movable {
 
         this.angle = angle;
         this.size = new Vector2F(PROJECTILE_SIZE, PROJECTILE_SIZE);
+        this.tobeRemoved = false;
+
     }
 
     @Override
@@ -57,4 +64,19 @@ public class Projectile extends CollideableEntity implements Movable {
         return roomBox.contains(projectile);
     }
 
+    @Override
+    public void onCollision(CollideableEntity collided) {
+//        if (this == collided){
+//            return;
+//        }
+
+        if(collided.getClass() == PlayerEntity.class && collided.getId() != this.ownerID) {
+            tobeRemoved = true;
+        }
+
+    }
+
+    public int getForce(){
+        return FORCE;
+    }
 }

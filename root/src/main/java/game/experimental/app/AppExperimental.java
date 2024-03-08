@@ -95,7 +95,8 @@ public class AppExperimental {
 
             Gizmos.beginDrawing(c.getProjectionView());
 
-            myChannel.update();
+            myChannel.update();                // shouldn't we remove it also from tree?????? // TODO
+
 
             Gizmos.drawBoundingBox(myChannel.getViewport(), new float[]{1.f, 0.f, 0.f, 1.f});
 
