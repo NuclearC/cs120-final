@@ -10,7 +10,7 @@ public class Projectile extends CollideableEntity implements Movable{
     public Projectile(long beginTick,float angle, Vector2F position, int id, int ownerID) {
 
         super(beginTick, position.add(new Vector2F((float)Math.cos(-angle), (float)Math.sin(-angle)).multiply(20)), id, ownerID);
-        this.velocity = new Vector2F((float)Math.cos(-angle), (float)Math.sin(-angle)).multiply(SOME_FACTOR);
+        this.velocity = new Vector2F((float)Math.cos(angle), (float)Math.sin(-angle)).multiply(SOME_FACTOR);
         this.size = new Vector2F(10,10);
     }
 

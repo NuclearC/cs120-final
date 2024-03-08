@@ -2,7 +2,6 @@ package game.experimental.engine;
 
 import game.experimental.utils.BoundingBox;
 import game.experimental.utils.Vector2F;
-import game.experimental.engine.Settings;
 
 import java.util.ArrayList;
 
@@ -158,7 +157,7 @@ public class PlayerEntity extends CollideableEntity implements Movable{
         this.life += collectible.getValue();
     }
 
-    public void emptyProjectileList(int projectileIndex){
+    public void removeProjectileFromList(int projectileIndex){
         this.projectiles.set(projectileIndex, null);
     }
     private int getNextProjectileIndex(){

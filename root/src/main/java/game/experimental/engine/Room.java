@@ -90,6 +90,8 @@ public class Room implements Settings {
                 for(int j =0 ; j < player.getProjectiles().size(); j ++) {
                     if(player.getProjectiles().get(j) != null)
                         quadTree.remove(player.getProjectiles().get(j), player.getProjectiles().get(j).getBoundingBox());
+                    else
+                        System.out.println(player.getProjectiles().get(j));
                 }
 
                 quadTree.remove(player, player.getBoundingBox());
@@ -98,12 +100,10 @@ public class Room implements Settings {
 
                 for(int j =0 ; j < player.getProjectiles().size(); j ++) {
                     Projectile  projectile = player.getProjectiles().get(j);
-                    if (projectile == null)
-                        continue;
-                    if(projectile.remainsWithinBoundary(projectile.getPosition()))
-                        quadTree.insert(player.getProjectiles().get(j), player.getProjectiles().get(j).getBoundingBox());
+                    if (projectile != null && projectile.remainsWithinBoundary(projectile.getPosition()))
+                        quadTree.insert(player.getProjectiles().get(j), new BoundingBox(player.getProjectiles().get(j).getPosition(), player.getProjectiles().get(j).size));
                     else{
-                        player.emptyProjectileList(j);
+                        player.removeProjectileFromList(j);
                     }
                 }
             }
@@ -128,7 +128,7 @@ public class Room implements Settings {
                 if (collectable.getLife() > 0)
                     quadTree.insert(collectable, collectable.getBoundingBox());
                 else
-                    collectable = null;
+                    staticCollectables[i] = null;
             }
         }
         Engine engine = Engine.getInstance();
