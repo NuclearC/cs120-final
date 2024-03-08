@@ -6,10 +6,11 @@ import game.experimental.utils.Vector2F;
 public class Projectile extends CollideableEntity implements Movable{
 
     private Vector2F velocity;
-    int SOME_FACTOR = 10;
+    int SOME_FACTOR = 25;
     public Projectile(long beginTick,float angle, Vector2F position, int id, int ownerID) {
-        super(beginTick, position, id, ownerID);
-        this.velocity = new Vector2F((float)Math.cos(angle), (float)Math.sin(angle)).multiply(SOME_FACTOR);
+
+        super(beginTick, position.add(new Vector2F((float)Math.cos(-angle), (float)Math.sin(-angle)).multiply(20)), id, ownerID);
+        this.velocity = new Vector2F((float)Math.cos(-angle), (float)Math.sin(-angle)).multiply(SOME_FACTOR);
         this.size = new Vector2F(10,10);
     }
 
@@ -36,9 +37,6 @@ public class Projectile extends CollideableEntity implements Movable{
     @Override
     public void move() {
         this.position = this.position.add(this.velocity);
-
-        System.out.println(this.position +" "+ this);
-
     }
 
     @Override

@@ -49,7 +49,8 @@ public class PlayerEntity extends CollideableEntity implements Movable{
         this.processVelocity();
 
         for(int i = 0; i < projectiles.size(); i++){
-            projectiles.get(i).simulate();
+            if (projectiles.get(i) != null)
+                projectiles.get(i).simulate();
         }
 
 //        float a = Settings.PLAYER_MAX_VELOCITY / Settings.ENGINE_FRAMERATE;
@@ -126,7 +127,11 @@ public class PlayerEntity extends CollideableEntity implements Movable{
 
     private void shoot(){
         System.out.println("Shot");
-        projectiles.add(new Projectile(beginTick, angle,position, 1,this.id));
+        int index = getNextProjectileIndex();
+        if(index == projectiles.size())
+            projectiles.add( new Projectile(beginTick, angle,getCenter(), index, this.id));
+        else
+            projectiles.set(index, new Projectile(beginTick, angle,getCenter(), index, this.id));
     }
 
     @Override
@@ -151,6 +156,18 @@ public class PlayerEntity extends CollideableEntity implements Movable{
         System.out.println(collectible.getClass() +  " is eaten");
         collectible.setLife(0);
         this.life += collectible.getValue();
+    }
+
+    public void emptyProjectileList(int projectileIndex){
+        this.projectiles.set(projectileIndex, null);
+    }
+    private int getNextProjectileIndex(){
+        for (int i = 0; i < projectiles.size(); i++){
+            if(projectiles.get(i) == null){
+                return i;
+            }
+        }
+        return projectiles.size();
     }
 
 }

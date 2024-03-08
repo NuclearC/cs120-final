@@ -39,7 +39,6 @@ public class AppExperimental {
         glEnable(GL_MULTISAMPLE);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
         loop();
 
         gameWindow.destroy();
@@ -114,7 +113,11 @@ public class AppExperimental {
 
             if (viewBoxData != null)
                 for(Entity ent : viewBoxData) {
-                    if (ent.getClass().getName() == "game.experimental.engine.PlayerEntity") {
+                    if (ent.getClass().getName() == "game.experimental.engine.Projectile") {
+                        collectableRenderer.setColorModulation(10.f, 10.f, 0.5f);
+                        collectableRenderer.draw(c, ent.getAngle(), ent.getPosition(), ent.getSize());
+                    }
+                    else if (ent.getClass().getName() == "game.experimental.engine.PlayerEntity") {
 
                         InterpolatedEntity intEnt = interpolateMap.get(ent);
                         if (intEnt == null) {
@@ -138,10 +141,9 @@ public class AppExperimental {
 
                     else if (ent.getClass().getName() == "game.experimental.engine.MovingCollectableEntity") {
                         collectableRenderer.setColorModulation(1.f, 1.f, 0.5f);
-                        collectableRenderer.draw(c, ent.getAngle(), ent.getPosition(), ent.getSize());
-                    }
-                }
+                        collectableRenderer.draw(c, ent.getAngle(), ent.getPosition(), ent.getSize());}
 
+                }
 
             gameWindow.present();
             
