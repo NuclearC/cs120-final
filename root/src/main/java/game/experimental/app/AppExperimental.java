@@ -114,8 +114,17 @@ public class AppExperimental {
             if (viewBoxData != null)
                 for(Entity ent : viewBoxData) {
                     if (ent.getClass().getName() == "game.experimental.engine.Projectile") {
+
+                        InterpolatedEntity intEnt = interpolateMap.get(ent);
+                        if (intEnt == null) {
+                            intEnt = new InterpolatedEntity(ent);
+                            interpolateMap.put(ent, intEnt);
+                        } else {
+                            intEnt.interpolate(myChannel.getTickCount());
+                        }
+                        
                         collectableRenderer.setColorModulation(10.f, 10.f, 0.5f);
-                        collectableRenderer.draw(c, ent.getAngle(), ent.getPosition(), ent.getSize());
+                        collectableRenderer.draw(c, intEnt.getAngle(interpolationFactor), intEnt.getPosition(interpolationFactor), ent.getSize());
                     }
                     else if (ent.getClass().getName() == "game.experimental.engine.PlayerEntity") {
 
