@@ -2,6 +2,8 @@ package game.experimental.gl.renderers;
 
 import java.io.IOException;
 
+import static org.lwjgl.opengl.GL20.glUniform4fv;
+import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
 import static org.lwjgl.opengl.GL46.*;
 
 import game.experimental.gl.*;
@@ -13,11 +15,11 @@ import game.experimental.utils.Matrix4x4F;
 import game.experimental.utils.Vector2F;
 
 /**
- * Represents a flyweight for rendering CollectableEntities. 
+ * Represents a flyweight for rendering Projectiles. 
  */
-public final class CollectableRenderer implements EntityRenderer {
+public final class ProjectileRenderer implements EntityRenderer {
 
-    private static CollectableRenderer INSTANCE;
+    private static ProjectileRenderer INSTANCE;
 
     private Texture texture;
     private Shape shape;
@@ -25,13 +27,13 @@ public final class CollectableRenderer implements EntityRenderer {
     private float[] modulation;
 
     /**
-     * Load the necessary assets for drawing the collectable. 
+     * Load the necessary assets for drawing the projectile. 
      */
     @Override
     public void load() {
-        Logger.log("Loading data for CollectableRenderer...");
+        Logger.log("Loading data for ProjectileRenderer...");
         try {
-            texture = new Texture("./assets/textures/texture_collect1.psd");
+            texture = new Texture("./assets/textures/texture_projectile1.psd");
         } catch (Exception e) {
             Logger.error("Failed to load texture; " + e.getMessage());
         }
@@ -62,17 +64,23 @@ public final class CollectableRenderer implements EntityRenderer {
     }
     
     /**
-     * Draw the collectable with the specified Camera (view and projection), position and size
+     * Draw the projectile with the specified Camera (view and projection), position and size
      */
     @Override
     public void draw(Camera camera, float rotation, Vector2F position, Vector2F size) {
         program.use();
 
+        // epic hack
+
         int pvmLocation = program.getUniform("pvm");
         int colorLocation = program.getUniform("color");
         glUniform4fv(colorLocation, modulation);
 
-        Matrix4x4F model = Matrix4x4F.transformTranslate(position).multiply(Matrix4x4F.transformRotate(rotation).multiply(Matrix4x4F.transformScale(size)));
+        Matrix4x4F model = Matrix4x4F.transformScale(size);
+        model = Matrix4x4F.transformTranslate(size.multiply(-0.5f)).multiply(model);
+        model = Matrix4x4F.transformRotate(rotation).multiply(model);
+        model = Matrix4x4F.transformTranslate(position.add(size.multiply(0.5f))).multiply(model);
+
         Matrix4x4F pvm = camera.getProjectionView().multiply(model);
         glUniformMatrix4fv(pvmLocation, false, pvm.getRaw());
         texture.bind();
@@ -82,17 +90,17 @@ public final class CollectableRenderer implements EntityRenderer {
     /**
      * Only use singleton. 
      */
-    private CollectableRenderer() {
+    private ProjectileRenderer() {
         this.load();
     }
 
     /**
-     * Acquire the singleton instance for CollectableRenderer.
+     * Acquire the singleton instance for ProjectileRenderer.
      * @return the instance
      */
-    public static CollectableRenderer getSingleton() {
+    public static ProjectileRenderer getSingleton() {
         if (INSTANCE == null)
-            INSTANCE = new CollectableRenderer();
+            INSTANCE = new ProjectileRenderer();
         
         return INSTANCE;
     }

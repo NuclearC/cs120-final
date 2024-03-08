@@ -5,6 +5,7 @@ import game.experimental.engine.*;
 import game.experimental.gl.*;
 import game.experimental.gl.renderers.CollectableRenderer;
 import game.experimental.gl.renderers.PlayerRenderer;
+import game.experimental.gl.renderers.ProjectileRenderer;
 import game.experimental.utils.Logger;
 import game.experimental.utils.Vector2F;
 import org.lwjgl.Version;
@@ -103,6 +104,7 @@ public class AppExperimental {
 
             PlayerRenderer playerRenderer = PlayerRenderer.getSingleton();
             CollectableRenderer collectableRenderer = CollectableRenderer.getSingleton();
+            ProjectileRenderer projectileRenderer = ProjectileRenderer.getSingleton();
 
             viewBoxData = myChannel.getViewBoxData();
 
@@ -123,8 +125,7 @@ public class AppExperimental {
                             intEnt.interpolate(myChannel.getTickCount());
                         }
                         
-                        collectableRenderer.setColorModulation(10.f, 10.f, 0.5f);
-                        collectableRenderer.draw(c, intEnt.getAngle(interpolationFactor), intEnt.getPosition(interpolationFactor), ent.getSize());
+                        projectileRenderer.draw(c, intEnt.getAngle(interpolationFactor), intEnt.getPosition(interpolationFactor), ent.getSize());
                     }
                     else if (ent.getClass().getName() == "game.experimental.engine.PlayerEntity") {
 
