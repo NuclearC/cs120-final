@@ -5,7 +5,6 @@ import org.lwjgl.*;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
 
-import game.experimental.engine.QuadTree;
 import game.experimental.gl.*;
 import game.experimental.gl.Shader.ShaderException;
 import game.experimental.gl.renderers.PlayerRenderer;
@@ -16,9 +15,6 @@ import game.experimental.utils.Matrix4x4F;
 import game.experimental.utils.Vector2F;
 
 import static org.lwjgl.opengl.GL46.*;
-
-import java.util.ArrayList;
-import java.util.Random;
 
 import static org.lwjgl.glfw.GLFW.*;
 

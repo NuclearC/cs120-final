@@ -2,10 +2,17 @@ package game.experimental.app;
 import game.experimental.app.input.InputSystem;
 import game.experimental.app.input.InputSystem.RegisteredInput;
 import game.experimental.engine.*;
+import game.experimental.engine.connection.Client;
+import game.experimental.engine.connection.ClientChannel;
+import game.experimental.engine.connection.PlayerCommand;
+import game.experimental.engine.entities.Entity;
+import game.experimental.engine.entities.PlayerEntity;
 import game.experimental.gl.*;
 import game.experimental.gl.renderers.CollectableRenderer;
 import game.experimental.gl.renderers.PlayerRenderer;
 import game.experimental.gl.renderers.ProjectileRenderer;
+import game.experimental.utils.BoundingBox;
+import game.experimental.utils.QuadTree;
 import game.experimental.utils.Logger;
 import game.experimental.utils.Vector2F;
 import org.lwjgl.Version;
@@ -48,6 +55,7 @@ public class AppExperimental {
         // Terminate GLFW and free the error callback
         glfwTerminate();
     }
+
 
     private void drawQuadTree(QuadTree<Entity> qt) {
         final float[] quadTreeBoxColor = {0.f, 0.7f, 0.f, 1.f};
@@ -117,8 +125,7 @@ public class AppExperimental {
 
             if (viewBoxData != null)
                 for(Entity ent : viewBoxData) {
-                    if (ent.getClass().getName() == "game.experimental.engine.Projectile") {
-
+                    if (ent.getClass().getName() == "game.experimental.engine.entities.Projectile") {
                         InterpolatedEntity intEnt = interpolateMap.get(ent);
                         if (intEnt == null) {
                             intEnt = new InterpolatedEntity(ent);
@@ -129,7 +136,7 @@ public class AppExperimental {
                         
                         projectileRenderer.draw(c, intEnt.getAngle(interpolationFactor), intEnt.getPosition(interpolationFactor), ent.getSize());
                     }
-                    else if (ent.getClass().getName() == "game.experimental.engine.PlayerEntity") {
+                    else if (ent.getClass().getName() == "game.experimental.engine.entities.PlayerEntity") {
 
                         InterpolatedEntity intEnt = interpolateMap.get(ent);
                         if (intEnt == null) {
@@ -147,11 +154,11 @@ public class AppExperimental {
                         playerRenderer.draw(c, intEnt.getAngle(interpolationFactor), interpolatedPos, ent.getSize());
   
                     }
-                    else if (ent.getClass().getName() == "game.experimental.engine.CollectableEntity"){
+                    else if (ent.getClass().getName() == "game.experimental.engine.entities.CollectableEntity"){
                         collectableRenderer.setColorModulation(1.f, 0.5f, 1.f);
                         collectableRenderer.draw(c, ent.getAngle(), ent.getPosition(), ent.getSize());}
 
-                    else if (ent.getClass().getName() == "game.experimental.engine.MovingCollectableEntity") {
+                    else if (ent.getClass().getName() == "game.experimental.engine.entities.MovingCollectableEntity") {
                         collectableRenderer.setColorModulation(1.f, 1.f, 0.5f);
                         collectableRenderer.draw(c, ent.getAngle(), ent.getPosition(), ent.getSize());}
 

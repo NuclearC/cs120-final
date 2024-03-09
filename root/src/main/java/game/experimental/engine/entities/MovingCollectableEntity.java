@@ -1,11 +1,12 @@
-package game.experimental.engine;
+package game.experimental.engine.entities;
 
+import game.experimental.engine.Settings;
 import game.experimental.utils.Vector2F;
 
 /**
  * Represents a Moving Collectable object in the game. Extends StaticCollectableEntity
  */
-public class MovingCollectableEntity extends CollectableEntity implements Movable{
+public class MovingCollectableEntity extends CollectableEntity implements Movable {
     private Vector2F velocity = new Vector2F();
     private Vector2F destination = new Vector2F();
     private Vector2F impulse = new Vector2F();     // initilized to o

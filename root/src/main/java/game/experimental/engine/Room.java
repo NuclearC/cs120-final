@@ -1,6 +1,9 @@
 package game.experimental.engine;
 
+import game.experimental.engine.connection.ClientChannel;
+import game.experimental.engine.entities.*;
 import game.experimental.utils.BoundingBox;
+import game.experimental.utils.QuadTree;
 import game.experimental.utils.Vector2F;
 
 import java.util.ArrayList;
@@ -101,12 +104,12 @@ public class Room implements Settings {
                     quadTree.insert(player, player.getBoundingBox());
                 }
                 else{
-                    removePlayer(player.id);
+                    removePlayer(player.getId());
                 }
 
                 for(int j =0 ; j < player.getProjectiles().size(); j ++) {
                     Projectile  projectile = player.getProjectiles().get(j);
-                    if (projectile.remainsWithinBoundary(projectile.getPosition()) && !projectile.tobeRemoved)
+                    if (projectile.remainsWithinBoundary(projectile.getPosition()) && !projectile.toBeRemoved())
                         quadTree.insert(player.getProjectiles().get(j), player.getProjectiles().get(j).getBoundingBox());
                     else{
                         player.removeProjectileFromList(j);
@@ -177,6 +180,7 @@ public class Room implements Settings {
         checkCollisions();
         playerSimulate();
         collectablesSimulate();
+
         Engine engine = Engine.getInstance();
         // generates DrawData for each player ViewBox
         //
@@ -187,7 +191,7 @@ public class Room implements Settings {
     /**
      * Generates a ViewBox data for each player. I don't know what this data should
      * look like.
-     * Now it returns only the player in an array. But quadtree queries should be
+     * Now it returns only protectedthe player in an array. But quadtree queries should be
      * done and an array of entities should be returned.
      * 
      * @param range the id of the player for which data is being generated.
@@ -241,7 +245,7 @@ public class Room implements Settings {
     /**
      * Removes a player from the room.
      * 
-     * @param ownerId id of the client whose player is to be removed.
+     * @param playerId d of the client whose player is to be removed.
      */
     public void removePlayer(int playerId) {
         for (PlayerEntity player : playerEntities) {
@@ -375,15 +379,5 @@ public class Room implements Settings {
      */
     public int getId() {
         return this.id;
-    }
-
-    /**
-     * Returns the next free id for the collidable objects.
-     * 
-     * @return next id for the collidable.
-     */
-    public int getNextColliadbleId() {
-        /// return collidableEntitiesList.size();
-        return -12341234;
     }
 }

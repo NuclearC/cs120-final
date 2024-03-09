@@ -1,5 +1,9 @@
-package game.experimental.engine;
+package game.experimental.engine.connection;
 
+import game.experimental.engine.Engine;
+import game.experimental.engine.connection.ClientChannel;
+import game.experimental.engine.entities.Entity;
+import game.experimental.engine.entities.PlayerEntity;
 import game.experimental.utils.BoundingBox;
 import game.experimental.utils.Vector2F;
 

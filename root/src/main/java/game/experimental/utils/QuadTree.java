@@ -1,4 +1,4 @@
-package game.experimental.engine;
+package game.experimental.utils;
 import java.util.ArrayList;
 
 import game.experimental.utils.BoundingBox;
@@ -19,7 +19,7 @@ public class QuadTree<T> {
      * Represents a node in the Quadtree.
      * Bounds the object and the bounding box together.
      */
-     public class Node {
+    public class Node {
         private final T object;
         private final BoundingBox boundingBox;
 
@@ -33,18 +33,18 @@ public class QuadTree<T> {
             this.boundingBox = boundingBox;
         }
 
-         /**
-          * Return the object bounded with the node
-          * @return object bounded with the node
-          */
+        /**
+         * Return the object bounded with the node
+         * @return object bounded with the node
+         */
         public T getObject() {
             return object;
         }
 
-         /**
-          * Return the bounding box associated with the node.
-          * @return bounding box associated with the node.
-          */
+        /**
+         * Return the bounding box associated with the node.
+         * @return bounding box associated with the node.
+         */
         public BoundingBox getBoundingBox() {
             return boundingBox;
         }

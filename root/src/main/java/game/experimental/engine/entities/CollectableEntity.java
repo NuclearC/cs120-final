@@ -1,4 +1,4 @@
-package game.experimental.engine;
+package game.experimental.engine.entities;
 
 import game.experimental.utils.*;
 
@@ -52,7 +52,7 @@ public class CollectableEntity extends CollideableEntity {
 
 
     /**
-     * Returns the life level of the entity.
+     * Returns the life level of the entity. 
      * @return life level of the entity.
      */
     public int getLife() {
@@ -98,11 +98,9 @@ public class CollectableEntity extends CollideableEntity {
             this.value = value;
             this.life = life;
         }
-        Type(){
-            value = 0;
-            life = 3;
-        }
+
     }
+    @Override
     public void onCollision(CollideableEntity collided){
         if(collided.getClass() == PlayerEntity.class || collided.getClass() == Projectile.class){
            //setLife(getLife() - 1);//damage sould be added TODO

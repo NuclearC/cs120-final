@@ -1,5 +1,7 @@
 package game.experimental.engine;
 
+import game.experimental.engine.connection.Client;
+
 public class Main {
     public static void main(String[] args) {
         Engine myEngine = Engine.getInstance();             // An Engine is created.

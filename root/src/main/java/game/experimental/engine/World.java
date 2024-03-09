@@ -1,6 +1,9 @@
 package game.experimental.engine;
 
 
+import game.experimental.engine.connection.ClientChannel;
+import game.experimental.engine.entities.PlayerEntity;
+
 import java.util.ArrayList;
 
 /**
@@ -49,7 +52,7 @@ public class World {
         Room decidedRoom = rooms.get(roomId);
         PlayerEntity addedPlayerInstance = decidedRoom.addPlayer(owner.getId());
         owner.setRoomId(roomId);
-        owner.setPlayerId(addedPlayerInstance.id);
+        owner.setPlayerId(addedPlayerInstance.getId());
     }
     /**
      * NOT IMPLEMENTED

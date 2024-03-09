@@ -1,4 +1,4 @@
-package game.experimental.engine;
+package game.experimental.engine.entities;
 
 import game.experimental.utils.*;
 
@@ -40,6 +40,7 @@ abstract public class CollideableEntity extends Entity {
         line = line.getNormalized();
         return line.multiply((float)Math.cos(line.getAngle(vec))* vec.length()*direction);
     }
+
     public Vector2F calculateImpulse(CollectableEntity other){
         Vector2F line = this.getCenter().subtract(other.getCenter());
         Movable obj = (Movable) this;

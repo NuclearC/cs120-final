@@ -20,7 +20,7 @@ public class BoundingBox implements Cloneable {
 
     /**
      * need to be checked
-     * 
+     *
      * @param position position vector of the box
      * @param size     size vector of the box
      */
@@ -44,7 +44,7 @@ public class BoundingBox implements Cloneable {
 
     /**
      * Gives the position vector of the BoundingBox.
-     * 
+     *
      * @return the position vector of the BoundingBox
      */
     public Vector2F getPosition() {
@@ -53,7 +53,7 @@ public class BoundingBox implements Cloneable {
 
     /**
      * Gives the size of the BoundingBox
-     * 
+     *
      * @return size vector of the BoundingBox
      */
     public Vector2F getSize() {
@@ -62,7 +62,7 @@ public class BoundingBox implements Cloneable {
 
     /**
      * Gives the vector indicating the top-right corner of the box
-     * 
+     *
      * @return vector of the top-right corner of the box
      */
     public Vector2F getTopRight() {
@@ -72,7 +72,7 @@ public class BoundingBox implements Cloneable {
 
     /**
      * Gives the vector indicating the Bottom-left corner of the box
-     * 
+     *
      * @return vector of the bottom-left corner of the box
      */
     public Vector2F getBottomLeft() {
@@ -82,7 +82,7 @@ public class BoundingBox implements Cloneable {
 
     /**
      * Gives the vector indicating the Bottom-Right corner of the box
-     * 
+     *
      * @return vector of the Bottom-Right corner of the box
      */
     public Vector2F getBottomRight() {
@@ -92,7 +92,7 @@ public class BoundingBox implements Cloneable {
 
     /**
      * gives the vector indicating the center of the box
-     * 
+     *
      * @return the vector indicating the center of the box
      */
     public Vector2F getCenter() {
@@ -101,7 +101,7 @@ public class BoundingBox implements Cloneable {
 
     /**
      * Checks whether the provided BoundingBox is inside the callee box.
-     * 
+     *
      * @param box the box that is checked
      * @return true when box is inside it or equal it, false otherwise.
      */
@@ -115,7 +115,7 @@ public class BoundingBox implements Cloneable {
 
     /**
      * checks whether the given point is inside or not
-     * 
+     *
      * @param vector the position of the point to check
      * @return true when point is inside it, false otherwise.
      */
@@ -126,12 +126,12 @@ public class BoundingBox implements Cloneable {
 
     /**
      * checks whether the given box is intersecting with it or not
-     * 
+     *
      * @param box the box that is checked
      * @return true if the boxes interacts, false otherwise
      */
     public boolean intersects(BoundingBox box) {
-        return !(position.getX() > box.getTopRight().getX() 
+        return !(position.getX() > box.getTopRight().getX()
                 || getTopRight().getX() < box.getPosition().getX()
                 || getPosition().getY() > box.getBottomRight().getY()
                 || getBottomRight().getY() < box.getPosition().getY());

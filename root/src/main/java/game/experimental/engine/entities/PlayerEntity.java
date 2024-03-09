@@ -1,5 +1,7 @@
-package game.experimental.engine;
+package game.experimental.engine.entities;
 
+import game.experimental.engine.connection.PlayerCommand;
+import game.experimental.engine.Settings;
 import game.experimental.utils.BoundingBox;
 import game.experimental.utils.Clock;
 import game.experimental.utils.Vector2F;
@@ -158,7 +160,7 @@ public class PlayerEntity extends CollideableEntity implements Movable {
         }
         else if(collided instanceof Projectile){
             Projectile projectile = (Projectile) collided;
-            if(projectile.ownerID == this.id)
+            if(projectile.getOwnerID() == this.id)
                 return;
             this.life -= projectile.getForce();
             projectile.onCollision(this);

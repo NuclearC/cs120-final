@@ -1,4 +1,4 @@
-package game.experimental.engine;
+package game.experimental.engine.entities;
 
 import game.experimental.utils.BoundingBox;
 import game.experimental.utils.Vector2F;

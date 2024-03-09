@@ -1,4 +1,4 @@
-package game.experimental.engine;
+package game.experimental.engine.connection;
 
 /**
  * So far just a placeholder for Client class.

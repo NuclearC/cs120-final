@@ -1,6 +1,6 @@
 package game.experimental.app;
 
-import game.experimental.engine.*;
+import game.experimental.engine.entities.Entity;
 import game.experimental.utils.Vector2F;
 
 /**

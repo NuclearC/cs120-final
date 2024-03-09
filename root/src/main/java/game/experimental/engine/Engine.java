@@ -1,5 +1,6 @@
 package game.experimental.engine;
 
+import game.experimental.engine.connection.ClientChannel;
 import game.experimental.utils.Clock;
 
 import java.util.ArrayList;

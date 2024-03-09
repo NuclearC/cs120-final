@@ -1,5 +1,6 @@
-package game.experimental.engine;
+package game.experimental.engine.entities;
 
+import game.experimental.engine.Settings;
 import game.experimental.utils.BoundingBox;
 import game.experimental.utils.Vector2F;
 
@@ -37,7 +38,7 @@ public class Projectile extends CollideableEntity implements Movable {
 
     @Override
     public void setVelocity(Vector2F velocity) {
-
+        this.velocity = velocity;
     }
 
     @Override
@@ -72,5 +73,8 @@ public class Projectile extends CollideableEntity implements Movable {
 
     public int getForce(){
         return FORCE;
+    }
+    public Boolean toBeRemoved(){
+        return tobeRemoved;
     }
 }
