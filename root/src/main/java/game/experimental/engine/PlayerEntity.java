@@ -125,7 +125,7 @@ public class PlayerEntity extends CollideableEntity implements Movable {
         // deltaVelocity.normalize();
 
     }
-
+    //@Override
     private void processVelocity() {
         Vector2F playerMoveVector = deltaVelocity.getNormalized().multiply(PLAYER_MOVE_VELOCITY);
 
@@ -171,8 +171,9 @@ public class PlayerEntity extends CollideableEntity implements Movable {
 
     private void takeCollectible(CollectableEntity collectible) {
         System.out.println(collectible.getClass() + " is eaten");
-        collectible.setLife(0);
-        this.life += collectible.getValue();
+        collectible.setLife(collectible.getLife() - 1);//changed to damaged point TODO
+        if(collectible.getLife() <= 0)
+            this.life += collectible.getValue();
     }
 
     public void removeProjectileFromList(int projectileIndex) {

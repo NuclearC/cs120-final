@@ -64,8 +64,8 @@ public class Projectile extends CollideableEntity implements Movable {
 
     @Override
     public void onCollision(CollideableEntity collided) {
-
-        if(collided.getClass() == PlayerEntity.class && collided.getId() != this.ownerID) {
+        System.out.println("PROJECTILE COLISION!!!!!!!!!!!!!!!!!!!! " + this.getClass());
+        if(collided.getId() != this.ownerID) {
             tobeRemoved = true;
         }
     }

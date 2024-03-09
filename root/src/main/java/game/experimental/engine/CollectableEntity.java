@@ -89,7 +89,7 @@ public class CollectableEntity extends CollideableEntity {
      * Add any specification needed.
      */
     public enum Type {
-        Triangle(10, 100),
+        Triangle(10, 3),
         Square(20, 150),
         Diamond(30, 200);
         public final int value;
@@ -100,23 +100,18 @@ public class CollectableEntity extends CollideableEntity {
         }
         Type(){
             value = 0;
-            life = 0;
+            life = 3;
         }
     }
     public void onCollision(CollideableEntity collided){
-        if(collided.getClass() == PlayerEntity.class){
-            //life should get decreased here
-            //should be implemented on how to get removed TODO
-            // System.out.println("collided with player");
-            //it should ignore this case
-        }
-        else if(collided.getClass() == MovingCollectableEntity.class){
-            // System.out.println("collided with moving collectable");
-            ((MovingCollectableEntity) collided).setImpulse(new Vector2F());//TODO
-        }
-        else if(collided.getClass() == CollectableEntity.class){
-            // System.out.println("collided with static collectable");
+        if(collided.getClass() == PlayerEntity.class || collided.getClass() == Projectile.class){
+           //setLife(getLife() - 1);//damage sould be added TODO
+            life--;
+            if(collided.getClass() == Projectile.class){
+                collided.onCollision(this);
+            }
 
         }
+
     }
 }

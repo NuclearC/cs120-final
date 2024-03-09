@@ -6,11 +6,13 @@ import game.experimental.utils.Vector2F;
  * Represents a Moving Collectable object in the game. Extends StaticCollectableEntity
  */
 public class MovingCollectableEntity extends CollectableEntity implements Movable{
-    private Vector2F velocity;
-    private final Vector2F impulse = new Vector2F();     // initilized to o
+    private Vector2F velocity = new Vector2F();
+    private Vector2F destination = new Vector2F();
+    private Vector2F impulse = new Vector2F();     // initilized to o
 
     public MovingCollectableEntity(long beginTick, Vector2F position, int id, int ownerID, int type){
         super(beginTick, position, id, ownerID, type);
+        destination = position;
     }
 
     public MovingCollectableEntity(long beginTick) {
@@ -29,13 +31,44 @@ public class MovingCollectableEntity extends CollectableEntity implements Movabl
         return velocity;
     }
 
-    @Override
-    public void move() {
-        this.position = this.position.add(this.velocity);
-        this.updateBoundingBox();
+    public Vector2F getDestination(){return this.destination;}
+
+    public void setDestination(Vector2F destination){
+        this.destination = destination;
+    }
+    private void changeDestination(){
+
+        Vector2F topCorner = new Vector2F(Math.max(destination.getX() - Settings.MAP_WIDTH / 8, 0),Math.max(destination.getY() - Settings.MAP_HEIGHT / 8,0));
+        Vector2F bottomCorner = new Vector2F(Math.min(destination.getX() + Settings.MAP_WIDTH / 8, Settings.MAP_WIDTH),Math.min(destination.getY() + Settings.MAP_HEIGHT / 8,Settings.MAP_HEIGHT));
+        //the boundaries of the random x,y can be changed and added to the settings
+        destination = Vector2F.randomVector(topCorner.getX(), bottomCorner.getX(), topCorner.getY(), bottomCorner.getY());
+        System.out.println("CHANGE...................Destination" + destination);
+        processVelocity();
     }
 
+    @Override
+    public void move() {
+        if(position.subtract(destination).length() < 1)
+            changeDestination();
+        Vector2F newPosition = this.position.add(this.velocity);
+        if (remainsWithinBoundary(newPosition)) {
+            this.position = newPosition;
+           // this.impulse = new Vector2F();
+        } else {
+            changeDestination();
+        }
+        updateBoundingBox();
+    }
 
+    private void processVelocity(){
+        Vector2F line = destination.subtract(position);
+        if (line.length() < 0.01){                // equals 0
+            velocity = new Vector2F();
+        }
+        line = line.getNormalized();
+        velocity = line.multiply((float) Math.random()*2 + 1f);//random should have range
+
+    }
     @Override
     public boolean remainsWithinBoundary(Vector2F newPosition) {
         return true;
@@ -43,25 +76,37 @@ public class MovingCollectableEntity extends CollectableEntity implements Movabl
 
     @Override
     public void simulate(){
-        if(this.getLife() < 0){
-            //it should be erased
-        }
+       // this.processVelocity();
+        this.move();
     }
     public void onCollision(CollideableEntity collided){
-        if(collided.getClass() == PlayerEntity.class){
-            //it should ignore it, cause it will be handeled by the player
+        if(collided.getClass() == Projectile.class){
+            setLife(getLife() - 1);//damage sould be added TODO
+            collided.onCollision(this);
+            return;
         }
-        else if(collided.getClass() == MovingCollectableEntity.class){
-//            System.out.println("collided with moving collectable");
-//            setImpulse(new Vector2F());//TODO
-//
-//            ((MovingCollectableEntity) collided).setImpulse(new Vector2F());//TODO
+        if(collided instanceof Movable)
+            this.setImpulse(calculateImpulse((Movable) collided));
+        else
+            this.setImpulse(calculateImpulse((CollectableEntity) collided));
+        float SMOOTHNESS_FACTOR = 0.5f;    // i coppied from player need to be chaked
+        this.velocity = this.velocity.add(this.impulse.multiply(SMOOTHNESS_FACTOR));
+        //System.out.println("collided with moving collectable");
+        /*
+        if(collided.getClass() == PlayerEntity.class){
+
+        }
+         else if(collided.getClass() == MovingCollectableEntity.class){
+            this.setImpulse(calculateImpulse((MovingCollectableEntity)collided));
+            float SMOOTHNESS_FACTOR = 0.5f;    // i coppied from player need to be chaked
+            this.velocity = this.velocity.add(this.impulse.multiply(SMOOTHNESS_FACTOR));
+            System.out.println("collided with moving collectable");
         }
         else if(collided.getClass() == CollectableEntity.class){
             System.out.println("collided with static collectable");
 
             setImpulse(new Vector2F());//TODO
 
-        }
+        }*/
     }
 }

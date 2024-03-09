@@ -36,6 +36,12 @@ public interface Movable {
      */
     boolean remainsWithinBoundary(Vector2F newPosition);
 
+    /**
+     * it process the new velocity for moving object
+     * and set the velocity to the new value
+     */
+   // void processVelocity() {}
+
 }
 
 

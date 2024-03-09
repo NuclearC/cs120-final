@@ -72,17 +72,21 @@ public class Room implements Settings {
                 }
             }
         }
+        for (int i = 0; i < level.MAX_NUMBER_OF_STATIC_COLLECTABLES; i++) {
+            if (staticCollectables[i] != null) {
+                ArrayList<Entity> collidedEntities = new ArrayList<>();
+                quadTree.query(staticCollectables[i].getBoundingBox(), collidedEntities);
+                for (Entity collided : collidedEntities) {
+                    staticCollectables[i].onCollision((CollideableEntity) collided);
+                }
+            }
+        }
     }
 
     /**
-     * Simulates the game inside one room.
+     * calls to simulate methode for each player and update their position in quad tree.
      */
-    public void simulate() {
-        // Gizmos.drawBoundingBox(quadTree.getRange(), new float[]{1.f, 0.f, 1.f, 1.f});
-        // checkCollide(); TODO;
-        checkCollisions();
-        // System.out.println("\tRoom simulated "+ this.getId());
-
+    private void playerSimulate(){
         for (int i = 0; i < level.MAX_NUMBER_OF_PLAYERS; i++) {
             if (playerEntities[i] != null) {
                 PlayerEntity player = playerEntities[i];
@@ -111,6 +115,11 @@ public class Room implements Settings {
             }
         }
 
+    }
+    /**
+     * calls to simulate methode for each moving and static collectables and update their position in quad tree.
+     */
+    private void collectablesSimulate(){
         for (int i = 0; i < level.MAX_NUMBER_OF_MOVING_COLLECTABLES; i++) {
             if (movingCollectables[i] != null) {
                 MovingCollectableEntity collectable = movingCollectables[i];
@@ -118,8 +127,11 @@ public class Room implements Settings {
                 collectable.simulate();
                 if (collectable.getLife() > 0)
                     quadTree.insert(collectable, collectable.getBoundingBox());
-                else
+                else{
+
                     movingCollectables[i] = null;
+                }
+
             }
         }
         for (int i = 0; i < level.MAX_NUMBER_OF_STATIC_COLLECTABLES; i++) {
@@ -133,9 +145,14 @@ public class Room implements Settings {
                     staticCollectables[i] = null;
             }
         }
-        Engine engine = Engine.getInstance();
-        // generates DrawData for each player ViewBox
-        //
+    }
+
+    /**
+     * gets the engine and updates its client channels
+     * //change the doc
+     * @param engine
+     */
+    private void channelUpdate(Engine engine){
         for (int i = 0; i < level.MAX_NUMBER_OF_PLAYERS; i++) {
             if (playerEntities[i] != null) {
                 PlayerEntity player = playerEntities[i];
@@ -151,7 +168,19 @@ public class Room implements Settings {
                 channel.setViewBoxData(visibleEntities);
             }
         }
-
+    }
+    /**
+     * Simulates the game inside one room.
+     */
+    public void simulate() {
+        // Gizmos.drawBoundingBox(quadTree.getRange(), new float[]{1.f, 0.f, 1.f, 1.f});
+        checkCollisions();
+        playerSimulate();
+        collectablesSimulate();
+        Engine engine = Engine.getInstance();
+        // generates DrawData for each player ViewBox
+        //
+        channelUpdate(engine);
         ++tickCount;
     }
 

@@ -95,9 +95,9 @@ public class Vector2F implements Vector, Cloneable {
      */
     @Override
     public Vector2F subtract(Vector anotherVector) {
-        Vector2F anotherVector2F = (Vector2F) anotherVector;
-        Vector2F resultVector = new Vector2F(x - anotherVector2F.getX(), y - anotherVector2F.getY());
-        return resultVector;
+      //  Vector2F anotherVector2F = (Vector2F) anotherVector;
+       // Vector2F resultVector = new Vector2F(x - anotherVector2F.getX(), y - anotherVector2F.getY());
+        return (this.add(anotherVector.multiply(-1f))).clone();
     }
 
     /**
@@ -181,9 +181,9 @@ public class Vector2F implements Vector, Cloneable {
         }
     }
 
-    public static Vector2F randomVector(float xRangeBegging, float xRangeEnd, float yRangeBeggin, float yRangeEnd){
-        float randomX = (float)Math.random() * xRangeEnd + xRangeBegging;
-        float randomY = (float)Math.random() * yRangeEnd + yRangeBeggin;
+    public static Vector2F randomVector(float xRangeBegging, float xRangeEnd, float yRangeBegging, float yRangeEnd){
+        float randomX = (float)(Math.random() * (xRangeEnd - xRangeBegging)) + xRangeBegging;
+        float randomY = (float)(Math.random() * (yRangeEnd - yRangeBegging)) + yRangeBegging;
 
         return new Vector2F(randomX,randomY);
     }
@@ -191,4 +191,6 @@ public class Vector2F implements Vector, Cloneable {
     public String toString(){
         return "x: " + this.x + " y: " + this.y;
     }
+
+
 }
