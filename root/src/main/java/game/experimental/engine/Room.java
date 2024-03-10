@@ -285,7 +285,7 @@ public class Room implements Settings {
     }
 
     /**
-     * adds moving collectable to the room in the given index
+     * adds moving collectable to the roo m in the given index
      */
     public void addMovingCollectable(int ind) {
         MovingCollectableEntity collectables = createMovingCollectable(ind, 0);// change the type TODO

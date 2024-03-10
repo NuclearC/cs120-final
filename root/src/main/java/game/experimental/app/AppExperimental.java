@@ -57,6 +57,7 @@ public class AppExperimental {
     }
 
 
+    // TODO for testing purposes
     private void drawQuadTree(QuadTree<Entity> qt) {
         final float[] quadTreeBoxColor = {0.f, 0.7f, 0.f, 1.f};
         final float[] objectBoxColor = {0.7f, 0.0f, 0.f, 1.f};
@@ -108,6 +109,7 @@ public class AppExperimental {
 
             Gizmos.drawBoundingBox(myChannel.getViewport(), new float[]{1.f, 0.f, 0.f, 1.f});
 
+            // TODO for testing purposes
             QuadTree<Entity> qt = (Engine.getInstance()).getWorld(0).getRoom(0).getQuadTree();
             drawQuadTree(qt);
 
@@ -125,7 +127,7 @@ public class AppExperimental {
 
             if (viewBoxData != null)
                 for(Entity ent : viewBoxData) {
-                    if (ent.getClass().getName() == "game.experimental.engine.entities.Projectile") {
+                    if (ent.getClass().getName().equals("game.experimental.engine.entities.Projectile")) {
                         InterpolatedEntity intEnt = interpolateMap.get(ent);
                         if (intEnt == null) {
                             intEnt = new InterpolatedEntity(ent);
@@ -136,7 +138,7 @@ public class AppExperimental {
                         
                         projectileRenderer.draw(c, intEnt.getAngle(interpolationFactor), intEnt.getPosition(interpolationFactor), ent.getSize());
                     }
-                    else if (ent.getClass().getName() == "game.experimental.engine.entities.PlayerEntity") {
+                    else if (ent.getClass().getName().equals("game.experimental.engine.entities.PlayerEntity")) {
 
                         InterpolatedEntity intEnt = interpolateMap.get(ent);
                         if (intEnt == null) {
@@ -154,11 +156,11 @@ public class AppExperimental {
                         playerRenderer.draw(c, intEnt.getAngle(interpolationFactor), interpolatedPos, ent.getSize());
   
                     }
-                    else if (ent.getClass().getName() == "game.experimental.engine.entities.CollectableEntity"){
+                    else if (ent.getClass().getName().equals( "game.experimental.engine.entities.CollectableEntity")){
                         collectableRenderer.setColorModulation(1.f, 0.5f, 1.f);
                         collectableRenderer.draw(c, ent.getAngle(), ent.getPosition(), ent.getSize());}
 
-                    else if (ent.getClass().getName() == "game.experimental.engine.entities.MovingCollectableEntity") {
+                    else if (ent.getClass().getName().equals( "game.experimental.engine.entities.MovingCollectableEntity")) {
                         collectableRenderer.setColorModulation(1.f, 1.f, 0.5f);
                         collectableRenderer.draw(c, ent.getAngle(), ent.getPosition(), ent.getSize());}
 
