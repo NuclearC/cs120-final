@@ -1,6 +1,8 @@
 package game.experimental.engine;
 
 import game.experimental.engine.connection.ClientChannel;
+import game.experimental.engine.entities.Entity;
+import game.experimental.engine.entities.PlayerEntity;
 import game.experimental.utils.Clock;
 
 import java.util.ArrayList;
@@ -47,6 +49,20 @@ public class Engine {
             
             for (World world : worlds) {
                 world.simulate();
+            }
+
+            channelsUpdate();
+        }
+    }
+
+    private void channelsUpdate(){
+        for (ClientChannel channel: clientChannels) {
+            if (channel != null) {
+                channel.updateViewport();
+
+                ArrayList<Entity> visibleEntities = worlds.get(channel.getWorldId()).getRoom(channel.getRoomId()).getEntitiesInRange(channel.getViewport());
+
+                channel.setViewBoxData(visibleEntities);
             }
         }
     }

@@ -1,6 +1,5 @@
 package game.experimental.engine;
 
-import game.experimental.engine.connection.ClientChannel;
 import game.experimental.engine.entities.*;
 import game.experimental.utils.BoundingBox;
 import game.experimental.utils.QuadTree;
@@ -151,28 +150,6 @@ public class Room implements Settings {
     }
 
     /**
-     * gets the engine and updates its client channels
-     * //change the doc
-     * @param engine
-     */
-    private void channelUpdate(Engine engine){
-        for (int i = 0; i < level.MAX_NUMBER_OF_PLAYERS; i++) {
-            if (playerEntities[i] != null) {
-                PlayerEntity player = playerEntities[i];
-
-                ClientChannel channel = engine.getClientChannel(player.getOwnerID());
-                if (channel == null)
-                    continue;
-
-                channel.updateViewport();
-
-                ArrayList<Entity> visibleEntities = retrieveEntitiesInRange(channel.getViewport());
-
-                channel.setViewBoxData(visibleEntities);
-            }
-        }
-    }
-    /**
      * Simulates the game inside one room.
      */
     public void simulate() {
@@ -181,10 +158,6 @@ public class Room implements Settings {
         playerSimulate();
         collectablesSimulate();
 
-        Engine engine = Engine.getInstance();
-        // generates DrawData for each player ViewBox
-        //
-        channelUpdate(engine);
         ++tickCount;
     }
 
@@ -196,7 +169,7 @@ public class Room implements Settings {
      * 
      * @param range the id of the player for which data is being generated.
      */
-    public ArrayList<Entity> retrieveEntitiesInRange(BoundingBox range) {
+    public ArrayList<Entity> getEntitiesInRange(BoundingBox range) {
         ArrayList<Entity> foundObjects = new ArrayList<>();
 
         quadTree.query(range, foundObjects);

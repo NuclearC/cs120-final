@@ -51,6 +51,7 @@ public class World {
         int roomId = decideRoom(owner);
         Room decidedRoom = rooms.get(roomId);
         PlayerEntity addedPlayerInstance = decidedRoom.addPlayer(owner.getId());
+        owner.setWorldId(this.id);
         owner.setRoomId(roomId);
         owner.setPlayerId(addedPlayerInstance.getId());
     }

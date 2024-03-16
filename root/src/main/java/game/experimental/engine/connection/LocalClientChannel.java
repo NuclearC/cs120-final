@@ -145,8 +145,19 @@ public class LocalClientChannel implements ClientChannel {
         this.roomId = roomId;
     }
 
+
     @Override
     public int getRoomId() {
         return roomId;
+    }
+
+    @Override
+    public void setWorldId(int worldId) {
+        this.worldId = worldId;
+    }
+
+    @Override
+    public int getWorldId() {
+        return worldId;
     }
 }

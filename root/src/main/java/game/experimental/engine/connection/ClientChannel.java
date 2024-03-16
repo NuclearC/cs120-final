@@ -22,8 +22,11 @@ public interface ClientChannel {
     int getPlayerId();
 
     void setRoomId(int roomId);
-
     int getRoomId();
+
+    void setWorldId(int worldId);
+
+    int getWorldId();
 
     int getId();
 
