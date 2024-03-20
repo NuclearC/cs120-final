@@ -108,7 +108,7 @@ public class Room implements Settings {
 
                 for(int j =0 ; j < player.getProjectiles().size(); j ++) {
                     Projectile  projectile = player.getProjectiles().get(j);
-                    if (projectile.remainsWithinBoundary(projectile.getPosition()) && !projectile.toBeRemoved())
+                    if (!projectile.toBeRemoved())
                         quadTree.insert(player.getProjectiles().get(j), player.getProjectiles().get(j).getBoundingBox());
                     else{
                         player.removeProjectileFromList(j);

@@ -1,25 +1,28 @@
 package game.experimental.app;
+
 import game.experimental.app.input.InputSystem;
 import game.experimental.app.input.InputSystem.RegisteredInput;
-import game.experimental.engine.*;
+import game.experimental.engine.Settings;
 import game.experimental.engine.connection.Client;
 import game.experimental.engine.connection.ClientChannel;
 import game.experimental.engine.connection.PlayerCommand;
 import game.experimental.engine.entities.Entity;
 import game.experimental.engine.entities.PlayerEntity;
-import game.experimental.gl.*;
+import game.experimental.gl.Camera;
+import game.experimental.gl.Gizmos;
 import game.experimental.gl.renderers.CollectableRenderer;
 import game.experimental.gl.renderers.PlayerRenderer;
 import game.experimental.gl.renderers.ProjectileRenderer;
-import game.experimental.utils.BoundingBox;
-import game.experimental.utils.QuadTree;
 import game.experimental.utils.Logger;
+import game.experimental.utils.QuadTree;
 import game.experimental.utils.Vector2F;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -110,8 +113,8 @@ public class AppExperimental {
             Gizmos.drawBoundingBox(myChannel.getViewport(), new float[]{1.f, 0.f, 0.f, 1.f});
 
             // TODO for testing purposes
-            QuadTree<Entity> qt = (Engine.getInstance()).getWorld(0).getRoom(0).getQuadTree();
-            drawQuadTree(qt);
+//            QuadTree<Entity> qt = (Engine.getInstance()).getWorld(0).getRoom(0).getQuadTree();
+//            drawQuadTree(qt);
 
             PlayerRenderer playerRenderer = PlayerRenderer.getSingleton();
             CollectableRenderer collectableRenderer = CollectableRenderer.getSingleton();

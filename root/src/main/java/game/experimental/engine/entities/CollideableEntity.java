@@ -33,7 +33,6 @@ abstract public class CollideableEntity extends Entity {
 
         Vector2F vec = obj.getVelocity();
         if (vec.length() < 0.01){
-            System.out.println("velocity 00000000000000");
             return new Vector2F();
         }
 

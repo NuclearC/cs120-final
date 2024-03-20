@@ -86,7 +86,7 @@ public class MovingCollectableEntity extends CollectableEntity implements Movabl
         if(this == collided)
             return;
         if(collided.getClass() == Projectile.class){
-            setLife(getLife() - 1);//damage sould be added TODO
+            setLife(getLife() - ((Projectile)collided).FORCE);//damage sould be added TODO
             collided.onCollision(this);
         }
         else
@@ -113,4 +113,5 @@ public class MovingCollectableEntity extends CollectableEntity implements Movabl
 
         }*/
     }
+
 }

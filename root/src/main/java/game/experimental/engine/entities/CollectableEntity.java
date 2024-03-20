@@ -1,6 +1,6 @@
 package game.experimental.engine.entities;
 
-import game.experimental.utils.*;
+import game.experimental.utils.Vector2F;
 
 /**
  * Represents collectable objects.
@@ -8,9 +8,8 @@ import game.experimental.utils.*;
 public class CollectableEntity extends CollideableEntity {
     private static final Vector2F COLLECTABLE_DEFAULT_SIZE = new Vector2F(15.f, 15.f);
 
-    private final int value;
     private int life;                   // life will be changed in the process
-    private final Type type;
+    public final TokenType TYPE;
 
     /**
      * Creates a collectable object.
@@ -22,16 +21,14 @@ public class CollectableEntity extends CollideableEntity {
     public CollectableEntity(long beginTick, Vector2F position, int id, int ownerID, int type) {
         super(beginTick, position, id, ownerID);
         this.size = COLLECTABLE_DEFAULT_SIZE;
-        this.type = getType(type);
-        this.value = this.type.value;
-        this.life = this.type.life;
+        this.TYPE = getType(type);
+        this.life = this.TYPE.life;
     }
 
     public CollectableEntity(long beginTick) {
         super(beginTick);
-        this.type = getType(0);
-        this.value = this.type.value;
-        this.life = this.type.life;
+        this.TYPE = getType(0);
+        this.life = this.TYPE.life;
     }
 
     @Override
@@ -45,8 +42,8 @@ public class CollectableEntity extends CollideableEntity {
      * Returns the value of the collectable.
      * @return value of the collectable object.
      */
-    public int getValue() {
-        return value;
+    public int getValueGain() {
+        return TYPE.valueGain;
     }
 
 
@@ -73,43 +70,35 @@ public class CollectableEntity extends CollideableEntity {
      * Sets the type of the Collectable. Should be called in the Constructor.
      * @param type
      */
-    private Type getType(int type){
+    private TokenType getType(int type){
         switch(type){
             default:
-                return Type.Triangle;
+                return TokenType.COIN;
             case 2:
-                return Type.Square;
+                return  TokenType.LIFE_KIT;
             case 3:
-                return  Type.Diamond;
+                return TokenType.MINE;
+            case 4:
+                return  TokenType.MOVING_COIN;
         }
     }
 
-    /**
-     * Defines the possible types of the Collectible objects.
-     * Add any specification needed.
-     */
-    public enum Type {
-        Triangle(10, 3),
-        Square(20, 150),
-        Diamond(30, 200);
-        public final int value;
-        public final int life;
-        Type(int value, int life){
-            this.value = value;
-            this.life = life;
-        }
 
-    }
+
     @Override
     public void onCollision(CollideableEntity collided){
-        if(collided.getClass() == PlayerEntity.class || collided.getClass() == Projectile.class){
+
+        if(collided.getClass() == Projectile.class){
+            collided.onCollision(this);
+        }
+        /*if(collided.getClass() == PlayerEntity.class || collided.getClass() == Projectile.class){
            //setLife(getLife() - 1);//damage sould be added TODO
             life--;
             if(collided.getClass() == Projectile.class){
                 collided.onCollision(this);
             }
 
-        }
+        }*/
 
     }
 }

@@ -7,8 +7,8 @@ import game.experimental.utils.Vector2F;
 public class Projectile extends CollideableEntity implements Movable {
 
     private Vector2F velocity;
-    
-    private final int FORCE = 15;
+    private Vector2F impulse;
+    public final int FORCE = 1;
     int SOME_FACTOR = 25;
     Boolean tobeRemoved;
 
@@ -23,7 +23,7 @@ public class Projectile extends CollideableEntity implements Movable {
                 id, ownerID);
 
         this.velocity = new Vector2F((float) Math.cos(angle), (float) Math.sin(-angle)).multiply(SOME_FACTOR);
-
+        this.impulse = new Vector2F();
         this.angle = angle;
         this.size = new Vector2F(PROJECTILE_SIZE, PROJECTILE_SIZE);
         this.tobeRemoved = false;
@@ -48,12 +48,19 @@ public class Projectile extends CollideableEntity implements Movable {
 
     @Override
     public void setImpulse(Vector2F impulse) {
-
+            this.impulse = impulse;
     }
 
     @Override
     public void move() {
-        this.position = this.position.add(this.velocity);
+        Vector2F newPosition = this.position.add(this.velocity);
+        newPosition = newPosition.add(this.impulse);
+
+        if (remainsWithinBoundary(newPosition)) {
+            this.position = newPosition;
+            this.impulse = new Vector2F();
+        }
+        else tobeRemoved = true;
     }
 
     @Override
@@ -66,14 +73,17 @@ public class Projectile extends CollideableEntity implements Movable {
     @Override
     public void onCollision(CollideableEntity collided) {
         System.out.println("PROJECTILE COLISION!!!!!!!!!!!!!!!!!!!! " + this.getClass());
+        if(collided.getClass() == CollectableEntity.class){
+            System.out.println("Entered");
+            setImpulse(calculateImpulse(collided));
+            return;
+        }
         if(collided.getId() != this.ownerID) {
             tobeRemoved = true;
         }
     }
 
-    public int getForce(){
-        return FORCE;
-    }
+
     public Boolean toBeRemoved(){
         return tobeRemoved;
     }
