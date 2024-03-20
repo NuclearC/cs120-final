@@ -25,7 +25,9 @@ public class MovingCollectableEntity extends CollectableEntity implements Movabl
     }
 
     @Override
-    public void setImpulse(Vector2F impulse) {}
+    public void setImpulse(Vector2F impulse) {
+        this.impulse = impulse;
+    }
 
     @Override
     public Vector2F getVelocity() {
@@ -81,17 +83,18 @@ public class MovingCollectableEntity extends CollectableEntity implements Movabl
         this.move();
     }
     public void onCollision(CollideableEntity collided){
+        if(this == collided)
+            return;
         if(collided.getClass() == Projectile.class){
             setLife(getLife() - 1);//damage sould be added TODO
             collided.onCollision(this);
-            return;
         }
-        if(collided instanceof Movable)
-            this.setImpulse(calculateImpulse((Movable) collided));
         else
-            this.setImpulse(calculateImpulse((CollectableEntity) collided));
+            this.setImpulse(calculateImpulse(collided));
+
         float SMOOTHNESS_FACTOR = 0.5f;    // i coppied from player need to be chaked
         this.velocity = this.velocity.add(this.impulse.multiply(SMOOTHNESS_FACTOR));
+        this.setImpulse(new Vector2F());
         //System.out.println("collided with moving collectable");
         /*
         if(collided.getClass() == PlayerEntity.class){

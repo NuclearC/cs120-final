@@ -154,7 +154,7 @@ public class PlayerEntity extends CollideableEntity implements Movable {
             return;
         }
         if(collided.getClass() == PlayerEntity.class) {
-            this.setImpulse(calculateImpulse((PlayerEntity)collided));
+            this.setImpulse(calculateImpulse(collided));
             float SMOOTHNESS_FACTOR = 0.5f;    // Try 0, 1 ,2, 3
             this.velocity = this.velocity.add(this.impulse.multiply(SMOOTHNESS_FACTOR));
         }

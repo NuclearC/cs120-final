@@ -23,32 +23,24 @@ abstract public class CollideableEntity extends Entity {
     public void onCollision(CollideableEntity entity){
     }
 
+    public Vector2F calculateImpulse(CollideableEntity other){
 
-    public Vector2F calculateImpulse(Movable other){
-
-        Vector2F line = this.getCenter().subtract(((CollideableEntity)other).getCenter());
-        Movable obj = (Movable) this;
-        Vector2F vec = obj.getVelocity();
-        if (vec.length() < 0.01){                // equals 0
-            return new Vector2F();
-        }
-        vec.subtract(((Movable) other).getVelocity());
-        int direction = 1;
-        if (Math.cos(line.getAngle(vec)) < 0){
-            direction = -1;
-        }
-        line = line.getNormalized();
-        return line.multiply((float)Math.cos(line.getAngle(vec))* vec.length()*direction);
-    }
-
-    public Vector2F calculateImpulse(CollectableEntity other){
+//        if (!(this instanceof Movable)){
+//            return new Vector2F();   // Not good
+//        }
         Vector2F line = this.getCenter().subtract(other.getCenter());
         Movable obj = (Movable) this;
+
         Vector2F vec = obj.getVelocity();
-        if (vec.length() < 0.01){                // equals 0
+        if (vec.length() < 0.01){
+            System.out.println("velocity 00000000000000");
             return new Vector2F();
         }
-        vec.subtract(other.getPosition());
+
+        if (other instanceof Movable){
+            vec = vec.subtract(((Movable) other).getVelocity());
+        }
+
         int direction = 1;
         if (Math.cos(line.getAngle(vec)) < 0){
             direction = -1;
