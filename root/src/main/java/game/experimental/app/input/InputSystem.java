@@ -2,6 +2,8 @@ package game.experimental.app.input;
 
 import static org.lwjgl.glfw.GLFW.*;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
@@ -110,6 +112,9 @@ public class InputSystem {
         }
     }
 
+    public void setName(String name){
+        System.out.println("new name should be " + name);
+    }
     public void subscribeWindow(GameWindow window) {
         long windowHandle = window.getNativeHandle();
 
@@ -145,5 +150,6 @@ public class InputSystem {
 
              }
          });
+
     }
 }

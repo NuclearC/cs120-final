@@ -21,6 +21,7 @@ public class PlayerEntity extends CollideableEntity implements Movable {
 
     private int life;
     private int money;
+
     public static final float PLAYER_DEFAULT_SIZE = 50.f; // TODO not the best place to keep it
     private static final float PLAYER_MAX_VELOCITY = 10.0f;
     private static final float PLAYER_MOVE_VELOCITY = 1.0f;
@@ -34,12 +35,13 @@ public class PlayerEntity extends CollideableEntity implements Movable {
         this.size = new Vector2F(PLAYER_DEFAULT_SIZE, PLAYER_DEFAULT_SIZE);
         this.life = 100;
         this.money = 0;
+
         this.velocity = new Vector2F();
         this.impulse = new Vector2F();
         this.deltaVelocity = new Vector2F();
         this.boundingBox = new BoundingBox(this.position, this.size);
         this.projectiles = new ArrayList<>();
-
+        this.money = 0;
         this.lastShotTime = 0;
     }
 
@@ -164,7 +166,7 @@ public class PlayerEntity extends CollideableEntity implements Movable {
             Projectile projectile = (Projectile) collided;
             if(projectile.getOwnerID() == this.id)
                 return;
-            this.life -= projectile.getForce();
+            this.life -= projectile.FORCE;
             projectile.onCollision(this);
         }
         else if(collided instanceof CollectableEntity){
@@ -175,9 +177,9 @@ public class PlayerEntity extends CollideableEntity implements Movable {
 
     private void takeCollectible(CollectableEntity collectible) {
         System.out.println(collectible.getClass() + " is eaten");
-        collectible.setLife(collectible.getLife() - 1);//changed to damaged point TODO
-        if(collectible.getLife() <= 0)
-            this.life += collectible.getValue();
+        collectible.setLife(0);
+        this.life += collectible.TYPE.lifeGain;
+        this.money += collectible.TYPE.valueGain;
     }
 
     public void removeProjectileFromList(int projectileIndex) {

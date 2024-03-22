@@ -46,7 +46,7 @@ public class MovingCollectableEntity extends CollectableEntity implements Movabl
         Vector2F bottomCorner = new Vector2F(Math.min(destination.getX() + Settings.MAP_WIDTH / 8, Settings.MAP_WIDTH),Math.min(destination.getY() + Settings.MAP_HEIGHT / 8,Settings.MAP_HEIGHT));
         //the boundaries of the random x,y can be changed and added to the settings
         destination = Vector2F.randomVector(topCorner.getX(), bottomCorner.getX(), topCorner.getY(), bottomCorner.getY());
-        System.out.println("CHANGE...................Destination" + destination);
+//        System.out.println("CHANGE...................Destination" + destination);
         processVelocity();
     }
 
@@ -90,7 +90,7 @@ public class MovingCollectableEntity extends CollectableEntity implements Movabl
         if(this == collided)
             return;
         if(collided.getClass() == Projectile.class){
-            setLife(getLife() - 1);//damage sould be added TODO
+            setLife(getLife() - ((Projectile)collided).FORCE);//damage sould be added TODO
             collided.onCollision(this);
         }
         else
@@ -118,4 +118,5 @@ public class MovingCollectableEntity extends CollectableEntity implements Movabl
 
         }*/
     }
+
 }
