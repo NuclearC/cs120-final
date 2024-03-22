@@ -1,6 +1,7 @@
 package game.experimental.engine.entities;
 
 import game.experimental.engine.Settings;
+import game.experimental.utils.BoundingBox;
 import game.experimental.utils.Vector2F;
 
 /**
@@ -72,9 +73,12 @@ public class MovingCollectableEntity extends CollectableEntity implements Movabl
         velocity = line.multiply((float) Math.random()*2 + 1f);//random should have range
 
     }
+
     @Override
     public boolean remainsWithinBoundary(Vector2F newPosition) {
-        return true;
+        BoundingBox roomBox = new BoundingBox(new Vector2F(), new Vector2F(Settings.MAP_WIDTH, Settings.MAP_HEIGHT));
+        BoundingBox collectableBox = new BoundingBox(newPosition, size);
+        return roomBox.contains(collectableBox);
     }
 
     @Override
@@ -95,6 +99,7 @@ public class MovingCollectableEntity extends CollectableEntity implements Movabl
         float SMOOTHNESS_FACTOR = 0.5f;    // i coppied from player need to be chaked
         this.velocity = this.velocity.add(this.impulse.multiply(SMOOTHNESS_FACTOR));
         this.setImpulse(new Vector2F());
+
         //System.out.println("collided with moving collectable");
         /*
         if(collided.getClass() == PlayerEntity.class){

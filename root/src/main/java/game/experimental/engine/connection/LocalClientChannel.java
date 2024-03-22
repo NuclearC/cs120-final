@@ -131,6 +131,13 @@ public class LocalClientChannel implements ClientChannel {
         player.setAngle(processCursorPosition());
     }
 
+    @Override
+    public void sendSettingsData() {
+        //PlayerEntity player = localEngine.getWorld(worldId).getRoom(roomId).getPlayer(this.playerId);
+//        setPlayerId(10);
+        System.out.println("Saved");
+    }
+
     private float processCursorPosition() {
         return (float)Math.atan2(this.cursorPosition.getY(), this.cursorPosition.getX());
     }

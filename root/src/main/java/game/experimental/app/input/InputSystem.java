@@ -24,6 +24,8 @@ public class InputSystem {
         MOVE_LEFT("Left"),
         MOVE_RIGHT("Right"),
         ATTACK1("Attack1"),
+        SETTINGS_OPEN("SettingsOpen"),
+//        SETTINGS_CLOSE("SettingsClose"),
         ATTACK2("Attack2");
     
         private String string;
@@ -56,7 +58,9 @@ public class InputSystem {
         keyToInputMap.put(GLFW_KEY_A, RegisteredInput.MOVE_LEFT);
         keyToInputMap.put(GLFW_KEY_S, RegisteredInput.MOVE_DOWN);
         keyToInputMap.put(GLFW_KEY_D, RegisteredInput.MOVE_RIGHT);
-        
+        keyToInputMap.put(GLFW_KEY_M, RegisteredInput.SETTINGS_OPEN);
+//        keyToInputMap.put(GLFW_KEY_ESCAPE, RegisteredInput.SETTINGS_CLOSE);
+
         inputToStateMap = new EnumMap<RegisteredInput, Boolean>(RegisteredInput.class);
     }    private float userInputAngle;
 

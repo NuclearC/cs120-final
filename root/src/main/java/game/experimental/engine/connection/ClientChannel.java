@@ -34,6 +34,7 @@ public interface ClientChannel {
     void setCursorPosition(Vector2F cursorPosition);
 
     void sendControlData();
+    void sendSettingsData();
 
     BoundingBox getViewport();
 

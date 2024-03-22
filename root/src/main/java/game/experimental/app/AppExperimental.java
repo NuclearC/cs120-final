@@ -11,7 +11,6 @@ import game.experimental.gl.*;
 import game.experimental.gl.renderers.CollectableRenderer;
 import game.experimental.gl.renderers.PlayerRenderer;
 import game.experimental.gl.renderers.ProjectileRenderer;
-import game.experimental.utils.BoundingBox;
 import game.experimental.utils.QuadTree;
 import game.experimental.utils.Logger;
 import game.experimental.utils.Vector2F;
@@ -27,6 +26,7 @@ import static org.lwjgl.opengl.GL13.GL_MULTISAMPLE;
 
 public class AppExperimental {
     private GameWindow gameWindow;
+    private SettingsWindow settingsWindow;
 
     private ClientChannel myChannel;
 
@@ -40,8 +40,8 @@ public class AppExperimental {
             throw new IllegalStateException("Unable to initialize GLFW");
         // create the main output window
         // this may be recreated if options are changed (such as window size of vsync)
-        gameWindow = new GameWindow(1280, 720, "OpenGL Output window", true);
-
+        this.gameWindow = new GameWindow(1280, 720, "OpenGL Output window", true);
+        this.settingsWindow = new SettingsWindow();
         GL.createCapabilities();
 
         glEnable(GL_MULTISAMPLE);
@@ -172,6 +172,11 @@ public class AppExperimental {
 
             input.updateShooting();
             int commandKey = 0;
+            if (input.getInputState(RegisteredInput.SETTINGS_OPEN))
+                this.settingsWindow.open();
+//            if (input.getInputState(RegisteredInput.SETTINGS_CLOSE))
+//                this.settingsWindow.close();
+
             if (input.getInputState(RegisteredInput.ATTACK1))
                 commandKey = PlayerCommand.SHOOT.set(commandKey);
             if (input.getInputState(RegisteredInput.MOVE_DOWN))
