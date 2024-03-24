@@ -10,7 +10,7 @@ public interface Settings {
     float ENGINE_FRAMERATE = 30f;    // to be changed to 20
     int MAX_NUMBER_OF_CLIENTS = 50;
 
-    float PLAYER_MAX_VELOCITY = 100.f;
+    float PLAYER_MAX_VELOCITY = 2.5f;
 
     /**
      * Level enum is used to define the level of the room. It has three options LOW, MEDIUM, HIGH,

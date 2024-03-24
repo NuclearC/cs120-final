@@ -4,6 +4,8 @@ import game.experimental.engine.Settings;
 import game.experimental.utils.BoundingBox;
 import game.experimental.utils.Vector2F;
 
+import java.util.ArrayList;
+
 /**
  * Represents a Moving Collectable object in the game. Extends StaticCollectableEntity
  */
@@ -40,37 +42,58 @@ public class MovingCollectableEntity extends CollectableEntity implements Movabl
     public void setDestination(Vector2F destination){
         this.destination = destination;
     }
-    private void changeDestination(){
 
+    public void behavior(ArrayList<Entity> entity){
+        for(int i = 0;i < entity.size(); i++) {
+            if (entity.get(i).getClass() != PlayerEntity.class){
+                entity.remove(i);
+                i--;
+            }
+
+        }
+        if(entity.size() == 0) return;
+        if(this.TYPE == TokenType.MOVING_COIN){
+            Vector2F newVelocity = velocity;
+            float factor = Settings.PLAYER_MAX_VELOCITY;
+            for(int i = 0;i < entity.size(); i++){
+                PlayerEntity player = (PlayerEntity) entity.get(i);
+                newVelocity = newVelocity.add(player.getVelocity());
+            }
+            System.out.println(newVelocity+"neeeeeeeeeeeeeeeeeeeeeeeeeeeeeew velocity");
+            if(destination.subtract(position.add(newVelocity.multiply(1.5F))).getX() * destination.subtract(position.add(newVelocity.multiply(1.5F))).getY() < 0)
+            changeDestination(position.add(newVelocity.multiply(1.5F)),factor);
+        }
+
+    }
+    private void changeDestination(Vector2F destination, float velocityFactor){
         Vector2F topCorner = new Vector2F(Math.max(destination.getX() - Settings.MAP_WIDTH / 8, 0),Math.max(destination.getY() - Settings.MAP_HEIGHT / 8,0));
         Vector2F bottomCorner = new Vector2F(Math.min(destination.getX() + Settings.MAP_WIDTH / 8, Settings.MAP_WIDTH),Math.min(destination.getY() + Settings.MAP_HEIGHT / 8,Settings.MAP_HEIGHT));
         //the boundaries of the random x,y can be changed and added to the settings
-        destination = Vector2F.randomVector(topCorner.getX(), bottomCorner.getX(), topCorner.getY(), bottomCorner.getY());
-//        System.out.println("CHANGE...................Destination" + destination);
-        processVelocity();
+        this.destination = Vector2F.randomVector(topCorner.getX(), bottomCorner.getX(), topCorner.getY(), bottomCorner.getY());
+        processVelocity(velocityFactor);
     }
 
     @Override
     public void move() {
         if(position.subtract(destination).length() < 1)
-            changeDestination();
+            changeDestination(destination,(float) Math.random());
         Vector2F newPosition = this.position.add(this.velocity);
         if (remainsWithinBoundary(newPosition)) {
             this.position = newPosition;
            // this.impulse = new Vector2F();
         } else {
-            changeDestination();
+            changeDestination(destination,(float) Math.random());
         }
         updateBoundingBox();
     }
 
-    private void processVelocity(){
+    private void processVelocity(float factor){
         Vector2F line = destination.subtract(position);
         if (line.length() < 0.01){                // equals 0
             velocity = new Vector2F();
         }
         line = line.getNormalized();
-        velocity = line.multiply((float) Math.random()*2 + 1f);//random should have range
+        velocity = line.multiply(factor*2 + 1f);//random should have range
 
     }
 
@@ -84,6 +107,7 @@ public class MovingCollectableEntity extends CollectableEntity implements Movabl
     @Override
     public void simulate(){
        // this.processVelocity();
+
         this.move();
     }
     public void onCollision(CollideableEntity collided){

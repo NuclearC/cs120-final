@@ -126,13 +126,17 @@ public class Room implements Settings {
             if (movingCollectables[i] != null) {
                 MovingCollectableEntity collectable = movingCollectables[i];
                 quadTree.remove(collectable, collectable.getBoundingBox());
+                int divisionFactor = 12;
+                Vector2F topCorner = new Vector2F(Math.max(collectable.getPosition().getX() - Settings.MAP_WIDTH /divisionFactor , 0),Math.max(collectable.getPosition().getY() - Settings.MAP_HEIGHT / divisionFactor,0));
+                Vector2F bottomCorner = new Vector2F(Math.min(collectable.getPosition().getX() + Settings.MAP_WIDTH / divisionFactor, Settings.MAP_WIDTH),Math.min(collectable.getPosition().getY() + Settings.MAP_HEIGHT / divisionFactor,Settings.MAP_HEIGHT));
+                ArrayList<Entity> entity = new ArrayList<>();
+                quadTree.query(new BoundingBox(topCorner,bottomCorner.subtract(topCorner)),entity);
+                collectable.behavior(entity);
                 collectable.simulate();
                 if (collectable.getLife() > 0)
                     quadTree.insert(collectable, collectable.getBoundingBox());
-                else{
-
+                else
                     movingCollectables[i] = null;
-                }
 
             }
         }
@@ -240,7 +244,7 @@ public class Room implements Settings {
      */
     private MovingCollectableEntity createMovingCollectable(int id, int type) {
         Vector2F position = Vector2F.randomVector(0, MAP_HEIGHT, 0, MAP_HEIGHT); // TODO
-        return new MovingCollectableEntity(tickCount, position, id, -1, 1); // TODO
+        return new MovingCollectableEntity(tickCount, position, id, -1, 4); // TODO
     }
 
     /**
