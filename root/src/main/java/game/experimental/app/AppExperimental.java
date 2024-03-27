@@ -3,11 +3,8 @@ package game.experimental.app;
 import game.experimental.app.input.InputSystem;
 import game.experimental.app.input.InputSystem.RegisteredInput;
 import game.experimental.engine.Settings;
-import game.experimental.engine.connection.Client;
-import game.experimental.engine.connection.ClientChannel;
-import game.experimental.engine.connection.PlayerCommand;
-import game.experimental.engine.entities.Entity;
-import game.experimental.engine.entities.PlayerEntity;
+import game.experimental.engine.connection.*;
+import game.experimental.engine.entities.*;
 import game.experimental.gl.Camera;
 import game.experimental.gl.Gizmos;
 import game.experimental.gl.renderers.CollectableRenderer;
@@ -98,7 +95,7 @@ public class AppExperimental {
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.f
 
-        Map<Entity, InterpolatedEntity> interpolateMap = new HashMap<>();
+        InterpolationHelper interpolator = new InterpolationHelper();
         ArrayList<Entity> viewBoxData;
 
         Vector2F viewportCenter = new Vector2F();
@@ -130,46 +127,31 @@ public class AppExperimental {
             final float frameTime = 1.0f / Settings.ENGINE_FRAMERATE;
             final float interpolationFactor = myChannel.getTimeSinceLastFrame() / (frameTime);
 
-            if (viewBoxData != null)
+            if (viewBoxData != null) {
                 for(Entity ent : viewBoxData) {
-                    if (ent.getClass().getName().equals("game.experimental.engine.entities.Projectile")) {
-                        InterpolatedEntity intEnt = interpolateMap.get(ent);
-                        if (intEnt == null) {
-                            intEnt = new InterpolatedEntity(ent);
-                            interpolateMap.put(ent, intEnt);
-                        } else {
-                            intEnt.interpolate(myChannel.getTickCount());
-                        }
-                        
-                        projectileRenderer.draw(c, intEnt.getAngle(interpolationFactor), intEnt.getPosition(interpolationFactor), ent.getSize());
-                    }
-                    else if (ent.getClass().getName().equals("game.experimental.engine.entities.PlayerEntity")) {
+                    if (ent instanceof Movable) {
+                        interpolator.updateEntity(ent, myChannel.getTickCount());
 
-                        InterpolatedEntity intEnt = interpolateMap.get(ent);
-                        if (intEnt == null) {
-                            intEnt = new InterpolatedEntity(ent);
-                            interpolateMap.put(ent, intEnt);
-                        } else {
-                            intEnt.interpolate(myChannel.getTickCount());
+                        InterpolatedEntity intEnt = interpolator.getInterpolatedEntity(ent);
+                        if (ent instanceof Projectile) {
+                            projectileRenderer.draw(c, intEnt.getAngle(interpolationFactor), intEnt.getPosition(interpolationFactor), ent.getSize());
+                        } else if (ent instanceof PlayerEntity) {
+                            Vector2F interpolatedPos = intEnt.getPosition(interpolationFactor);                      
+                            if (ent.getOwnerID() == myChannel.getId()) {
+                                viewportCenter = interpolatedPos.add(new Vector2F(PlayerEntity.PLAYER_DEFAULT_SIZE / 2.f, PlayerEntity.PLAYER_DEFAULT_SIZE / 2.f));
+                                c.setViewport(viewportCenter, myChannel.getViewportZoom());
+                            }
+                            playerRenderer.draw(c, intEnt.getAngle(interpolationFactor), interpolatedPos, ent.getSize());
+                        } else if (ent instanceof MovingCollectableEntity) {
+                            collectableRenderer.setColorModulation(1.f, 1.f, 0.5f);
+                            collectableRenderer.draw(c, intEnt.getAngle(interpolationFactor), intEnt.getPosition(interpolationFactor), ent.getSize());
                         }
-                        
-                        Vector2F interpolatedPos = intEnt.getPosition(interpolationFactor);                      
-                        if (ent.getOwnerID() == myChannel.getId()) {
-                            viewportCenter = interpolatedPos.add(new Vector2F(PlayerEntity.PLAYER_DEFAULT_SIZE / 2.f, PlayerEntity.PLAYER_DEFAULT_SIZE / 2.f));
-                            c.setViewport(viewportCenter, myChannel.getViewportZoom());
-                        }
-                        playerRenderer.draw(c, intEnt.getAngle(interpolationFactor), interpolatedPos, ent.getSize());
-  
-                    }
-                    else if (ent.getClass().getName().equals( "game.experimental.engine.entities.CollectableEntity")){
+                    } else if (ent instanceof CollectableEntity) {
                         collectableRenderer.setColorModulation(1.f, 0.5f, 1.f);
-                        collectableRenderer.draw(c, ent.getAngle(), ent.getPosition(), ent.getSize());}
-
-                    else if (ent.getClass().getName().equals( "game.experimental.engine.entities.MovingCollectableEntity")) {
-                        collectableRenderer.setColorModulation(1.f, 1.f, 0.5f);
-                        collectableRenderer.draw(c, ent.getAngle(), ent.getPosition(), ent.getSize());}
-
+                        collectableRenderer.draw(c, ent.getAngle(), ent.getPosition(), ent.getSize());
+                    } 
                 }
+            }
 
             gameWindow.present();
             

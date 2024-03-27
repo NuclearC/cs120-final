@@ -12,9 +12,18 @@ public class Vector2F implements Vector, Cloneable {
      * Crates a default 2D vector.
      * Initializes x = 0 and y = 0
      */
-    public Vector2F(){
+    public Vector2F() {
         x = 0;
         y = 0;
+    }
+
+    /**
+     * Copy-construct a vector from an existing object. 
+     * @param other the existing vector
+     */
+    public Vector2F(Vector2F other) {
+        this.x = other.x;
+        this.y = other.y;
     }
 
 

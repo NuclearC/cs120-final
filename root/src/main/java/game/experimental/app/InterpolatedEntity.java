@@ -55,6 +55,9 @@ public class InterpolatedEntity {
         }
     }
     
+    /**
+     * The entity to be interpolated.
+     */
     private Entity entity;
 
     private long lastUpdateTick;
@@ -65,6 +68,9 @@ public class InterpolatedEntity {
     private static final InterpolationStrategy<Vector2F> vecLinearInterpolator = new InterpolationStrategy<Vector2F>() {
         @Override 
         public Vector2F interpolate(Vector2F start, Vector2F end, float factor) {
+            if (end.subtract(start).length() > 50.f)    
+                return new Vector2F(end);
+
             return start.add(end.subtract(start).multiply(factor));
         }
     };
@@ -110,7 +116,7 @@ public class InterpolatedEntity {
      * whether the engine has passed a frame. 
      * @param tickCount the tickCount of the parent Room of the given Entity
      */
-    public void interpolate(long tickCount) {
+    public void updateFrame(long tickCount) {
         if (tickCount > this.lastUpdateTick) {
             this.lastUpdateTick = tickCount;
 
