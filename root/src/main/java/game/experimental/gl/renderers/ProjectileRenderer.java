@@ -2,13 +2,15 @@ package game.experimental.gl.renderers;
 
 import java.io.IOException;
 
+import static org.lwjgl.opengl.GL20.glUniform4fv;
+import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
 import static org.lwjgl.opengl.GL46.*;
 
 import game.experimental.gl.*;
 import game.experimental.gl.Shader.ShaderException;
 import game.experimental.gl.Shader.ShaderType;
+import game.experimental.gl.Texture.TextureLoadException;
 import game.experimental.gl.Program.ProgramException;
-import game.experimental.utils.Logger;
 import game.experimental.utils.Matrix4x4F;
 import game.experimental.utils.Vector2F;
 
@@ -29,11 +31,10 @@ public final class ProjectileRenderer implements EntityRenderer {
      */
     @Override
     public void load() {
-        Logger.log("Loading data for ProjectileRenderer...");
         try {
             texture = new Texture("./assets/textures/texture_projectile1.psd");
-        } catch (Exception e) {
-            Logger.error("Failed to load texture; " + e.getMessage());
+        } catch (TextureLoadException e) {
+            System.err.println("Projectile texture failed to load: " + e.getMessage());
         }
 
         shape = new Shape(Shape.buildQuad());
@@ -50,13 +51,13 @@ public final class ProjectileRenderer implements EntityRenderer {
             fragmentShader.destroy();
 
         } catch(ShaderException e) {
-            Logger.error("Shader compile error " + e.getMessage());
+            System.err.println("Shader compile error " + e.getMessage());
 			return;
 		} catch (ProgramException e) {
-            Logger.error("Program linking error " + e.getMessage());
+            System.err.println("Program linking error " + e.getMessage());
 			return;
 		} catch (IOException e) {
-            Logger.error("I/O error " + e.getMessage());
+            System.err.println("I/O error " + e.getMessage());
 			return;
         }
     }
@@ -66,6 +67,8 @@ public final class ProjectileRenderer implements EntityRenderer {
      */
     @Override
     public void draw(Camera camera, float rotation, Vector2F position, Vector2F size) {
+        if (program == null || shape == null || texture == null)
+            return;
         program.use();
 
         // epic hack

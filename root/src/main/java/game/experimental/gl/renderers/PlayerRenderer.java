@@ -2,6 +2,8 @@ package game.experimental.gl.renderers;
 
 import java.io.IOException;
 
+import static org.lwjgl.opengl.GL20.glUniform4fv;
+import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
 import static org.lwjgl.opengl.GL46.*;
 
 import game.experimental.gl.Camera;
@@ -9,10 +11,10 @@ import game.experimental.gl.Program;
 import game.experimental.gl.Shader;
 import game.experimental.gl.Shape;
 import game.experimental.gl.Texture;
+import game.experimental.gl.Texture.TextureLoadException;
 import game.experimental.gl.Program.ProgramException;
 import game.experimental.gl.Shader.ShaderException;
 import game.experimental.gl.Shader.ShaderType;
-import game.experimental.utils.Logger;
 import game.experimental.utils.Matrix4x4F;
 import game.experimental.utils.Vector2F;
 
@@ -35,12 +37,11 @@ public final class PlayerRenderer implements EntityRenderer {
      */
     @Override
     public void load() {
-        Logger.log("Loading data for PlayerRenderer...");
         try {
             texture = new Texture("./assets/textures/texture_pawn.psd");
             barrelTexture = new Texture("./assets/textures/texture_steel.psd");
-        } catch (Exception e) {
-            Logger.error("Failed to load texture; " + e.getMessage());
+        } catch (TextureLoadException e) {
+            System.err.println("Player texture failed to load: " + e.getMessage());
         }
 
         modulation = new float[]{1.f, 1.f, 1.f, 1.f};
@@ -58,13 +59,13 @@ public final class PlayerRenderer implements EntityRenderer {
             fragmentShader.destroy();
 
         } catch(ShaderException e) {
-            Logger.error("Shader compile error " + e.getMessage());
+            System.err.println("Shader compile error " + e.getMessage());
 			return;
 		} catch (ProgramException e) {
-            Logger.error("Program linking error " + e.getMessage());
+            System.err.println("Program linking error " + e.getMessage());
 			return;
 		} catch (IOException e) {
-            Logger.error("I/O error " + e.getMessage());
+            System.err.println("I/O error " + e.getMessage());
 			return;
         }
     }
@@ -74,6 +75,9 @@ public final class PlayerRenderer implements EntityRenderer {
      */
     @Override
     public void draw(Camera camera, float rotation, Vector2F position, Vector2F size) {
+        if (program == null || barrelTexture == null || shape == null || texture == null)
+            return;
+
         program.use();
 
         int pvmLocation = program.getUniform("pvm");
@@ -81,8 +85,6 @@ public final class PlayerRenderer implements EntityRenderer {
 
         Vector2F barrelSize = new Vector2F(size.getX() * 0.5f, size.getY() * 0.3f);
         Vector2F barrelPosition = new Vector2F(size.getX() * 0.7f, size.getY() * 0.5f - barrelSize.getY() * 0.5f);
-
-
         
         Matrix4x4F model = Matrix4x4F.transformScale(barrelSize);
         model = Matrix4x4F.transformTranslate(size.multiply(-0.5f)).multiply(model);

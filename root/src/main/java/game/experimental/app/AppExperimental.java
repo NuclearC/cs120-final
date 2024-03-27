@@ -2,25 +2,17 @@ package game.experimental.app;
 
 import game.experimental.app.input.InputSystem;
 import game.experimental.app.input.InputSystem.RegisteredInput;
-import game.experimental.engine.Settings;
+import game.experimental.engine.*;
 import game.experimental.engine.connection.*;
 import game.experimental.engine.entities.*;
-import game.experimental.gl.Camera;
-import game.experimental.gl.Gizmos;
-import game.experimental.gl.renderers.CollectableRenderer;
-import game.experimental.gl.renderers.PlayerRenderer;
-import game.experimental.gl.renderers.ProjectileRenderer;
-import game.experimental.utils.QuadTree;
-import game.experimental.utils.Logger;
-import game.experimental.utils.QuadTree;
-import game.experimental.utils.Vector2F;
+import game.experimental.gl.*;
+import game.experimental.gl.renderers.*;
+import game.experimental.utils.*;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -77,9 +69,7 @@ public class AppExperimental {
 
     private void loop() {
 
-        Gizmos.initialize();
-        
-        Logger.log("hello world");
+        Gizmos.initialize();;
 
         Camera c = new Camera(1280, 720);
 

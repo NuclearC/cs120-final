@@ -9,9 +9,21 @@ import java.nio.ByteBuffer;
  * Represesents a texture (an image) residing within the GPU. 
  */
 public class Texture {
+
+    public class TextureLoadException extends Exception {
+        public TextureLoadException(String message) {
+            super(message);
+        }
+    }
+
     private int texture = 0;
 
-    public Texture(String filename) throws Exception {
+    /**
+     * Create a texture from a file
+     * @param filename the path to the image file
+     * @throws TextureLoadException
+     */
+    public Texture(String filename) throws TextureLoadException {
         texture = glGenTextures();
         glBindTexture(GL_TEXTURE_2D, texture);
 
@@ -31,16 +43,22 @@ public class Texture {
             glGenerateMipmap(GL_TEXTURE_2D);
 
         } else {
-            throw new Exception(ExceptionMessages.TEXTURE_NOT_FOUND);
+            throw new TextureLoadException(ExceptionMessages.TEXTURE_NOT_FOUND);
         }
 
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 
+    /**
+     * Bind the texture to the GL_TEXTURE_2D
+     */
     public void bind() {
         glBindTexture(GL_TEXTURE_2D, texture);
     }
 
+    /**
+     * Destroy the texture. 
+     */
     public void destroy() {
         glDeleteTextures(texture);
     }

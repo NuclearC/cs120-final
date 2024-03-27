@@ -26,18 +26,33 @@ public class Engine {
         lastFrameBeginTime = this.getSimulationTime();
     }
 
+    /**
+     * Get a singleton instance of an Engine
+     * @return the instance
+     */
     public static Engine getInstance(){
         return INSTANCE;
     }
 
+    /**
+     * Retrieve monotonic clock's value
+     * @return a value in seconds
+     */
     public float getSimulationTime() {
         return Clock.now();
     }
 
+    /**
+     * Get the time since the last frame was began
+     * @return the time in seconds
+     */
     public float getTimeSinceLastFrame() {
         return (getSimulationTime() - this.lastFrameBeginTime);
     }
 
+    /**
+     * Run a single frame of simulation. 
+     */
     public void runEngineFrame() {
         final float currentTime = getSimulationTime();
         final float elapsedTime = currentTime - lastFrameBeginTime;
